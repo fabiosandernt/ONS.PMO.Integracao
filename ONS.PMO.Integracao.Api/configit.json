@@ -1,0 +1,27 @@
+﻿{
+  "ConnectionStrings:PMOIntegracaoConnectionString": {
+    "depara": "ONS.PMO.Integracao_ConnectionString",
+    "arquivo": "appsettings.json",
+    "kind": "JsonFile"
+  },
+  "JwtSecurity:PMOIntegracaoJwtSecurity": {
+    "depara": "ONS.PMO.Integracao_JwtSecurity",
+    "arquivo": "appsettings.json",
+    "kind": "JsonFile"
+  },
+  "ONSPopAuthTokenURL:PMOIntegracaoPopAuthTokenURL": {
+    "depara": "ONS.PMO.Integracao_PopAuth.TokenURL",
+    "arquivo": "appsettings.json",
+    "kind": "JsonFile"
+  },
+  "ONSPopAuthclientId:PMOIntegracaoPopAuthclientId": {
+    "depara": "ONS.PMO.Integracao_PopAuth.clientId",
+    "arquivo": "appsettings.json",
+    "kind": "JsonFile"
+  },
+  "ONSAuthorizationIssuer:PMOIntegracaoAuthorizationIssuer": {
+    "depara": "ONS.PMO.Integracao_ONS.Authorization.Issuer",
+    "arquivo": "appsettings.json",
+    "kind": "JsonFile"
+  }
+}
