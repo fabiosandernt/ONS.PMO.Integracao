@@ -32,5 +32,15 @@ namespace ONS.PMO.Integracao.Infraestructure.Repository
 
             return query.FirstOrDefault();
         }
+
+        public Pmo ObterPorFiltroExterno(IBaseFilter filtro)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int ObterQuantidadeSemanasPMO(int idSemanaOperativa)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

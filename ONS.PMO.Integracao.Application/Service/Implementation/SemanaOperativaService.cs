@@ -1,17 +1,48 @@
-﻿using ONS.PMO.Integracao.Application.Dto.PMO;
+﻿
+using ONS.PMO.Integracao.Application.Dto.PMO;
 using ONS.PMO.Integracao.Application.Filter;
 using ONS.PMO.Integracao.Application.Service.Interfaces;
 using ONS.PMO.Integracao.Domain.Entidades.PMO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ONS.PMO.Integracao.Domain.Interfaces.Repository.PMO;
 
 namespace ONS.PMO.Integracao.Application.Service.Implementation
 {
     public class SemanaOperativaService : ISemanaOperativaService
     {
+
+        private readonly ISemanaOperativaRepository _semanaOperativaRepository;
+        private readonly IParametroService _parametroService;
+        private readonly ISituacaoSemanaOperativaRepository _situacaoSemanaOperativaRepository;
+        private readonly ISituacaoColetaInsumoRepository _situacaoColetaInsumoRepository;
+        private readonly IGabaritoRepository _gabaritoRepository;
+        private readonly IColetaInsumoRepository _coletaInsumoRepository;
+        private readonly IPMORepository _pmoRepository;
+        private readonly INotificacaoService _notificacaoService;
+        private readonly IDadoColetaNaoEstruturadoRepository _dadoColetaNaoEstruturadoRepository;
+        private readonly IColetaInsumoService _coletaInsumoService;
+        private readonly IArquivoRepository _arquivoRepository;
+        private readonly ISharePointService _sharePointService;
+        private readonly IHistoricoService _historicoService;
+        private readonly IArquivoSemanaOperativaRepository _arquivoSemanaOperativaRepository;
+
+        public SemanaOperativaService(ISemanaOperativaRepository semanaOperativaRepository, IParametroService parametroService, ISituacaoSemanaOperativaRepository situacaoSemanaOperativaRepository, ISituacaoColetaInsumoRepository situacaoColetaInsumoRepository, IGabaritoRepository gabaritoRepository, IColetaInsumoRepository coletaInsumoRepository, IPMORepository pmoRepository, INotificacaoService notificacaoService, IDadoColetaNaoEstruturadoRepository dadoColetaNaoEstruturadoRepository, IColetaInsumoService coletaInsumoService, IArquivoRepository arquivoRepository, ISharePointService sharePointService, IHistoricoService historicoService, IArquivoSemanaOperativaRepository arquivoSemanaOperativaRepository)
+        {
+            _semanaOperativaRepository = semanaOperativaRepository;
+            _parametroService = parametroService;
+            _situacaoSemanaOperativaRepository = situacaoSemanaOperativaRepository;
+            _situacaoColetaInsumoRepository = situacaoColetaInsumoRepository;
+            _gabaritoRepository = gabaritoRepository;
+            _coletaInsumoRepository = coletaInsumoRepository;
+            _pmoRepository = pmoRepository;
+            _notificacaoService = notificacaoService;
+            _dadoColetaNaoEstruturadoRepository = dadoColetaNaoEstruturadoRepository;
+            _coletaInsumoService = coletaInsumoService;
+            _arquivoRepository = arquivoRepository;
+            _sharePointService = sharePointService;
+            _historicoService = historicoService;
+            _arquivoSemanaOperativaRepository = arquivoSemanaOperativaRepository;
+        }
+
         public void AbrirEstudo(AberturaEstudoDTO dto)
         {
             throw new NotImplementedException();

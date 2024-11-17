@@ -36,7 +36,7 @@ public  class ColetaInsumo
 
     public virtual SemanaOperativa IdSemanaoperativaNavigation { get; set; } = null!;
 
-    public virtual SituacaoColetaIsumo IdTpsituacaocoletainsumoNavigation { get; set; } = null!;
+    public virtual SituacaoColetaInsumo IdTpsituacaocoletainsumoNavigation { get; set; } = null!;
 
     public virtual ICollection<DadoColeta> TbDadocoleta { get; set; } = new List<DadoColeta>();
 
