@@ -15,10 +15,10 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />  
-    <PackageReference Include="ons.configit.configuration.provider" Version="2.2.1" />
+    <!--<PackageReference Include="ons.configit.configuration.provider" Version="2.2.1" />
     <PackageReference Include="ons.configit.entidade" Version="1.0.0" />
     <PackageReference Include="ONS.Core.Authorization" Version="1.3.1" />
-    <PackageReference Include="ONS.Core.POP.Provider" Version="2.1.3" />
+    <PackageReference Include="ONS.Core.POP.Provider" Version="2.1.3" />-->
     <PackageReference Include="OpenTelemetry" Version="1.9.0" />
     <PackageReference Include="OpenTelemetry.Exporter.Console" Version="1.9.0" />
     <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.9.0" />

@@ -24,7 +24,11 @@ namespace ONS.PMO.Integracao.Api
             }).CreateLogger<Program>();
 
             builder.Services.AddRazorPages();
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+            });
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
@@ -37,20 +41,20 @@ namespace ONS.PMO.Integracao.Api
             }
             else
             {
-                var environmentVariables = Environment.GetEnvironmentVariables();
+                //var environmentVariables = Environment.GetEnvironmentVariables();
 
-                builder.Configuration.AddConfigITConfiguration(options =>
-                {
-                    options["-amb"] = environmentVariables["ConfigITamb"]?.ToString();
-                    options["-user"] = environmentVariables["ConfigITuser"]?.ToString();
-                    options["-password"] = environmentVariables["ConfigITpwd"]?.ToString();
-                    options["-r"] = environmentVariables["ConfigITr"]?.ToString();
-                });
+                //builder.Configuration.AddConfigITConfiguration(options =>
+                //{
+                //    options["-amb"] = environmentVariables["ConfigITamb"]?.ToString();
+                //    options["-user"] = environmentVariables["ConfigITuser"]?.ToString();
+                //    options["-password"] = environmentVariables["ConfigITpwd"]?.ToString();
+                //    options["-r"] = environmentVariables["ConfigITr"]?.ToString();
+                //});
 
-                var connectionString = builder.Configuration.GetConnectionString("PMOIntegracaoConnectionString");
-                builder.Configuration["TestConfigValue"] = connectionString;
-                builder.Services.RegisterApplication(builder.Configuration)
-                    .RegisterRepository(connectionString);
+                //var connectionString = builder.Configuration.GetConnectionString("PMOIntegracaoConnectionString");
+                //builder.Configuration["TestConfigValue"] = connectionString;
+                //builder.Services.RegisterApplication(builder.Configuration)
+                //    .RegisterRepository(connectionString);
             }
 
             var supportedCultures = new[]
