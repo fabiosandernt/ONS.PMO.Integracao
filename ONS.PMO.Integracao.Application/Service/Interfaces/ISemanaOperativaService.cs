@@ -1,5 +1,7 @@
 ﻿
 
+using ONS.PMO.Integracao.Application.Dto.PMO;
+using ONS.PMO.Integracao.Application.Filter;
 using ONS.PMO.Integracao.Domain.Entidades.PMO;
 
 namespace ONS.PMO.Integracao.Application.Service.Interfaces
