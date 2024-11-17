@@ -10,5 +10,6 @@ namespace ONS.PMO.Integracao.Domain.Interfaces.Repository.PMO
 {
     public interface ISituacaoSemanaOperativaRepository : IRepository<SituacaoSemanaOperativa>
     {
+
     }
 }

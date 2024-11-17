@@ -5,7 +5,10 @@ using ONS.PMO.Integracao.Application.Filter;
 using ONS.PMO.Integracao.Application.Service.Interfaces;
 using ONS.PMO.Integracao.Domain.Entidades.PMO;
 using ONS.PMO.Integracao.Domain.Entidades.Resources;
+using ONS.PMO.Integracao.Domain.Entidades.Tabelas;
+using ONS.PMO.Integracao.Domain.Enum;
 using ONS.PMO.Integracao.Domain.Interfaces.Repository.PMO;
+using System;
 
 namespace ONS.PMO.Integracao.Application.Service.Implementation
 {
@@ -52,9 +55,50 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             throw new NotImplementedException();
         }
 
-        public void AlterarSemanaOperativa(DadosAlteracaoSemanaOperativaDTO dadosAlteracao)
+        public async Task AlterarSemanaOperativa(DadosAlteracaoSemanaOperativaDTO dadosAlteracao)
         {
-            throw new NotImplementedException();
+            ValidarDataAlteracao(dadosAlteracao);
+            SemanaOperativa semanaOperativa = await _semanaOperativaRepository.GetbyExpressionAsync(x => x.IdSemanaoperativa == dadosAlteracao.Id);
+            if (semanaOperativa != null)
+            {
+                semanaOperativa.DatReuniao = dadosAlteracao.DataReuniao;
+                semanaOperativa.DatIniciomanutencao = dadosAlteracao.DataInicioManutencao;
+                semanaOperativa.DatFimmanutencao = dadosAlteracao.DataFimManutencao;
+                semanaOperativa.DinUltimaalteracao = DateTime.Now;
+            }
+        }
+
+        private void ValidarDataAlteracao(DadosAlteracaoSemanaOperativaDTO dadosAlteracao)
+        {
+            const string dataReuniao = "Data da Reunião";
+            const string dataInicioManutencao = "Data Início da Manutenção";
+            const string dataFimManutencao = "Data Termino da Manutenção";
+
+            bool isDataInvalida = false;
+            DateTime dataAtual = DateTime.Now.Date;
+            var message = BusinessMessage.Get("MS006");
+
+            IList<string> mensagens = new List<string>();
+
+            if (dadosAlteracao.DataReuniao.CompareTo(dataAtual) < 0)
+            {
+                mensagens.Add(string.Format(message.Value, dataReuniao));
+            }
+
+            if (dadosAlteracao.DataInicioManutencao.CompareTo(dataAtual) < 0)
+            {
+                mensagens.Add(string.Format(message.Value, dataInicioManutencao));
+            }
+
+            if (dadosAlteracao.DataFimManutencao.CompareTo(dataAtual) < 0)
+            {
+                mensagens.Add(string.Format(message.Value, dataFimManutencao));
+            }
+
+            if (mensagens.Any())
+            {
+                throw new ArgumentException(mensagens.FirstOrDefault());
+            }
         }
 
         public void AtualizarSemanasOperativasInclusao(IEnumerable<SemanaOperativa> semanasOperativas, int ano, string nomeMes)
@@ -117,9 +161,13 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             throw new NotImplementedException();
         }
 
-        public SemanaOperativa ObterSemanaOperativaPorChave(int chave)
+        public async Task<SemanaOperativa> ObterSemanaOperativaPorChave(int chave)
         {
-            throw new NotImplementedException();
+            return await _semanaOperativaRepository.GetbyExpressionAsync(x => x.IdSemanaoperativa == chave);
+        }
+        public async Task<SemanaOperativa> ObterSemanaOperativaPorChave(int chave, byte[] versao)
+        {
+            return await _semanaOperativaRepository.GetbyExpressionAsync(x => x.IdSemanaoperativa == chave && x.VerControleconcorrencia == versao);
         }
 
         public SemanaOperativa ObterSemanaOperativaPorChaveParaInformarDados(int chave)
@@ -129,7 +177,7 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
 
         public async Task<TbSemanaoperativaDto> ObterSemanaOperativaValidaParaAbrirEstudo(DadosSemanaOperativaDTO dto)
         {
-            SemanaOperativa semana = ObterSemanaOperativaPorChave(dto.IdSemanaOperativa);
+            SemanaOperativa semana = await ObterSemanaOperativaPorChave(dto.IdSemanaOperativa);
             if (semana != null)
             {
                 // Significa que a chamada deste método tem a intenção de verificar a versão do PMO
@@ -163,9 +211,128 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             throw new NotImplementedException();
         }
 
-        public void ResetarGabarito(ResetGabaritoDTO dto)
+        public async Task ResetarGabarito(ResetGabaritoDTO dto)
         {
-            throw new NotImplementedException();
+            await AssociarGabarito(dto.IdSemanaOperativa, dto.IdEstudo, dto.IsPadrao, dto.VersaoPMO, dto.VersaoSemanaOperativa);
+        }
+
+        private async Task AssociarGabarito(int idSemanaOperativa, int? idSemanaEstudoGabarito, bool isPadrao, byte[] versaoPMO, byte[] versaoSemanaOperativa)
+        {
+            SemanaOperativa semanaOperativa = versaoSemanaOperativa == null
+                ? await ObterSemanaOperativaPorChave(idSemanaOperativa)
+                : await ObterSemanaOperativaPorChave(idSemanaOperativa, versaoSemanaOperativa);
+
+            if (semanaOperativa != null)
+            {
+                if (versaoPMO != null)
+                {
+                    var pmo = await _pmoRepository.GetbyExpressionAsync(x => x.IdPmo == semanaOperativa.IdPmo && x.VerControleconcorrencia == versaoPMO);
+                    if (pmo != null)
+                    {
+                        pmo.VerControleconcorrencia = versaoPMO;
+                    }
+                }
+
+                if (versaoSemanaOperativa != null) semanaOperativa.VerControleconcorrencia = versaoSemanaOperativa;
+
+                if (isPadrao)
+                {
+                    AssociarGabaritoPadrao(semanaOperativa);
+                }
+                else
+                {
+                    AssociarGabaritoEstudoAnterior(idSemanaEstudoGabarito, semanaOperativa);
+                }
+
+                //semanaOperativa.SituacaoId = (int)SituacaoSemanaOperativaEnum.Configuracao;
+                semanaOperativa.IdTpsituacaosemanaoperNavigation = await _situacaoSemanaOperativaRepository.Get((int)SituacaoSemanaOperativaEnum.GeracaoBlocos);
+                semanaOperativa.DinUltimaalteracao = DateTime.Now;
+
+                _historicoService.CriarSalvarHistoricoSemanaOperativa(semanaOperativa);
+            }
+
+
+        }
+
+        private async void AssociarGabaritoEstudoAnterior(int? idSemanaEstudoGabarito, SemanaOperativa semanaOperativa)
+        {
+            if (idSemanaEstudoGabarito.HasValue)
+            {
+                SemanaOperativa semanaEstudoGabarito = await ObterSemanaOperativaPorChave(idSemanaEstudoGabarito.Value);
+                IEnumerable<Gabarito> gabaritosCopiados = CopiarGabaritos(semanaEstudoGabarito.TbGabaritos.ToList());
+                SituacaoColetaInsumo situacao = await _situacaoColetaInsumoRepository.Get((int)SituacaoColetaInsumoEnum.NaoIniciado);
+                IEnumerable<ColetaInsumo> coletasCopiadas = semanaEstudoGabarito.TbColetainsumos.ToList().Where(ci => ci.IdInsumopmoNavigation.FlgAtivo).Select(ci =>
+                    CriarColetaInsumo(ci.IdAgenteinstituicaoNavigation, ci.IdInsumopmoNavigation, ci.CodPerfilons, semanaOperativa, situacao));
+
+                AssociarGabaritosColetasASemana(semanaOperativa, gabaritosCopiados, coletasCopiadas);
+            }
+        }
+
+        private void AssociarGabaritosColetasASemana(SemanaOperativa semanaOperativa, IEnumerable<Gabarito> gabaritos,
+           IEnumerable<ColetaInsumo> coletasInsumos)
+        {
+            // É preciso limpar a lista para que o EF limpe os gabaritos e coletas
+            // pois esse fluxo é chamado também pelo ResetarGabarito.
+            _gabaritoRepository.DeletarPorIdSemanaOperativa(semanaOperativa.IdPmo);
+            foreach (var gabarito in gabaritos)
+            {
+                semanaOperativa.TbGabaritos.Add(gabarito);
+            }
+
+            _historicoService.ExcluirHistoricoColetaInsumoViaSemanaOperativa(semanaOperativa.IdPmo);
+            _gabaritoRepository.DeletarPorIdSemanaOperativa(semanaOperativa.IdPmo);
+            foreach (var coletaInsumo in coletasInsumos)
+            {
+                semanaOperativa.TbColetainsumos.Add(coletaInsumo);
+                _historicoService.CriarSalvarHistoricoColetaInsumo(coletaInsumo);
+            }
+        }
+
+        private ColetaInsumo CriarColetaInsumo(AgenteInstituicao agente, InsumoPMO insumo, string codigoPerfilONS,
+          SemanaOperativa semanaOperativa, SituacaoColetaInsumo situacao)
+        {
+            return new ColetaInsumo
+            {
+                IdInsumopmoNavigation = insumo,
+                IdAgenteinstituicaoNavigation = agente,
+                CodPerfilons = codigoPerfilONS,
+                IdTpsituacaocoletainsumoNavigation = situacao,
+                IdSemanaoperativaNavigation = semanaOperativa,
+                LgnAgenteultimaalteracao = "UserInfo.UserName",
+                DinUltimaalteracao = DateTime.Now
+            };
+        }
+        private IEnumerable<Gabarito> CopiarGabaritos(IEnumerable<Gabarito> gabaritos)
+        {
+            foreach (var gabarito in gabaritos)
+            {
+                yield return new Gabarito
+                {
+                    IdAgenteinstituicaoNavigation = gabarito.IdAgenteinstituicaoNavigation,
+                    IdInsumopmoNavigation = gabarito.IdInsumopmoNavigation,
+                    IdOrigemcoletaNavigation = gabarito.IdOrigemcoletaNavigation,
+                    FlgPadrao = false,
+                    CodPerfilons = gabarito.CodPerfilons
+                };
+            }
+        }
+        private async Task AssociarGabaritoPadrao(SemanaOperativa semanaOperativa)
+        {
+            var filtro = new GabaritoConfiguracaoFilter { IsPadrao = true };
+
+            var gabaritosPadrao = _gabaritoRepository.ConsultarPorGabaritoFilter(filtro);
+
+            var gabaritosCopiados = CopiarGabaritos(gabaritosPadrao);
+
+            var gabaritosPadraoAgrupados = gabaritosPadrao.GroupBy(g => new { g.IdInsumopmoNavigation, g.IdAgenteinstituicaoNavigation, g.CodPerfilons });
+            var situacaoColetaInsumo = await _situacaoColetaInsumoRepository.Get((int)SituacaoColetaInsumoEnum.NaoIniciado);
+
+            var coletasCriadas = gabaritosPadraoAgrupados.Where(g => g.Key.IdInsumopmoNavigation.FlgAtivo)
+                .Select(g => CriarColetaInsumo(g.Key.IdAgenteinstituicaoNavigation, g.Key.IdInsumopmoNavigation, g.Key.CodPerfilons,
+                    semanaOperativa, situacaoColetaInsumo));
+
+            AssociarGabaritosColetasASemana(semanaOperativa, gabaritosCopiados, coletasCriadas);
+
         }
     }
 }

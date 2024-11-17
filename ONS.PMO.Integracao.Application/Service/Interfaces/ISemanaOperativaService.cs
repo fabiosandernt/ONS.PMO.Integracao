@@ -13,7 +13,8 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
         /// <returns>SemanaOperativa.</returns>
 
         //[UseNetDataContractSerializer("Situacao", "PMO")]
-        SemanaOperativa ObterSemanaOperativaPorChave(int chave);
+        Task<SemanaOperativa> ObterSemanaOperativaPorChave(int chave);
+        Task<SemanaOperativa> ObterSemanaOperativaPorChave(int chave, byte[] versao);
 
         /// <summary>
         /// Obtém a SemanaOperativa em situação válida para informar ValorDado do estudo.
@@ -111,7 +112,7 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
         /// </summary>
         /// <param name="dadosAlteracao">ValorDado para alteração.</param>
 
-        void AlterarSemanaOperativa(DadosAlteracaoSemanaOperativaDTO dadosAlteracao);
+        Task AlterarSemanaOperativa(DadosAlteracaoSemanaOperativaDTO dadosAlteracao);
 
         /// <summary>
         /// Reseta o gabarito de uma semana operativa para o gabarito selecionado.
@@ -123,7 +124,7 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
         /// "VersaoPMO": Identificação da versão do PMO a fim de tratar a concorrência de registros
         /// </param>
 
-        void ResetarGabarito(ResetGabaritoDTO dto);
+        Task ResetarGabarito(ResetGabaritoDTO dto);
 
         /// <summary>
         /// Valida se a SemanaOperativa foi selecionada e retorna a SemanaOperativa.

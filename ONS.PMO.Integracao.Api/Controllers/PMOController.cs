@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using ONS.PMO.Integracao.Application.Dto.PMO;
 using ONS.PMO.Integracao.Application.Filter;
 using ONS.PMO.Integracao.Application.Service.Implementation;
 using ONS.PMO.Integracao.Application.Service.Interfaces;
-using ONS.PMO.Integracao.Domain.Entidades.PMO;
 using ONS.PMO.Integracao.Domain.Entidades.Resources;
 
 namespace ONS.PMO.Integracao.Api.Controllers
@@ -108,7 +106,24 @@ namespace ONS.PMO.Integracao.Api.Controllers
             }
         }
 
+        [HttpPost("Alterar Semana")]
+        public async Task<IActionResult> AlterarSemanaOperativa(DadosAlteracaoSemanaOperativaDTO dto)
+        {
+            await _semanaOperativaService.AlterarSemanaOperativa(dto);
+            var message = BusinessMessage.Get("MS013");
+            return Ok(message.Value);
+        }
+
+        [HttpPost("Resetar Gabarito")]
+        public ActionResult ResetarGabarito(ResetGabaritoDTO dto)
+        {
+            _semanaOperativaService.ResetarGabarito(dto);
+            var message = BusinessMessage.Get("MS013");
+            return Ok(message.Value);
+        }
+
         #endregion
+
         #region Excluir Semana Operativa
 
         [HttpPost("Excluir Semana")]
