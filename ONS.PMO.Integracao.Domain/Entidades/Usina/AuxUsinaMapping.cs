@@ -37,9 +37,9 @@ public class AuxUsinaMapping : IEntityTypeConfiguration<AuxUsina>
             .HasMaxLength(100)
             .HasColumnName("nom_longo");
 
-        entity.HasOne(d => d.IdOrigemcoletaNavigation).WithOne(p => p.TbAuxUsina)
-            .HasForeignKey<AuxUsina>(d => d.IdOrigemcoleta)
-            .OnDelete(DeleteBehavior.ClientSetNull)
-            .HasConstraintName("fk_origemcoleta_aux_usina");
+        //entity.HasOne(d => d.IdOrigemcoletaNavigation).WithOne(p => p.TbAuxUsina)
+        //    .HasForeignKey<AuxUsina>(d => d.IdOrigemcoleta)
+        //    .OnDelete(DeleteBehavior.ClientSetNull)
+        //    .HasConstraintName("fk_origemcoleta_aux_usina");
     }
 }

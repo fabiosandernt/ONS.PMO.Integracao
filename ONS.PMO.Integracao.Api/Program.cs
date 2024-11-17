@@ -11,6 +11,7 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
+using System.Text.Json.Serialization;
 
 namespace ONS.PMO.Integracao.Api
 {
@@ -28,6 +29,8 @@ namespace ONS.PMO.Integracao.Api
 
             builder.Services.AddRazorPages();
             builder.Services.AddControllers();
+    
+            
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 

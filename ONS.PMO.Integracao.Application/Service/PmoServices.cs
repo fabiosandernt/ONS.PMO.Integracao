@@ -4,6 +4,10 @@ using ONS.PMO.Integracao.Domain.Interfaces;
 using ONS.PMO.Integracao.Application.Dto.DisponibilidadeCVU;
 using ONS.PMO.Integracao.Application.Dto.TabelasDto;
 using ONS.PMO.Integracao.Domain.Entidades.SAGER.DisponibilidadeCVU;
+using ONS.PMO.Integracao.Application.Filter;
+using ONS.PMO.Integracao.Domain.Interfaces.PMO;
+using Microsoft.AspNetCore.DataProtection.Repositories;
+using ONS.PMO.Integracao.Domain.Entidades.PMO;
 
 namespace ONS.PMO.Integracao.Application.Service
 {
@@ -12,13 +16,31 @@ namespace ONS.PMO.Integracao.Application.Service
           
         private readonly IDadosResultadoPmoRepository _dadosResultadoPmoRepository;
         private readonly IMapper _mapper;
+        private readonly IPmoRepository _pmoRepository;
 
-        public PmoServices(IMapper mapper, IDadosResultadoPmoRepository dadosResultadoPmoRepository)
+
+        public PmoServices(IMapper mapper, IDadosResultadoPmoRepository dadosResultadoPmoRepository, IPmoRepository PMORepository)
         {
-            _dadosResultadoPmoRepository = dadosResultadoPmoRepository;           
+            _pmoRepository = PMORepository;
+            _dadosResultadoPmoRepository = dadosResultadoPmoRepository;
             _mapper = mapper;
         }
 
+        public async Task<PmoDto> GetByIdAsync(int id)
+        {
+            var pmo = await _pmoRepository.GetByIdAsync(id);
+
+            var pmoDto = _mapper.Map<PmoDto>(pmo);
+
+            return pmoDto;
+        }
+
+        public async Task<ICollection<PmoDto>> GetByFilter(PmoFilter filter)
+        {
+            var query = _pmoRepository.GetByFilter(filter);
+            var pmosDto = _mapper.Map<List<PmoDto>>(query);
+            return pmosDto;
+        }
 
         public async Task<DadoResultadoPmoDto> ObterDadosMontadorDisponibilidadeInflexibilidadeCVU(DisponibilidadeFilter filter)
         {

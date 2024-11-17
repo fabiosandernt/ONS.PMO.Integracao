@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace ONS.PMO.Integracao.Application.Dto.TabelasDto;
 
-public  class PmoDto : ICustomQueryable, IQueryPaging, IQuerySort
+public  class PmoDto
 {
     [JsonIgnore]
     public int? IdPmo { get; set; }
@@ -21,7 +21,5 @@ public  class PmoDto : ICustomQueryable, IQueryPaging, IQuerySort
     public byte[]? VerControleconcorrencia { get; set; } = null!;
 
     public virtual ICollection<SemanaOperativaDto>? TbSemanaoperativas { get; set; } = new List<SemanaOperativaDto>();
-    public int? Limit { get; set; } = 10;
-    public int? Offset { get; set; }
-    public string? Sort { get; set; }
+
 }

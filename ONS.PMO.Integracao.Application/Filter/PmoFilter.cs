@@ -6,8 +6,11 @@ using System.ComponentModel.DataAnnotations;
 namespace ONS.PMO.Integracao.Application.Filter
 {
     public class PmoFilter : BaseFilter
-    {        
+    {
+        [Display(Name = "Id")]
+        [QueryOperator(Operator = WhereOperator.Equals)]
         public int? IdPmo { get; set; }
+
         [Display(Name = "Ano")]
         [QueryOperator(Operator = WhereOperator.Equals)]
         public int? AnoReferencia { get; set; }

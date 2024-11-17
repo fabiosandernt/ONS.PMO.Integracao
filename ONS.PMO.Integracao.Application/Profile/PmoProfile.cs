@@ -16,7 +16,16 @@ namespace ONS.PMO.Integracao.Application.Profile
             CreateMap<ListaResultadoPMO, ListaResultadoPmoDto>().ReverseMap();     
             CreateMap<OrigemResultadoPMO, OrigemResultadoPmoDto>().ReverseMap();
             CreateMap<ParametroPMO, ParametroPmoDto>().ReverseMap();
-            CreateMap<Pmo, PmoDto>().ReverseMap();
+            
+            CreateMap<Pmo, PmoDto>()
+                .ForMember(dest => dest.IdPmo, opt => opt.MapFrom(src => src.IdPmo))
+                .ForMember(dest => dest.AnoReferencia, opt => opt.MapFrom(src => src.AnoReferencia))
+                .ForMember(dest => dest.MesReferencia, opt => opt.MapFrom(src => src.MesReferencia))
+                .ForMember(dest => dest.QtdMesesadiante, opt => opt.MapFrom(src => src.QtdMesesadiante))
+                .ForMember(dest => dest.VerControleconcorrencia.Length, opt => opt.MapFrom(src => src.VerControleconcorrencia))
+                .ForMember(dest => dest.TbSemanaoperativas, opt => opt.MapFrom(src => src.TbSemanaoperativas));
+
+
             CreateMap<ResultadoColetaPMO, ResultadoColetaPmoDto>().ReverseMap();
             CreateMap<TipoImportacaoPMO, ImportacaoDto>().ReverseMap();
 
@@ -68,7 +77,7 @@ namespace ONS.PMO.Integracao.Application.Profile
 
             //Dias semana
             CreateMap<DiasSemana, DiaSemanaDto>().ReverseMap();
-            CreateMap<SemanaOperativa, Dto.TabelasDto.SemanaOperativaDto>().ReverseMap();
+            CreateMap<ONS.PMO.Integracao.Domain.Entidades.PMO.SemanaOperativa, Dto.TabelasDto.SemanaOperativaDto>().ReverseMap();
             CreateMap<SituacaoSemanaOperacao, SituacaoSemanaOperativaDto>().ReverseMap();
 
             //Estudo e Estado

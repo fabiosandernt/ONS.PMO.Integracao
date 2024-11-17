@@ -19,17 +19,17 @@ namespace ONS.PMO.Integracao.Infraestructure.Repository
         {
             string[] codMnemonicos = new string[] { "Gtmin", "Gtmax", "Cincr" };
 
-            var query = from dado in Context.Set<DadoResultPMO>()
-                        join mnemonico in Context.Set<MnemonicoPMO>() on dado.IdMnemonicopmo equals mnemonico.IdMnemonicopmo
-                        join lista in Context.Set<ListaResultadoPMO>() on dado.IdListaresultadopmo equals lista.IdListaresultadopmo
-                        join origem in Context.Set<OrigemResultadoPMO>() on lista.IdOrigemresultadopmo equals origem.IdOrigemresultadopmo
-                        join usina in Context.Set<AuxUsinaMontador>() on origem.CodOrigemresultadopmo equals usina.CodDpp.ToString()
-                        join resultadocoleta in Context.Set<ResultadoColetaPMO>() on lista.IdResultadocoletapmo equals resultadocoleta.IdResultadocoletapmo
-                        join importacao in Context.Set<ImportacaoPMO>() on lista.IdImportacaopmo equals importacao.IdImportacaopmo
-                        join semana in Context.Set<SemanaOperativa>() on importacao.IdSemanaoperativa equals semana.IdSemanaoperativa
-                        join situacao in Context.Set<SituacaoSemanaOperacao>() on semana.IdTpsituacaosemanaoper equals situacao.IdTpsituacaosemanaoper
-                        join patamar in Context.Set<Patamar>() on dado.IdTppatamar equals patamar.IdTppatamar
-                        join tpPatamar in Context.Set<Patamar>() on dado.IdTppatamar equals tpPatamar.IdTppatamar
+            var query = from dado in _context.Set<DadoResultPMO>()
+                        join mnemonico in _context.Set<MnemonicoPMO>() on dado.IdMnemonicopmo equals mnemonico.IdMnemonicopmo
+                        join lista in _context.Set<ListaResultadoPMO>() on dado.IdListaresultadopmo equals lista.IdListaresultadopmo
+                        join origem in _context.Set<OrigemResultadoPMO>() on lista.IdOrigemresultadopmo equals origem.IdOrigemresultadopmo
+                        join usina in _context.Set<AuxUsinaMontador>() on origem.CodOrigemresultadopmo equals usina.CodDpp.ToString()
+                        join resultadocoleta in _context.Set<ResultadoColetaPMO>() on lista.IdResultadocoletapmo equals resultadocoleta.IdResultadocoletapmo
+                        join importacao in _context.Set<ImportacaoPMO>() on lista.IdImportacaopmo equals importacao.IdImportacaopmo
+                        join semana in _context.Set<SemanaOperativa>() on importacao.IdSemanaoperativa equals semana.IdSemanaoperativa
+                        join situacao in _context.Set<SituacaoSemanaOperacao>() on semana.IdTpsituacaosemanaoper equals situacao.IdTpsituacaosemanaoper
+                        join patamar in _context.Set<Patamar>() on dado.IdTppatamar equals patamar.IdTppatamar
+                        join tpPatamar in _context.Set<Patamar>() on dado.IdTppatamar equals tpPatamar.IdTppatamar
                         where semana.DatIniciosemana >= filter.DataInicioSemana
                               && semana.DatFimsemana <= filter.DataFimSemana
                               && codMnemonicos.Contains(mnemonico.CodMnemonicopmo)
