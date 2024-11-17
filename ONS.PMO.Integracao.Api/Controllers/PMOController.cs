@@ -50,13 +50,17 @@ namespace ONS.PMO.Integracao.Api.Controllers
         [HttpPost("Incluir PMO")]
         public async Task<IActionResult> IncluirPMOAsync([FromBody] TbPmoDto dto)
         {
-            var pmo = _pmoServices.GerarPMOAsync(dto);
-            DisplaySuccessMessage(SGIPMOMessages.MS013);
-            return RedirectToAction("ManterPMO", new { id = pmo.Id });
+            var pmo = await _pmoServices.GerarPMOAsync(dto);
+            return Ok(pmo);
 
         }
 
-
+        [HttpPost("Alterar PMO")]
+        public async Task<IActionResult> SalvarPMO(TbPmoDto dto)
+        {
+            await _pmoServices.AtualizarMesesAdiantePMOAsync(dto.IdPmo, dto.QtdMesesadiante, dto.VerControleconcorrencia);
+            return Ok(dto);
+        }
         #region Excluir Semana Operativa
 
         [HttpPost("Excluir Semana")]

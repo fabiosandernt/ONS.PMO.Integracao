@@ -68,7 +68,6 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
         /// </summary>
         /// <param name="dto">Dados do PMO.</param>
         Task ExcluirPMOAsync(DadosPMODTO dto);
-        void ExcluirUltimaSemanaOperativa(object idPMO, byte[] bytes);
     }
 
 }

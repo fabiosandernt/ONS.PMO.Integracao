@@ -6,9 +6,10 @@ using ONS.PMO.Integracao.Application.Service.Interfaces;
 using ONS.PMO.Integracao.Domain.Entidades.PMO;
 using ONS.PMO.Integracao.Domain.Entidades.SAGER.DisponibilidadeCVU;
 using ONS.PMO.Integracao.Domain.Entidades.Tabelas;
+using ONS.PMO.Integracao.Domain.Enum;
 using ONS.PMO.Integracao.Domain.Interfaces.Repository.PMO;
 using ONS.PMO.Integracao.Domain.Interfaces.Repository.SAGER;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Globalization;
 
 namespace ONS.PMO.Integracao.Application.Service.Implementation
 {
@@ -18,27 +19,38 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
         private readonly IDadosResultadoPmoRepository _dadosResultadoPmoRepository;
         private readonly IMapper _mapper;
         private readonly IPMORepository _PMORepository;
-        private readonly IPMORepository _pmoRepository;
         private readonly ISemanaOperativaService _semanaOperativaService;
         private readonly IParametroService _parametroService;
         private readonly IHistoricoService _historicoService;
 
-        public PmoServices(IDadosResultadoPmoRepository dadosResultadoPmoRepository, IMapper mapper, IPMORepository pMORepository, IPMORepository pmoRepository, ISemanaOperativaService semanaOperativaService, IParametroService parametroService, IHistoricoService historicoService)
+        public PmoServices(IDadosResultadoPmoRepository dadosResultadoPmoRepository, IMapper mapper, IPMORepository pMORepository, ISemanaOperativaService semanaOperativaService, IParametroService parametroService, IHistoricoService historicoService)
         {
             _dadosResultadoPmoRepository = dadosResultadoPmoRepository;
             _mapper = mapper;
             _PMORepository = pMORepository;
-            _pmoRepository = pmoRepository;
             _semanaOperativaService = semanaOperativaService;
             _parametroService = parametroService;
             _historicoService = historicoService;
         }
 
-        public Task AtualizarMesesAdiantePMOAsync(int idPMO, int? mesesAdiante, byte[] versao)
+        public async Task AtualizarMesesAdiantePMOAsync(int idPMO, int? mesesAdiante, byte[] versao)
         {
-            throw new NotImplementedException();
+            ValidarQuantidadeMesesAdiante(mesesAdiante);
+            var pmo = await _PMORepository.GetbyExpressionAsync(x=>x.IdPmo == idPMO && x.VerControleconcorrencia == versao);
+            if (pmo != null)
+            {
+                pmo.VerControleconcorrencia = versao;
+                pmo.QtdMesesadiante = mesesAdiante;
+            }
         }
-
+        private void ValidarQuantidadeMesesAdiante(int? qtdMeses)
+        {
+            if (qtdMeses.HasValue && qtdMeses.Value > 11)
+            {
+                //throw new ONSBusinessException(SGIPMOMessages.MS009);
+                throw new ArgumentException("falta implementar");
+            }
+        }
         public async Task ExcluirPMOAsync(DadosPMODTO dto)
         {
             var pmo = await _PMORepository.GetbyExpressionAsync(x=>x.IdPmo == dto.IdPMO && x.VerControleconcorrencia == dto.VersaoPMO);
@@ -48,28 +60,169 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             }       
         }
 
-        public Task ExcluirUltimaSemanaOperativaAsync(int idPMO, byte[] versaoPMO)
+        public async Task ExcluirUltimaSemanaOperativaAsync(int idPMO, byte[] versaoPMO)
         {
-            throw new NotImplementedException();
+            var pmo = await _PMORepository.GetbyExpressionAsync(x => x.IdPmo == idPMO && x.VerControleconcorrencia == versaoPMO);
+            if (pmo != null)
+            {
+                ValidarExistenciaSemanaOperativa(pmo);
+
+                SemanaOperativa ultimaSemana = pmo.TbSemanaoperativas.Last();
+
+                DateTime dataInicioUltimaSemana = ultimaSemana.DatIniciosemana;
+                ValidarDataInclusaoExclusaoSemanaOperativa(dataInicioUltimaSemana);
+
+                ValidarColetaDados(ultimaSemana);
+
+                semanaOperativaService.ExcluirSemana(ultimaSemana);
+
+                pmo.Versao = versaoPMO;
+            }
         }
 
-        public Task<TbPmoDto> GerarPMOAsync(TbPmoDto dto)
+        private void ValidarColetaDados(SemanaOperativa semanaOperativa)
+        {
+            var situacao = semanaOperativa.IdTpsituacaosemanaoperNavigation;
+            if (situacao != null)
+            {
+                var sitaucaoSemanaOperativa = (SituacaoSemanaOperativaEnum)situacao.IdTpsituacaosemanaoper;
+                if (sitaucaoSemanaOperativa >= SituacaoSemanaOperativaEnum.ColetaDados)
+                {
+                    throw new ONSBusinessException(SGIPMOMessages.MS011);
+                }
+            }
+        }
+        private void ValidarDataInclusaoExclusaoSemanaOperativa(DateTime data)
+        {
+            if (data.CompareTo(DateTime.Now.Date) < 0)
+            {
+                //throw new ONSBusinessException(SGIPMOMessages.MS010);
+                throw new ArgumentException("falta implementar");
+            }
+        }
+
+        private void ValidarExistenciaSemanaOperativa(Pmo pmo)
+        {
+            if (pmo != null)
+            {
+                if (pmo.TbSemanaoperativas.Count == 1)
+                {
+                    //throw new ONSBusinessException(SGIPMOMessages.MS007);
+                    throw new ArgumentException("falta implementar");
+                }
+            }
+        }
+        public async Task<TbPmoDto> GerarPMOAsync(TbPmoDto dto)
         {
             var pmo = new Pmo()
             {
                 AnoReferencia = dto.AnoReferencia,
                 MesReferencia = dto.MesReferencia,
-                SemanasOperativas = semanaOperativaService.GerarSugestaoSemanasOperativas(ano, mes)
+                TbSemanaoperativas = _semanaOperativaService.GerarSugestaoSemanasOperativas(dto.AnoReferencia, dto.MesReferencia)
             };
-            var parametroQtdMeses = parametroService.ObterParametro(ParametroEnum.QuantidadeMesesAFrente);
+            var parametroQtdMeses = _parametroService.ObterParametro(ParametroEnum.QuantidadeMesesAFrente);
             if (parametroQtdMeses != null)
             {
-                pmo.QuantidadeMesesAdiante = int.Parse(parametroQtdMeses.Valor);
+                pmo.QtdMesesadiante = int.Parse(parametroQtdMeses.ValParametropmo);
             }
-            _PMORepository.Add(pmo);
-            return pmo;
+            _PMORepository.Save(pmo);
+            return dto;
         }
 
+        public ISet<SemanaOperativa> GerarSugestaoSemanasOperativas(int ano, int mes)
+        {
+            ISet<SemanaOperativa> semanasOperativas = new SortedSet<SemanaOperativa>();
+
+            var cultura = CultureInfo.CurrentCulture;
+            string nomeMes = cultura.TextInfo.ToTitleCase(cultura.DateTimeFormat.GetMonthName(mes));
+
+            DateTime dataInicioSemana = new DateTime(ano, mes, 1);
+            DateTime ultimoDiaMes = dataInicioSemana.AddMonths(1).AddDays(-1);
+            DateTime dataFimPMO = ultimoDiaMes;
+
+            if (dataInicioSemana.DayOfWeek != DayOfWeek.Saturday)
+            {
+                // A semana operativa desve ser sempre de Sábado a Sexta
+                // Se o primeiro dia do mês não for um Sábado é preciso obter a quantidade de dias 
+                // que se deve retroceder para chegar ao Sábado
+                int qtdDiasParaSabado = -(int)dataInicioSemana.DayOfWeek - 1;
+                dataInicioSemana = dataInicioSemana.AddDays(qtdDiasParaSabado);
+            }
+
+            if (ultimoDiaMes.DayOfWeek != DayOfWeek.Friday)
+            {
+                // A semana operativa desve ser sempre de Sábado a Sexta
+                // Se último dia do mês não for uma Sexta é preciso obter a quantidade de dias 
+                // para chegar à Sexta
+                int qtdDiasParaSexta = ultimoDiaMes.DayOfWeek == DayOfWeek.Saturday ?
+                    6 : (int)DayOfWeek.Friday - (int)ultimoDiaMes.DayOfWeek;
+                dataFimPMO = ultimoDiaMes.AddDays(qtdDiasParaSexta);
+            }
+
+            int revisao = 0;
+            while (dataInicioSemana <= ultimoDiaMes)
+            {
+                SemanaOperativa semanaOperativa = GerarSemanaOperativa(ano, nomeMes, dataInicioSemana, dataFimPMO, revisao);
+                if (semanaOperativa != null)
+                {
+                    semanasOperativas.Add(semanaOperativa);
+                    revisao++;
+                }
+                dataInicioSemana = dataInicioSemana.AddDays(7);
+            }
+            return semanasOperativas;
+        }
+
+        public SemanaOperativa GerarSemanaOperativa(int ano, string nomeMes, DateTime dataInicioSemana,
+          DateTime dataFimPMO, int revisao)
+        {
+            SemanaOperativa semanaOperativa = new SemanaOperativa
+            {
+                DatIniciosemana = dataInicioSemana,
+                DatFimsemana = dataInicioSemana.AddDays(6),
+                DatReuniao = ObterDataReuniao(dataInicioSemana, revisao),
+                NumRevisao = revisao,
+                DatIniciomanutencao = dataInicioSemana,
+                DatFimmanutencao = dataFimPMO,
+                NomSemanaoperativa = ObterNomeSemanaOperativa(ano, nomeMes, revisao)
+            };
+
+            return semanaOperativa;
+        }
+
+        private string ObterNomeSemanaOperativa(int ano, string nomeMes, int revisao)
+        {
+            string nomeSemanaOperativa = revisao == 0 ?
+                string.Format("PMO {0} {1}", nomeMes, ano) :
+                string.Format("PMO {0} {1} - Revisão {2}", nomeMes, ano, revisao);
+            return nomeSemanaOperativa;
+        }
+
+        private DateTime ObterDataReuniao(DateTime dataInicioSemana, int revisao)
+        {
+            ParametroPMO parametro;
+            int valorDiaReuniao = 0;
+            if (revisao == 0)
+            {
+                parametro = _parametroService.ObterParametro(ParametroEnum.DiaReuniaoPMO);
+                if (parametro != null)
+                {
+                    valorDiaReuniao = int.Parse(parametro.ValParametropmo);
+                }
+            }
+            else
+            {
+                parametro = _parametroService.ObterParametro(ParametroEnum.DiaReuniaoRevisao);
+                if (parametro != null)
+                {
+                    valorDiaReuniao = int.Parse(parametro.ValParametropmo);
+                }
+            }
+            int valorDeDiasParaRetroceder = valorDiaReuniao == (int)DayOfWeek.Saturday
+                ? -7
+                : valorDiaReuniao - (int)DayOfWeek.Saturday;
+            return dataInicioSemana.AddDays(valorDeDiasParaRetroceder);
+        }
         public async Task<TbPmoDto> GetByIdAsync(int id)
         {
             var tbPmo = await _PMORepository.Get(id);
