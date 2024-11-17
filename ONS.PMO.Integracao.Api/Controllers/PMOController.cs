@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ONS.PMO.Integracao.Application.Filter;
 using ONS.PMO.Integracao.Application.Service.Interfaces;
-using System.Runtime.InteropServices;
 
 namespace ONS.PMO.Integracao.Api.Controllers
 {
@@ -29,7 +28,7 @@ namespace ONS.PMO.Integracao.Api.Controllers
             }
         }
 
-         [HttpGet("{id:int}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var result = await _pmoServices.GetByIdAsync(id);
