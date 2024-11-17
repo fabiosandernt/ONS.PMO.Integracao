@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using ONS.PMO.Integracao.Application.Dto.PMO;
 using ONS.PMO.Integracao.Application.Filter;
 using ONS.PMO.Integracao.Application.Service.Implementation;
 using ONS.PMO.Integracao.Application.Service.Interfaces;
+using ONS.PMO.Integracao.Domain.Entidades.PMO;
 
 namespace ONS.PMO.Integracao.Api.Controllers
 {
@@ -12,9 +14,11 @@ namespace ONS.PMO.Integracao.Api.Controllers
     public class PMOController : ControllerBase
     {
         private readonly IPmoServices _pmoServices;
-        public PMOController(IPmoServices pmoServices)
+        private readonly ISemanaOperativaService _semanaOperativaService;
+        public PMOController(IPmoServices pmoServices, ISemanaOperativaService semanaOperativaService)
         {
             _pmoServices = pmoServices;
+            _semanaOperativaService = semanaOperativaService;
         }
 
         [HttpGet("filter")]
@@ -61,6 +65,46 @@ namespace ONS.PMO.Integracao.Api.Controllers
             await _pmoServices.AtualizarMesesAdiantePMOAsync(dto.IdPmo, dto.QtdMesesadiante, dto.VerControleconcorrencia);
             return Ok(dto);
         }
+
+        [HttpPost("Incluir Semana")]
+        public async Task<IActionResult> IncluirSemanaOperativa(InclusaoSemanaOperativaDTO dto)
+        {
+            await _pmoServices.IncluirSemanaOperativaAsync(dto);
+
+            //IList<string> mensagens = new List<string>();
+            //mensagens.Add(SGIPMOMessages.MS013);
+            //string mensagemComSpan =
+            //    string.Format("<img src='{0}' style='float:left; margin-right:5px'></img> {1} ",
+            //        Url.Content("~/Images/alert2.png"), SGIPMOMessages.MS028);
+            //mensagens.Add(mensagemComSpan);
+            return Ok(dto);
+        }
+
+        #region Abertura Estudo
+
+        [HttpPost("Abrir Estudo")]
+        public async Task<IActionResult> CarregarAbrirEstudo(AberturaEstudoDTO aberturaEstudoDTO)
+        {
+            ValidarSelecaoSemanaOperativa(aberturaEstudoDTO.IdSemanaOperativa);
+
+            DadosSemanaOperativaDTO dto = new DadosSemanaOperativaDTO()
+            {
+                IdSemanaOperativa = aberturaEstudoDTO.IdSemanaOperativa,
+                VersaoPMO = aberturaEstudoDTO.VersaoSemanaOperativa
+            };
+            return Ok(await _semanaOperativaService.ObterSemanaOperativaValidaParaAbrirEstudo(dto));
+
+        }
+
+        private void ValidarSelecaoSemanaOperativa(int? idSemanaOperativa)
+        {
+            if (!idSemanaOperativa.HasValue)
+            {
+                throw new ONSBusinessException(SGIPMOMessages.MS025);
+            }
+        }
+
+       
         #region Excluir Semana Operativa
 
         [HttpPost("Excluir Semana")]
@@ -72,5 +116,6 @@ namespace ONS.PMO.Integracao.Api.Controllers
         }
 
         #endregion
+
     }
 }

@@ -74,9 +74,9 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
 
                 ValidarColetaDados(ultimaSemana);
 
-                semanaOperativaService.ExcluirSemana(ultimaSemana);
+                _semanaOperativaService.ExcluirSemana(ultimaSemana);
 
-                pmo.Versao = versaoPMO;
+                pmo.VerControleconcorrencia = versaoPMO;
             }
         }
 
@@ -88,7 +88,8 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
                 var sitaucaoSemanaOperativa = (SituacaoSemanaOperativaEnum)situacao.IdTpsituacaosemanaoper;
                 if (sitaucaoSemanaOperativa >= SituacaoSemanaOperativaEnum.ColetaDados)
                 {
-                    throw new ONSBusinessException(SGIPMOMessages.MS011);
+                    //throw new ONSBusinessException(BusinessMessage.MS011);
+                    throw new ArgumentException("falta implementar");
                 }
             }
         }

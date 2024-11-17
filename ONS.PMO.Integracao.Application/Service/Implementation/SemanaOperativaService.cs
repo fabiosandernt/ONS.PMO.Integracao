@@ -1,4 +1,5 @@
 ﻿
+using AutoMapper;
 using ONS.PMO.Integracao.Application.Dto.PMO;
 using ONS.PMO.Integracao.Application.Filter;
 using ONS.PMO.Integracao.Application.Service.Interfaces;
@@ -24,8 +25,9 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
         private readonly ISharePointService _sharePointService;
         private readonly IHistoricoService _historicoService;
         private readonly IArquivoSemanaOperativaRepository _arquivoSemanaOperativaRepository;
+        private readonly IMapper _mapper;
 
-        public SemanaOperativaService(ISemanaOperativaRepository semanaOperativaRepository, IParametroService parametroService, ISituacaoSemanaOperativaRepository situacaoSemanaOperativaRepository, ISituacaoColetaInsumoRepository situacaoColetaInsumoRepository, IGabaritoRepository gabaritoRepository, IColetaInsumoRepository coletaInsumoRepository, IPMORepository pmoRepository, INotificacaoService notificacaoService, IDadoColetaNaoEstruturadoRepository dadoColetaNaoEstruturadoRepository, IColetaInsumoService coletaInsumoService, IArquivoRepository arquivoRepository, ISharePointService sharePointService, IHistoricoService historicoService, IArquivoSemanaOperativaRepository arquivoSemanaOperativaRepository)
+        public SemanaOperativaService(ISemanaOperativaRepository semanaOperativaRepository, IParametroService parametroService, ISituacaoSemanaOperativaRepository situacaoSemanaOperativaRepository, ISituacaoColetaInsumoRepository situacaoColetaInsumoRepository, IGabaritoRepository gabaritoRepository, IColetaInsumoRepository coletaInsumoRepository, IPMORepository pmoRepository, INotificacaoService notificacaoService, IDadoColetaNaoEstruturadoRepository dadoColetaNaoEstruturadoRepository, IColetaInsumoService coletaInsumoService, IArquivoRepository arquivoRepository, ISharePointService sharePointService, IHistoricoService historicoService, IArquivoSemanaOperativaRepository arquivoSemanaOperativaRepository, IMapper mapper)
         {
             _semanaOperativaRepository = semanaOperativaRepository;
             _parametroService = parametroService;
@@ -41,6 +43,7 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             _sharePointService = sharePointService;
             _historicoService = historicoService;
             _arquivoSemanaOperativaRepository = arquivoSemanaOperativaRepository;
+            _mapper = mapper;
         }
 
         public void AbrirEstudo(AberturaEstudoDTO dto)
@@ -123,9 +126,25 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             throw new NotImplementedException();
         }
 
-        public SemanaOperativa ObterSemanaOperativaValidaParaAbrirEstudo(DadosSemanaOperativaDTO dto)
+        public async Task<TbSemanaoperativaDto> ObterSemanaOperativaValidaParaAbrirEstudo(DadosSemanaOperativaDTO dto)
         {
-            throw new NotImplementedException();
+            SemanaOperativa semana = ObterSemanaOperativaPorChave(dto.IdSemanaOperativa);
+            if (semana != null)
+            {
+                // Significa que a chamada deste método tem a intenção de verificar a versão do PMO
+                if (dto.VersaoPMO != null)
+                {
+                    var pmo = await _pmoRepository.GetbyExpressionAsync(x => x.IdPmo == semana.IdPmo && x.VerControleconcorrencia == dto.VersaoPMO);
+                }
+
+                if (semana.IdTpsituacaosemanaoperNavigation != null)
+                {
+                    //throw new ONSBusinessException(SGIPMOMessages.MS008);
+                    throw new ArgumentException("falta implementar");
+                }
+            }
+            var semanaDto = _mapper.Map<TbSemanaoperativaDto>(semana);
+            return semanaDto;
         }
 
         public SemanaOperativa ObterSemanaOperativaValidaParaResetarGabarito(int idSemanaOperativa)

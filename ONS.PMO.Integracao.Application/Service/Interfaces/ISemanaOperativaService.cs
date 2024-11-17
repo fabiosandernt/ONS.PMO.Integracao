@@ -11,7 +11,7 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
         /// </summary>
         /// <param name="chave">Chave da SemanaOperativa.</param>
         /// <returns>SemanaOperativa.</returns>
-      
+
         //[UseNetDataContractSerializer("Situacao", "PMO")]
         SemanaOperativa ObterSemanaOperativaPorChave(int chave);
 
@@ -20,7 +20,7 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
         /// </summary>
         /// <param name="chave">Chave da SemanaOperativa.</param>
         /// <returns>SemanaOperativa.</returns>
-        
+
         //[UseNetDataContractSerializer("Situacao")]
         SemanaOperativa ObterSemanaOperativaPorChaveParaInformarDados(int chave);
 
@@ -30,15 +30,15 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
         /// </summary>
         /// <param name="idSemanaOperativa">Id da semana operativa.</param>
         /// <returns>Retorna a SemanaOperativa caso esteja em situação válida.</returns>
-       
+
         //[UseNetDataContractSerializer("PMO")]
-        SemanaOperativa ObterSemanaOperativaValidaParaAbrirEstudo(DadosSemanaOperativaDTO dto);
+        Task<TbSemanaoperativaDto> ObterSemanaOperativaValidaParaAbrirEstudo(DadosSemanaOperativaDTO dto);
 
         /// <summary>
         /// Consulta as semanas operativas que já foram associada a um gabarito.
         /// </summary>
         /// <returns>Lista de SemanaOperativa.</returns>
-       
+
         //[UseNetDataContractSerializer]
         IList<SemanaOperativa> ConsultarSemanasOperativasComGabarito();
 
@@ -46,7 +46,7 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
         /// Consulta as semanas operativas com estudo aberto por nome.
         /// </summary>
         /// <returns>Lista de SemanaOperativa.</returns>
-       
+
         IList<SemanaOperativa> ConsultarEstudoPorNome(string nomeEstudo);
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
         /// </summary>
         /// <param name="nomeEstudo"></param>
         /// <returns></returns>
-       
+
         IList<SemanaOperativa> ConsultarEstudoConvergenciaPldPorNome(string nomeEstudo);
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
         /// <param name="ano">Ano do PMO</param>
         /// <param name="mes">Mês do PMO</param>
         /// <returns>Lista de SemanaOperativa</returns>
-       
+
         ISet<SemanaOperativa> GerarSugestaoSemanasOperativas(int ano, int mes);
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
         /// "VersaoPMO": Identificação da versão do PMO a fim de tratar a concorrência de registros
         /// "VersaoSemanaOperativa": Identificação da versão da Semana Operativa a fim de tratar a concorrência de registros
         /// </param>
-        
+
         void AbrirEstudo(AberturaEstudoDTO dto);
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
         /// Altera a semana operativa.
         /// </summary>
         /// <param name="dadosAlteracao">ValorDado para alteração.</param>
-     
+
         void AlterarSemanaOperativa(DadosAlteracaoSemanaOperativaDTO dadosAlteracao);
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
         /// "IsPadrao": Indica se o gabarito deve ser resetado para o grabarito padrão.
         /// "VersaoPMO": Identificação da versão do PMO a fim de tratar a concorrência de registros
         /// </param>
-       
+
         void ResetarGabarito(ResetGabaritoDTO dto);
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
         /// </summary>
         /// <param name="idSemanaOperativa">Id da semana operativa.</param>
         /// <returns>Retorna a SemanaOperativa caso esteja em situação válida.</returns>
-       
+
         //[UseNetDataContractSerializer("PMO", "Situacao")]
         SemanaOperativa ObterSemanaOperativaValidaParaResetarGabarito(int idSemanaOperativa);
 
@@ -142,7 +142,7 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
         /// </summary>
         /// <param name="filtro"></param>
         /// <returns></returns>
-       
+
         //[UseNetDataContractSerializer("ArquivosInsumos", "ArquivosEnviados", "SituacaoSemanaOperativa")]
         ArquivosSemanaOperativaDTO ConsultarArquivosSemanaOperativaConvergenciaCcee(ArquivosSemanaOperativaFilter filtro);
 
@@ -162,7 +162,7 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
         /// </summary>
         /// <param name="filtro"></param>
         /// <returns></returns>
-        
+
         //[UseNetDataContractSerializer("Arquivos", "SemanaOperativa", "SemanaOperativa.Situacao")]
         ArquivosSemanaOperativaConvergirPldDTO ConsultarArquivosSemanaOperativaConvergenciaPLD(ArquivosSemanaOperativaFilter filtro);
 
@@ -170,7 +170,7 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
         /// Método utilizado para realizar a convergência com PLD ("Convergir PLD" ou "Não Convergir PLD")
         /// </summary>
         /// <param name="dto"></param>
-       
+
         void ConvergirPLD(ConvergirPLDDTO dto);
 
 
@@ -183,7 +183,7 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
         /// </summary>
         /// <param name="filtro"></param>
         /// <returns></returns>
-       
+
         //UseNetDataContractSerializer("ArquivosInsumos", "ArquivosEnviados", "SituacaoSemanaOperativa")]
         ArquivosSemanaOperativaDTO ConsultarArquivosSemanaOperativaPublicacaoResultados(ArquivosSemanaOperativaFilter filtro);
 
@@ -197,7 +197,7 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
         /// Método utilizado para efetuar o reprocessamento do PMO, que é acionado na mesma tela em que os resultados são publicados.
         /// </summary>
         /// <param name="dto"></param>
-       
+
         void ReprocessarPMO(ReprocessamentoPMODTO dto);
 
         #endregion
