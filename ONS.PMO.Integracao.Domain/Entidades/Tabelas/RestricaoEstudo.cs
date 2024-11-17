@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
-public class RestricaoEstudo
+public  class RestricaoEstudo
 {
     public int IdTprestricao { get; set; }
 
@@ -19,7 +19,7 @@ public class RestricaoEstudo
 
     public virtual EstudoMontador IdEstudomontadorNavigation { get; set; } = null!;
 
-    public virtual Prestricao IdTprestricaoNavigation { get; set; } = null!;
+    public virtual TipoRestricao IdTprestricaoNavigation { get; set; } = null!;
 
     public virtual ICollection<Restricao> TbRestricaos { get; set; } = new List<Restricao>();
 }

@@ -4,7 +4,7 @@ using ONS.PMO.Integracao.Domain.Entidades.PMO;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
-public class ColunaGrandeza
+public  class ColunaGrandeza
 {
     public int IdColunagrandeza { get; set; }
 
@@ -26,5 +26,5 @@ public class ColunaGrandeza
 
     public virtual ICollection<GrandezaBlocoEstudo> TbGrandezablocoestudos { get; set; } = new List<GrandezaBlocoEstudo>();
 
-    public virtual ICollection<ModConfigBlocoEstudo> IdModifconfigblocoestudos { get; set; } = new List<ModConfigBlocoEstudo>();
+    public virtual ICollection<ModificacaoConfiguracaoBlocoEstudo> IdModifconfigblocoestudos { get; set; } = new List<ModificacaoConfiguracaoBlocoEstudo>();
 }

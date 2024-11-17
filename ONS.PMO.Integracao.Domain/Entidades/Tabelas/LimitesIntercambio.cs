@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
-public class LimitesIntercambio
+public  class LimitesIntercambio
 {
     public int IdLimitesintercambio { get; set; }
 
@@ -21,7 +21,7 @@ public class LimitesIntercambio
 
     public virtual EstudoMontador IdEstudomontadorNavigation { get; set; } = null!;
 
-    public virtual ICollection<LimitePeriodo> TbLimiteperiododia { get; set; } = new List<LimitePeriodo>();
+    public virtual ICollection<LimitePeriodoDia> TbLimiteperiododia { get; set; } = new List<LimitePeriodoDia>();
 
     public virtual ICollection<LimitesPatamar> TbLimitespatamars { get; set; } = new List<LimitesPatamar>();
 

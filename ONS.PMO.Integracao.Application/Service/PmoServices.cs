@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
-using ONS.PMO.Integracao.Application.Service.Interfaces;
-using ONS.PMO.Integracao.Domain.Interfaces;
 using ONS.PMO.Integracao.Application.Dto.DisponibilidadeCVU;
 using ONS.PMO.Integracao.Application.Dto.TabelasDto;
-using ONS.PMO.Integracao.Domain.Entidades.SAGER.DisponibilidadeCVU;
 using ONS.PMO.Integracao.Application.Filter;
-using ONS.PMO.Integracao.Domain.Interfaces.PMO;
-using Microsoft.AspNetCore.DataProtection.Repositories;
+using ONS.PMO.Integracao.Application.Service.Interfaces;
 using ONS.PMO.Integracao.Domain.Entidades.PMO;
+using ONS.PMO.Integracao.Domain.Entidades.SAGER.DisponibilidadeCVU;
+using ONS.PMO.Integracao.Domain.Entidades.Tabelas;
+using ONS.PMO.Integracao.Domain.Interfaces.Repository.PMO;
+using ONS.PMO.Integracao.Domain.Interfaces.Repository.SAGER;
 
 namespace ONS.PMO.Integracao.Application.Service
 {
@@ -16,57 +16,99 @@ namespace ONS.PMO.Integracao.Application.Service
           
         private readonly IDadosResultadoPmoRepository _dadosResultadoPmoRepository;
         private readonly IMapper _mapper;
-        private readonly IPmoRepository _pmoRepository;
+        private readonly IPMORepository _PMORepository;
 
-
-        public PmoServices(IMapper mapper, IDadosResultadoPmoRepository dadosResultadoPmoRepository, IPmoRepository PMORepository)
+        public PmoServices(IMapper mapper, IDadosResultadoPmoRepository dadosResultadoPmoRepository, IPMORepository PMORepository)
         {
-            _pmoRepository = PMORepository;
-            _dadosResultadoPmoRepository = dadosResultadoPmoRepository;
+            _PMORepository = PMORepository;
+            _dadosResultadoPmoRepository = dadosResultadoPmoRepository;           
             _mapper = mapper;
         }
+        public async Task<TbPmoDto> GetByIdAsync(int id)
+        {            
+            var tbPmo = await _PMORepository.Get(id);
+                        
+            var tbPmoDto = new TbPmoDto
+            {
+                IdPmo = tbPmo.IdPmo,
+                AnoReferencia = tbPmo.AnoReferencia,
+                MesReferencia = tbPmo.MesReferencia,
+                QtdMesesadiante = tbPmo.QtdMesesadiante,
+                //VerControleconcorrencia = tbPmo.VerControleconcorrencia,
+                TbSemanaoperativas = tbPmo.TbSemanaoperativas.Select(semana => new SemanaOperativa
+                {
+                    IdSemanaoperativa = semana.IdSemanaoperativa,
+                    IdPmo = semana.IdPmo,
+                    NomSemanaoperativa = semana.NomSemanaoperativa,
+                    DatIniciosemana = semana.DatIniciosemana,
+                    DatFimsemana = semana.DatFimsemana,
+                    DatReuniao = semana.DatReuniao,
+                    DatIniciomanutencao = semana.DatIniciomanutencao,
+                    DatFimmanutencao = semana.DatFimmanutencao,
+                    NumRevisao = semana.NumRevisao,
+                    VerControleconcorrencia = semana.VerControleconcorrencia,
+                    DinUltimaalteracao = semana.DinUltimaalteracao,
+                    TbColetainsumos = semana.TbColetainsumos.Select(coleta => new ColetaInsumo
+                    {
+                        IdColetainsumo = coleta.IdColetainsumo,
+                        IdTpsituacaocoletainsumo = coleta.IdTpsituacaocoletainsumo,
+                        IdSemanaoperativa = coleta.IdSemanaoperativa,
+                        IdInsumopmo = coleta.IdInsumopmo,
+                        IdAgenteInstituicao = coleta.IdAgenteInstituicao,
+                        DscMotivoalteracaoons = coleta.DscMotivoalteracaoons,
+                        DscMotivorejeicaoons = coleta.DscMotivorejeicaoons,
+                        VerControleconcorrencia = coleta.VerControleconcorrencia,
+                        DinUltimaalteracao = coleta.DinUltimaalteracao,
+                        LgnAgenteultimaalteracao = coleta.LgnAgenteultimaalteracao,
+                        CodPerfilons = coleta.CodPerfilons,
+                        NomGrandezasnaoestagioalteradas = coleta.NomGrandezasnaoestagioalteradas
+                    }).ToList()
+                }).ToList()
+            };
 
-        public async Task<PmoDto> GetByIdAsync(int id)
-        {
-            var pmo = await _pmoRepository.GetByIdAsync(id);
-
-            var pmoDto = _mapper.Map<PmoDto>(pmo);
-
-            return pmoDto;
+            return tbPmoDto;
         }
 
-        public async Task<ICollection<PmoDto>> GetByFilter(PmoFilter filter)
+
+        //public async Task<TbPmoDto> GetByIdAsync(int id)
+        //{
+        //   var tbPmo = await _PMORepository.Get(id);
+        //   var tbPmoDto = _mapper.Map<TbPmoDto>(tbPmo);
+        //   return tbPmoDto;
+        //}
+
+        public ICollection<TbPmoDto> GetByQueryable(PmoFilter filter)
         {
-            var query = _pmoRepository.GetByFilter(filter);
-            var pmosDto = _mapper.Map<List<PmoDto>>(query);
+            var query = _PMORepository.GetByQueryable(filter);
+            var pmosDto = _mapper.Map<List<TbPmoDto>>(query);
             return pmosDto;
         }
 
         public async Task<DadoResultadoPmoDto> ObterDadosMontadorDisponibilidadeInflexibilidadeCVU(DisponibilidadeFilter filter)
         {
             var query = await _dadosResultadoPmoRepository.GetDadoResultPmosAsync(filter);
-            var resultados = new List<ResultadoPmoDto>();
+            var resultados = new List<PmoDto>();
             var resultadoFinal = new DadoResultadoPmoDto() { Pmo = resultados,Offset=filter.Offset??0 };
             foreach (var dadoResultado in query)
             {
                 var pmo = resultados.FirstOrDefault(x => x.IdPmo == dadoResultado.IdListaresultadopmoNavigation.IdImportacaopmoNavigation.IdSemanaoperativaNavigation.IdPmo);
                 if (pmo == null)
                 {
-                    pmo = new ResultadoPmoDto
+                    pmo = new PmoDto
                     {
                         IdPmo = dadoResultado.IdListaresultadopmoNavigation.IdImportacaopmoNavigation.IdSemanaoperativaNavigation.IdPmo,
-                        ListaResultado = new List<CVUListaResultadoPmoDto>()
+                        ListaResultado = new List<ListaResultadoPmoDto>()
                     };
                     resultados.Add(pmo);
                 }
                 var resultado = pmo.ListaResultado.FirstOrDefault(r => r.ListaResultadoId == dadoResultado.IdListaresultadopmo);
                 if (resultado == null)
                 {
-                   resultado = new CVUListaResultadoPmoDto
+                   resultado = new ListaResultadoPmoDto
                    {    
                         ListaResultadoId = dadoResultado.IdListaresultadopmo,
                         IdImportacao = dadoResultado.IdListaresultadopmoNavigation.IdImportacaopmo??0,
-                       SemanaOperativa = new Dto.DisponibilidadeCVU.SemanaOperativaDto
+                       SemanaOperativa = new SemanaOperativaDto
                        {
                            IdSemanaOperativa = dadoResultado.IdListaresultadopmoNavigation.IdImportacaopmoNavigation.IdSemanaoperativaNavigation.IdSemanaoperativa,
                            NomSemanaOperativa = dadoResultado.IdListaresultadopmoNavigation.IdImportacaopmoNavigation.IdSemanaoperativaNavigation.NomSemanaoperativa,
@@ -102,25 +144,25 @@ namespace ONS.PMO.Integracao.Application.Service
                         codSubsistema= dadoResultado.IdListaresultadopmoNavigation.IdOrigemresultadopmoNavigation.CodOrigemresultadopmopai,
                         codTpGeracao= dadoResultado.IdListaresultadopmoNavigation.TbAuxUsinamontador.CodTpgeracao,
                         MnemonicoId = dadoResultado.IdMnemonicopmo,
-                        Grandezas = new List<CVUGrandezaDto>(),
+                        Grandezas = new List<GrandezaDto>(),
                        
                     };
                 agente.Insumo.Add(insumo);
                 }
                 var grandeza = insumo.Grandezas.FirstOrDefault(x => x.NomeGrandeza == dadoResultado.IdMnemonicopmoNavigation.NomMnemonicopmo);
                 if (grandeza == null) {
-                    grandeza = new CVUGrandezaDto
+                    grandeza = new GrandezaDto
                     {
                         CodMnemonicoPMO = dadoResultado.IdMnemonicopmoNavigation.CodMnemonicopmo,
                         NomeGrandeza = dadoResultado.IdMnemonicopmoNavigation.NomMnemonicopmo,
-                        Patamares = new List<PatamarPmoDto>()
+                        Patamares = new List<PatamarDto>()
                     };
                     insumo.Grandezas.Add(grandeza);
                 
                 }
                 var patamares = grandeza.Patamares.FirstOrDefault(x => x.IdPatamar == dadoResultado.IdTppatamar);
                 if (patamares == null) {
-                    patamares = new PatamarPmoDto
+                    patamares = new PatamarDto
                     {
                         IdPatamar = dadoResultado.IdTppatamar ?? 0,
                         Patamar = dadoResultado.Tppatamar,
@@ -133,7 +175,24 @@ namespace ONS.PMO.Integracao.Application.Service
            
 
         }
-     
+
+        public async Task<TbPmoDto> ObterPMOPorFiltro(PmoFilter filter)
+        {
+            var tbPmo = _PMORepository.ObterPorFiltro(filter);       
+            //var tbPmo =  await _PMORepository
+              //.FindOneByCriterio(x=>x.AnoReferencia == filter.AnoReferencia && x.MesReferencia == filter.MesReferencia);
+
+            if (tbPmo == null)
+            {                
+                return null; 
+            }
+           
+            var tbPmoDto = _mapper.Map<TbPmoDto>(tbPmo);
+            return tbPmoDto;
+
+            
+
+        }
     }
   
 }

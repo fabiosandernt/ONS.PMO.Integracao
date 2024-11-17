@@ -1,6 +1,6 @@
 ﻿using AspNetCore.IQueryable.Extensions;
 using Microsoft.EntityFrameworkCore;
-using ONS.PMO.Integracao.Domain.Interfaces.RespositoryBase;
+using ONS.PMO.Integracao.Domain.Interfaces.Repository.Base;
 using ONS.PMO.Integracao.Infraestructure.Context;
 using System.Linq.Expressions;
 
@@ -29,10 +29,10 @@ namespace ONS.PMO.Integracao.Infraestructure.Data
 
         public async Task<T> FindOneByCriterio(Expression<Func<T, bool>> expression)
         {
-            return _query.FirstOrDefault(expression);
+           return _query.FirstOrDefault(expression);
         }
 
-        public async Task<T> GetByIdAsync(object id)
+        public async Task<T> Get(object id)
         {
             return await _query.FindAsync(id);
         }

@@ -1,11 +1,10 @@
-﻿using AspNetCore.IQueryable.Extensions.Pagination;
-using AspNetCore.IQueryable.Extensions.Sort;
-using AspNetCore.IQueryable.Extensions;
+﻿using AspNetCore.IQueryable.Extensions;
+using ONS.PMO.Integracao.Domain.Filter;
 using System.ComponentModel.DataAnnotations;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.SAGER.DisponibilidadeCVU
 {
-    public class DisponibilidadeFilter : ICustomQueryable
+    public class DisponibilidadeFilter : BaseFilter
     {
         [Display(Name = "DataInicioSemana")]
         [Required]
@@ -14,8 +13,8 @@ namespace ONS.PMO.Integracao.Domain.Entidades.SAGER.DisponibilidadeCVU
         [Display(Name = "DataFimSemana")]
         [Required]
         public DateTime? DataFimSemana { get; set; }
-        public int? LimiteDeResultados { get; set; } = 10;
-        public int? Offset { get; set; } = 0;
+        public override int? Limit { get; set; } = 10;
+        public override int? Offset { get; set; } = 0;
         public int? CodDpp { get; set; }
     }
 }

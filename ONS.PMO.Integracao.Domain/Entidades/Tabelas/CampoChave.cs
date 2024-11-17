@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
-public class CampoChave
+public  class CampoChave
 {
     public int IdCampochave { get; set; }
 
@@ -11,7 +11,7 @@ public class CampoChave
 
     public string DscCampochave { get; set; } = null!;
 
-    public virtual ICollection<CampoChaveColeta> TbCampochavetpcoleta { get; set; } = new List<CampoChaveColeta>();
+    public virtual ICollection<CampoChaveTipoColeta> TbCampochavetpcoleta { get; set; } = new List<CampoChaveTipoColeta>();
 
     public virtual ICollection<ChaveBloco> TbChaveblocos { get; set; } = new List<ChaveBloco>();
 
@@ -19,5 +19,5 @@ public class CampoChave
 
     public virtual ICollection<OrdenacaoRegistro> TbOrdenacaoregistros { get; set; } = new List<OrdenacaoRegistro>();
 
-    public virtual ICollection<ModConfigBlocoEstudo> IdModifconfigblocoestudos { get; set; } = new List<ModConfigBlocoEstudo>();
+    public virtual ICollection<ModificacaoConfiguracaoBlocoEstudo> IdModifconfigblocoestudos { get; set; } = new List<ModificacaoConfiguracaoBlocoEstudo>();
 }

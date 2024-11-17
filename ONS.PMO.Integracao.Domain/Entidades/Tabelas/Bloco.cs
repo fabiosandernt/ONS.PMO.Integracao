@@ -4,7 +4,7 @@ using ONS.PMO.Integracao.Domain.Entidades.PMO;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
-public class Bloco
+public  class Bloco
 {
     public int IdBloco { get; set; }
 
@@ -52,11 +52,11 @@ public class Bloco
 
     public virtual ICollection<GrandezaBloco> TbGrandezablocos { get; set; } = new List<GrandezaBloco>();
 
-    public virtual ICollection<ModConfigBlocoEstudo> TbModifconfigblocoestudos { get; set; } = new List<ModConfigBlocoEstudo>();
+    public virtual ICollection<ModificacaoConfiguracaoBlocoEstudo> TbModifconfigblocoestudos { get; set; } = new List<ModificacaoConfiguracaoBlocoEstudo>();
 
     public virtual ICollection<OrdenacaoRegistro> TbOrdenacaoregistros { get; set; } = new List<OrdenacaoRegistro>();
 
     public virtual ICollection<CategoriaInsumo> IdTpcategoriainsumos { get; set; } = new List<CategoriaInsumo>();
 
-    public virtual ICollection<Prestricao> IdTprestricaos { get; set; } = new List<Prestricao>();
+    public virtual ICollection<TipoRestricao> IdTprestricaos { get; set; } = new List<TipoRestricao>();
 }

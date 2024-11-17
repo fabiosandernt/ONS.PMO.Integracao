@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
-public class IntervencaoSGI
+public  class IntervencaoSGI
 {
     public int IdIntervencaosgi { get; set; }
 
@@ -25,7 +25,7 @@ public class IntervencaoSGI
 
     public string? IdOrigemcoletauge { get; set; }
 
-    public int? IdAgenteinstituicao { get; set; }
+    public int? IdAgenteInstituicao { get; set; }
 
     public string? NomAgente { get; set; }
 }

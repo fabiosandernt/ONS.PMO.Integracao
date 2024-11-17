@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using ONS.PMO.Integracao.Domain.Entidades.PMO;
+using ONS.PMO.Integracao.Domain.Entidades.Auxiliar;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
-public class ConjuntoGeracaoMinima
+public  class ConjuntoGeracaoMinima
 {
     public int IdConjuntogeracaominima { get; set; }
 
@@ -22,7 +22,7 @@ public class ConjuntoGeracaoMinima
 
     public virtual ICollection<Desligamento> TbDesligamentos { get; set; } = new List<Desligamento>();
 
-    public virtual ICollection<GeracaoMinimaPeriodo> TbGeracaominimaperiododia { get; set; } = new List<GeracaoMinimaPeriodo>();
+    public virtual ICollection<GeracaoMinimaPeriodoDia> TbGeracaominimaperiododia { get; set; } = new List<GeracaoMinimaPeriodoDia>();
 
-    public virtual ICollection<AuxUsinaMontador> IdOrigemcoletamontadors { get; set; } = new List<AuxUsinaMontador>();
+    public virtual ICollection<TbAuxUsinamontador> IdOrigemcoletamontadors { get; set; } = new List<TbAuxUsinamontador>();
 }

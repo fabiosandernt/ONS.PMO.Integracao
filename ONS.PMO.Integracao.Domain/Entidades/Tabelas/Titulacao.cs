@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
-public class Titulacao
+public  class Titulacao
 {
     public int IdTitulacao { get; set; }
 

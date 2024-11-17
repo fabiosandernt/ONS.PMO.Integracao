@@ -4,7 +4,7 @@ using ONS.PMO.Integracao.Domain.Entidades.PMO;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
-public class MnemonicoBlocoAC
+public  class MnemonicoBlocoAC
 {
     public int IdMnemonicoblocoac { get; set; }
 

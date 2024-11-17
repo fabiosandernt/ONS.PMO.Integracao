@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using ONS.PMO.Integracao.Domain.Entidades.BDT;
 using ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.PMO;
@@ -19,11 +18,11 @@ public class Gabarito
 
     public string? IdOrigemcoleta { get; set; }
 
-    public int? IdAgenteinstituicao { get; set; }
+    public int? IdAgenteInstituicao { get; set; }
 
     public byte[] VerControleconcorrencia { get; set; } = null!;
 
-    public virtual Agenteinstituicao? IdAgenteinstituicaoNavigation { get; set; }
+    public virtual AgenteInstituicao? IdAgenteinstituicaoNavigation { get; set; }
 
     public virtual InsumoPMO IdInsumopmoNavigation { get; set; } = null!;
 

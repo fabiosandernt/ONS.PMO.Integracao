@@ -18,7 +18,9 @@ namespace ONS.PMO.Integracao.Application
         {
             services.AddAutoMapper(typeof(Application.ConfigurationModule).Assembly);
 
-            services.AddScoped<IPmoServices, PmoServices>();            
+            services.AddScoped<IPmoServices, PmoServices>(); 
+            services.AddScoped<IInsumoService, InsumoService>(); 
+            
   
             services.AddHttpClient();
 

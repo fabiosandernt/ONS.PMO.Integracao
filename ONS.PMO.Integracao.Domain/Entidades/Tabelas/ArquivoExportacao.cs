@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.Tabelas
 {
-    public class ArquivoExportacao
+    public  class ArquivoExportacao
     {
         public int IdArquivoexportacao { get; set; }
 

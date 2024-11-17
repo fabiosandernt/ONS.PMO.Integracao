@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using ONS.PMO.Integracao.Domain.Entidades.PMO;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
-public class LimitesPatamar
+public  class LimitesPatamar
 {
     public int IdLimpatamar { get; set; }
 

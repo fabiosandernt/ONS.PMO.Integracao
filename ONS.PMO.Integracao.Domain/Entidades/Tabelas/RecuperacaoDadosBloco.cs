@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
-public class RecuperacaoDadosBloco
+public  class RecuperacaoDadosBloco
 {
     public int IdRecuperacaodados { get; set; }
 

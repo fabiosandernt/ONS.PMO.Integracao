@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using ONS.PMO.Integracao.Domain.Entidades.PMO;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
-public class Restricao
+public  class Restricao
 {
     public int IdRestricao { get; set; }
 

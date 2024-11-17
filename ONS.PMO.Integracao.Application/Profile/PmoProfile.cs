@@ -1,10 +1,10 @@
-﻿using ONS.PMO.Integracao.Application.Dto.DisponibilidadeCVU;
+﻿
+using ONS.PMO.Integracao.Application.Dto.DisponibilidadeCVU;
 using ONS.PMO.Integracao.Application.Dto.TabelasDto;
-using ONS.PMO.Integracao.Domain.Entidades.BDT;
+using ONS.PMO.Integracao.Domain.Entidades.Auxiliar;
 using ONS.PMO.Integracao.Domain.Entidades.PMO;
 using ONS.PMO.Integracao.Domain.Entidades.SAGER.DisponibilidadeCVU;
 using ONS.PMO.Integracao.Domain.Entidades.Tabelas;
-using ONS.PMO.Integracao.Domain.Entidades.Tabelas.Auxiliares;
 
 namespace ONS.PMO.Integracao.Application.Profile
 {
@@ -12,12 +12,8 @@ namespace ONS.PMO.Integracao.Application.Profile
     {
         public PmoProfile()
         {
-            CreateMap<ImportacaoPMO, ImportacaoPmoDto>().ReverseMap();
-            CreateMap<ListaResultadoPMO, ListaResultadoPmoDto>().ReverseMap();     
-            CreateMap<OrigemResultadoPMO, OrigemResultadoPmoDto>().ReverseMap();
-            CreateMap<ParametroPMO, ParametroPmoDto>().ReverseMap();
-            
-            CreateMap<Pmo, PmoDto>()
+
+            CreateMap<Pmo, TbPmoDto>()
                 .ForMember(dest => dest.IdPmo, opt => opt.MapFrom(src => src.IdPmo))
                 .ForMember(dest => dest.AnoReferencia, opt => opt.MapFrom(src => src.AnoReferencia))
                 .ForMember(dest => dest.MesReferencia, opt => opt.MapFrom(src => src.MesReferencia))
@@ -25,171 +21,134 @@ namespace ONS.PMO.Integracao.Application.Profile
                 .ForMember(dest => dest.VerControleconcorrencia.Length, opt => opt.MapFrom(src => src.VerControleconcorrencia))
                 .ForMember(dest => dest.TbSemanaoperativas, opt => opt.MapFrom(src => src.TbSemanaoperativas));
 
-
-            CreateMap<ResultadoColetaPMO, ResultadoColetaPmoDto>().ReverseMap();
-            CreateMap<TipoImportacaoPMO, ImportacaoDto>().ReverseMap();
-
-            //Aux
-            CreateMap<AuxConjMaquinaMontador, AuxConjMaquinaMontadorDto>().ReverseMap();
-            CreateMap<AuxContrato, AuxContratoDto>().ReverseMap();
-            CreateMap<AuxDesvioAgua, AuxDesvioAguaDto>().ReverseMap();
-            CreateMap<AuxIntervaloCustoDeficit, AuxIntervaloCustoDeficitDto>().ReverseMap();
-            CreateMap<AuxMnemonicoMontador, AuxMnemonicoMontadorDto>().ReverseMap();
-            CreateMap<AuxReeMontador, AuxReeMontadorDto>().ReverseMap();
-            CreateMap<AuxReservatorio, AuxReservatorioDto>().ReverseMap();
-            CreateMap<AuxSubmercado, AuxSubmercadoDto>().ReverseMap();
-            CreateMap<AuxUnidadeGeradora, AuxUnidadeGeradoraDto>().ReverseMap();
-            CreateMap<AuxUnidadeGeradoraMontador, AuxUnidadeGeradoraMontadorDto>().ReverseMap();
-
-            //Arquivos
-            CreateMap<Arquivo, ArquivoDto>().ReverseMap();
-            CreateMap<ArquivoFonteResultPMO, ArquivoFonteResultPMODto>().ReverseMap();
-            CreateMap<ArquivoSemanaOperativa, ArquivoSemanaOperativaDto>().ReverseMap();
-            CreateMap<ExportacaoArquivoTexto, ExportacaoArquivoTextoDto>().ReverseMap();
-
-            //Blocos
-            CreateMap<Bloco, BlocoDto>().ReverseMap();
-            CreateMap<EstadoBlocoEstudoMontador, EstadoBlocoEstudoMontadorDto>().ReverseMap();
-            CreateMap<GrandezaBloco, GrandezaBlocoDto>().ReverseMap();
-            CreateMap<GrandezaBlocoAC, GrandezaBlocoAcDto>().ReverseMap();
-            CreateMap<GrandezaBlocoEstudo, GrandezaBlocoEstudo>().ReverseMap();
-            CreateMap<BlocoEstudoMontador, BlocoEstudoMontadorDto>().ReverseMap();
-
-            //Chaves
-            CreateMap<ChaveBloco, ChaveBlocoDto>().ReverseMap();
-            CreateMap<ChaveBlocoEstudo, ChaveBlocoEstudoDto>().ReverseMap();
-            CreateMap<ChaveMnemonico, ChaveMnemonicoDto>().ReverseMap();
-            CreateMap<ChaveMnemonicoEstudo, ChaveMnemonicoEstudoDto>().ReverseMap();
-            CreateMap<CampoChave, CampoChaveDto>().ReverseMap();
-            CreateMap<CampoChaveColeta, CampoChaveColetumDto>().ReverseMap();
-
-            //Dados
-            CreateMap<DadoColetaEstruturado, DadoColetaEstruturadoDto>().ReverseMap();
-            CreateMap<DadoColetaManutencao, DadoColetaManutencaoDto>().ReverseMap();
-            CreateMap<DadoColetaNaoEstruturado, DadoColetanaoEstruturadoDto>().ReverseMap();
-            CreateMap<DadoColeta, DadoColetumDto>().ReverseMap();
-            CreateMap<DadoResultPMO, DadoResultPMODto>().ReverseMap();
-            CreateMap<DadosConvergencia, DadosConvergenciumDto>().ReverseMap();
-            CreateMap<RecuperacaoDado, RecuperacaoDadoDto>().ReverseMap();
-            CreateMap<RecuperacaoDadosAgentePMO, RecuperacaoDadosAgentePmoDto>().ReverseMap();
-            CreateMap<RecuperacaoDadosBloco, RecuperacaoDadosBlocoDto>().ReverseMap();
-            CreateMap<DadoGrandeza, DadoGrandezaDto>().ReverseMap();
-
-            //Dias semana
-            CreateMap<DiasSemana, DiaSemanaDto>().ReverseMap();
-            CreateMap<ONS.PMO.Integracao.Domain.Entidades.PMO.SemanaOperativa, Dto.TabelasDto.SemanaOperativaDto>().ReverseMap();
-            CreateMap<SituacaoSemanaOperacao, SituacaoSemanaOperativaDto>().ReverseMap();
-
-            //Estudo e Estado
-            CreateMap<EstadoManutencaoPMO, EstadoManutencaoPMODto>().ReverseMap();
-            CreateMap<EstadoMnemonicoEstudoMontador, EstadoMnemonicoEstudoMontadorDto>().ReverseMap();
-            CreateMap<EstadoRestricaoEstudoMontador, EstadoRestricaoEstudoMontadorDto>().ReverseMap();
-            CreateMap<EstudoMontador, EstudoMontadorDto>().ReverseMap();
-            CreateMap<EstudoMontadorNaoOficial, EstudoMontadorNaoOficialDto>().ReverseMap();
-            CreateMap<EstudoSelecionado, EstudoSelecionadoDto>().ReverseMap();
-
-            //Geração
-            CreateMap<ConjuntoGeracaoMinima, ConjuntoGeracaoMinimaDto>().ReverseMap();
-            CreateMap<GeracaoMinimaPeriodo, GeracaoMinimaPeriodoDto>().ReverseMap();
-            CreateMap<GeracaoPequenasUsina, GeracaoPequenasUsinaDto>().ReverseMap();
-            CreateMap<GeracaoTermica, GeracaoTermicaDto>().ReverseMap();
-
-            //Histórico
-            CreateMap<ColunaGrandeza, ColunaGrandezaDto>().ReverseMap();
-            CreateMap<EstagioGrandeza, EstagioGrandezaDto>().ReverseMap();
-            CreateMap<EstagioGrandezaMnemonico, EstagioGrandezaMnemonicoDto>().ReverseMap();
-            CreateMap<Grandeza, GrandezaDto>().ReverseMap();
-            CreateMap<GrandezaMnemonicoEstudo, GrandezaMnemonicoEstudoDto>().ReverseMap();
-            CreateMap<GrandezaMontador, GrandezaMontadorDto>().ReverseMap();
-            CreateMap<HistoricoConfiguracaoBloco, HisConfigBlocoDto>().ReverseMap();
-            CreateMap<HistoricoConfiguracaoGrandeza, HisConfigGrandezaDto>().ReverseMap();
-            CreateMap<HistoricoColetaInsumo, HistmoDifColetaInsumoDto>().ReverseMap();
-            CreateMap<HistoricoSemanaOperativa, HistModifSemanaOperDto>().ReverseMap();
-
-            //Insumo
-            CreateMap<SituacaoColetaInsumo, SituacaoColetaInsumoDto>().ReverseMap();
-            CreateMap<InsumoEstruturado, InsumoEstruturadoDto>().ReverseMap();
-            CreateMap<InsumoNaoEstruturado, InsumoNaoEstruturadoDto>().ReverseMap();
-            CreateMap<InsumoPMO, InsumoPmoDto>().ReverseMap();
-            CreateMap<ColetaInsumo, ColetaInsumoDto>().ReverseMap();
-            CreateMap<CategoriaInsumo, CategoriaInsumoDto>().ReverseMap();
-
-            //Interligacao
-            CreateMap<AuxInterligacao, AuxInterligacaoDto>().ReverseMap();
-            CreateMap<AuxInterligacaoMontador, AuxInterligacaoMontadorDto>().ReverseMap();
-            CreateMap<AuxInterligacaoMontadorInterligacao, AuxInterligacaoMontadorInterligacaoDto>().ReverseMap();
-            CreateMap<AuxInterligacaoMontadorUsina, AuxInterligacaoMontadorUsinaDto>().ReverseMap();
-
-            //Limite
-            CreateMap<LimitePeriodo, LimitePeriodoDto>().ReverseMap();
-            CreateMap<LimitesIntercambio, LimitesIntercambioDto>().ReverseMap();
-            CreateMap<LimitesPatamar, LimitesPatamarDto>().ReverseMap();
-            CreateMap<ReducaoLimiteIntercambio, ReducaoLimiteIntercambioDto>().ReverseMap();
-            CreateMap<Limite, LimiteDto>().ReverseMap();
-
-            //Log 
-            CreateMap<LogAuditoria, LogAuditoriaDto>().ReverseMap();
-            CreateMap<LogDadosInformado, LogDadosInformadoDto>().ReverseMap();
-            CreateMap<LogNotificacao, LogNotificacaoDto>().ReverseMap();
-
-            //Manutenção
-            CreateMap<ManutencaoProgramadum, ManutencaoProgramadumDto>().ReverseMap();
-            CreateMap<ManutencaoPMO, ManutencaoPmoDto>().ReverseMap();
-            CreateMap<ManutencaoProgramadaEstudo, ManutencaoProgramadaEstudoDto>().ReverseMap();
-            CreateMap<ManutencaoPrograma, ManutencaoProgramadaDto>().ReverseMap();
-
-            //Mnemonico
-            CreateMap<MnemonicoBlocoAC, MnemonicoBlocoAcDto>().ReverseMap();
-            CreateMap<MnemonicoEstudoMontador, MnemonicoEstudoMontadorDto>().ReverseMap();
-            CreateMap<MnemonicoPMO, MnemonicoPmoDto>().ReverseMap();
-            CreateMap<Arquivo, ArquivoDto>().ReverseMap();
-            CreateMap<Mnemonico, MnemonicoDto>().ReverseMap();
-
-            //Montador
-            CreateMap<MneespEstudoMontador, MneespEstudoMontadorDto>().ReverseMap();
-            CreateMap<OrigemColetaMontador, OrigemColetaMontadorDto>().ReverseMap();
-            CreateMap<PeriodoMontador, PeriodoMontadorDto>().ReverseMap();
-
-            //Restricao
-            CreateMap<Restricao, RestricaoDto>().ReverseMap();
-            CreateMap<RestricaoEletrica, RestricaoEletricaDto>().ReverseMap();
-            CreateMap<RestricaoEstudo, RestricaoEstudoDto>().ReverseMap();
-            CreateMap<Prestricao, PrestricaoDto>().ReverseMap();
-
-            //Subsistema
-            CreateMap<AuxSubsistemaContrato, AuxSubsistemaContratoDto>().ReverseMap();
-            CreateMap<AuxSubsistema, AuxSubsistemaDto>().ReverseMap();
-            CreateMap<AuxSubsistemaIntervaloCustoDeficit, AuxSubsistemaIntervaloCustoDeficitDto>().ReverseMap();
-            CreateMap<AuxSubsistemaMontador, AuxSubsistemaMontadorDto>().ReverseMap();
-
-            //Usina
-            CreateMap<AuxPequenaUsina, AuxPequenaUsinaDto>().ReverseMap();
-            CreateMap<AuxUsinaConjunto, AuxUsinaConjuntoDto>().ReverseMap();
-            CreateMap<AuxUsina, AuxUsinaDto>().ReverseMap();
-            CreateMap<AuxUsinaMnemonico, AuxUsinaMnemonicoDto>().ReverseMap();
-            CreateMap<AuxUsinaMontador, AuxUsinaMontadorDto>().ReverseMap();
-
-            //Outros
             CreateMap<Disponibilidade, DisponibilidadeDto>().ReverseMap();
-            CreateMap<Agenteinstituicao, AgenteinstituicaoDto>().ReverseMap();
-            CreateMap<ConfiguracaoCenarioPadrao, ConfiguracaoCenarioPadraoDto>().ReverseMap();
-            CreateMap<ConfiguracaoGestaoManutencao, ConfiguracaoGestaoManutencaoDto>().ReverseMap();
-            CreateMap<DecisaoComandoGNL, DecisaoComandoGNLDto>().ReverseMap();
-            CreateMap<DemandaIntegral, DemandaIntegralDto>().ReverseMap();
-            CreateMap<Desligamento, DesligamentoDto>().ReverseMap();
-            CreateMap<FonteOrigem, FonteOrigemDto>().ReverseMap();
-            CreateMap<Gabarito, GabaritoDto>().ReverseMap();
-            CreateMap<IntervencaoSGI, IntervencaoSgiDto>().ReverseMap();
-            CreateMap<ModConfigBlocoEstudo, ModifConfigBlocoEstudoDto>().ReverseMap();
-            CreateMap<MotivoAlteracao, MotivoAlteracaoDto>().ReverseMap();
-            CreateMap<OrdemExportacaoAgente, OrdemExportacaoAgenteDto>().ReverseMap();
-            CreateMap<OrdenacaoRegistro, OrdenacaoRegistroDto>().ReverseMap();
-            CreateMap<OrigemColetum, OrigemColetumDto>().ReverseMap();
-            CreateMap<PerdaPotencium, PerdaPotenciumDto>().ReverseMap();
-            CreateMap<Titulacao, TitulacaoDto>().ReverseMap();
-            CreateMap<Coleta, ColetumDto>().ReverseMap();
-            CreateMap<Estagio, EstagioDto>().ReverseMap();
-            CreateMap<Patamar, Dto.TabelasDto.PatamarDto>().ReverseMap();
+            CreateMap<AgenteInstituicao, TbAgenteinstituicaoDto>().ReverseMap();
+            CreateMap<Arquivo, TbArquivoDto>().ReverseMap();
+            CreateMap<ArquivoFonteResultadoPmo, TbArquivofonteresultpmoDto>().ReverseMap();
+            CreateMap<ArquivoSemanaOperativa, TbArquivosemanaoperativaDto>().ReverseMap();
+            CreateMap<TbAuxConjmaqmontador, TbAuxConjmaqmontadorDto>().ReverseMap();
+            CreateMap<TbAuxContrato, TbAuxContratoDto>().ReverseMap();
+            CreateMap<TbAuxDesvioagua, TbAuxDesvioaguaDto>().ReverseMap();
+            CreateMap<TbAuxInterligacao, TbAuxInterligacaoDto>().ReverseMap();
+            CreateMap<TbAuxInterligacaomontador, TbAuxInterligacaomontadorDto>().ReverseMap();
+            CreateMap<TbAuxInterligacaomontadorinterligacao, TbAuxInterligacaomontadorinterligacaoDto>().ReverseMap();
+            CreateMap<TbAuxInterligacaomontadorusina, TbAuxInterligacaomontadorusinaDto>().ReverseMap();
+            CreateMap<TbAuxIntervalocustodeficit, TbAuxIntervalocustodeficitDto>().ReverseMap();
+            CreateMap<TbAuxMnemonicomontador, TbAuxMnemonicomontadorDto>().ReverseMap();
+            CreateMap<TbAuxPequenausina, TbAuxPequenausinaDto>().ReverseMap();
+            CreateMap<TbAuxReemontador, TbAuxReemontadorDto>().ReverseMap();
+            CreateMap<TbAuxReservatorio, TbAuxReservatorioDto>().ReverseMap();
+            CreateMap<TbAuxSubmercado, TbAuxSubmercadoDto>().ReverseMap();
+            CreateMap<TbAuxSubsistemacontrato, TbAuxSubsistemacontratoDto>().ReverseMap();
+            CreateMap<TbAuxSubsistema, TbAuxSubsistemaDto>().ReverseMap();
+            CreateMap<TbAuxSubsistemaintervalocustodeficit, TbAuxSubsistemaintervalocustodeficitDto>().ReverseMap();
+            CreateMap<TbAuxSubsistemamontador, TbAuxSubsistemamontadorDto>().ReverseMap();
+            CreateMap<TbAuxUnidadegeradora, TbAuxUnidadegeradoraDto>().ReverseMap();
+            CreateMap<TbAuxUnidadegeradoramontador, TbAuxUnidadegeradoramontadorDto>().ReverseMap();
+            CreateMap<TbAuxUsinaconjunto, TbAuxUsinaconjuntoDto>().ReverseMap();
+            CreateMap<TbAuxUsina, TbAuxUsinaDto>().ReverseMap();
+            CreateMap<TbAuxUsinamnemonico, TbAuxUsinamnemonicoDto>().ReverseMap();
+            CreateMap<TbAuxUsinamontador, TbAuxUsinamontadorDto>().ReverseMap();
+            CreateMap<Bloco, TbBlocoDto>().ReverseMap();
+            CreateMap<BlocoEstudoMontador, TbBlocoestudomontadorDto>().ReverseMap();
+            CreateMap<CampoChave, TbCampochaveDto>().ReverseMap();
+            CreateMap<CampoChaveTipoColeta, TbCampochavetpcoletumDto>().ReverseMap();
+            CreateMap<ChaveBloco, TbChaveblocoDto>().ReverseMap();
+            CreateMap<ChaveBlocoEstudo, TbChaveblocoestudoDto>().ReverseMap();
+            CreateMap<ChaveMnemonico, TbChavemnemonicoDto>().ReverseMap();
+            CreateMap<ChaveMnemonicoEstudo, TbChavemnemonicoestudoDto>().ReverseMap();
+            CreateMap<ColetaInsumo, TbColetainsumoDto>().ReverseMap();
+            CreateMap<ColunaGrandeza, TbColunagrandezaDto>().ReverseMap();
+            CreateMap<ConfiguracaoCenarioPadrao, TbConfiguracaocenariopadraoDto>().ReverseMap();
+            CreateMap<ConfiguracaoGestaoManutencao, TbConfiguracaogestaomanutencaoDto>().ReverseMap();
+            CreateMap<ConjuntoGeracaoMinima, TbConjuntogeracaominimaDto>().ReverseMap();
+            CreateMap<DadoColetaEstruturado, TbDadocoletaestruturadoDto>().ReverseMap();
+            CreateMap<DadoColetaManutencao, TbDadocoletamanutencaoDto>().ReverseMap();
+            CreateMap<DadoColetaNaoEstruturado, TbDadocoletanaoestruturadoDto>().ReverseMap();
+            CreateMap<DadoColeta, TbDadocoletumDto>().ReverseMap();
+            CreateMap<DadoResultadoPMO, TbDadoresultpmoDto>().ReverseMap();
+            CreateMap<DadosConvergencia, TbDadosconvergenciumDto>().ReverseMap();
+            CreateMap<DecisaoComandoGNL, TbDecisaocomandognlDto>().ReverseMap();
+            CreateMap<DemandaIntegral, TbDemandaintegralDto>().ReverseMap();
+            CreateMap<Desligamento, TbDesligamentoDto>().ReverseMap();
+            CreateMap<DiaSemana, TbDiasemanaDto>().ReverseMap();
+            CreateMap<EstadoBlocoEstudoMontador, TbEstadoblocoestudomontadorDto>().ReverseMap();
+            CreateMap<EstadoManutencaoPmo, TbEstadomanutencaopmoDto>().ReverseMap();
+            CreateMap<EstadoMnemonicoEstudoMontador, TbEstadomnemonicoestudomontadorDto>().ReverseMap();
+            CreateMap<EstadoRestricaoEstudoMontador, TbEstadorestricaoestudomontadorDto>().ReverseMap();
+            CreateMap<EstagioGrandeza, TbEstagiograndezaDto>().ReverseMap();
+            CreateMap<EstagioGrandezaMnemonico, TbEstagiograndezamnemonicoDto>().ReverseMap();
+            CreateMap<EstudoMontador, TbEstudomontadorDto>().ReverseMap();
+            CreateMap<EstudoMontadorNaoOficial, TbEstudomontadornaooficialDto>().ReverseMap();
+            CreateMap<EstudoSelecionado, TbEstudoselecionadoDto>().ReverseMap();
+            CreateMap<ExportacaoArquivoTexto, TbExportacaoarquivotextoDto>().ReverseMap();
+            CreateMap<FonteOrigem, TbFonteorigemDto>().ReverseMap();
+            CreateMap<Gabarito, TbGabaritoDto>().ReverseMap();
+            CreateMap<GeracaoMinimaPeriodoDia, TbGeracaominimaperiododiumDto>().ReverseMap();
+            CreateMap<GeracaoPequenasUsina, TbGeracaopequenasusinaDto>().ReverseMap();
+            CreateMap<GeracaoTermica, TbGeracaotermicaDto>().ReverseMap();
+            CreateMap<GrandezaBloco, TbGrandezablocoDto>().ReverseMap();
+            CreateMap<GrandezaBlocoAC, TbGrandezablocoacDto>().ReverseMap();
+            CreateMap<GrandezaBlocoEstudo, GrandezaBlocoEstudo>().ReverseMap();
+            CreateMap<Grandeza, TbGrandezaDto>().ReverseMap();
+            CreateMap<GrandezaMnemonicoEstudo, TbGrandezamnemonicoestudoDto>().ReverseMap();
+            CreateMap<GrandezaMontador, TbGrandezamontadorDto>().ReverseMap();
+            CreateMap<HistoricoConfiguracaoBloco, TbHisconfigblocoDto>().ReverseMap();
+            CreateMap<HistoricoConfiguracaoGrandeza, TbHisconfiggrandezaDto>().ReverseMap();
+            CreateMap<HistoricoModificacaoColetaInsumo, TbHistmodifcoletainsumoDto>().ReverseMap();
+            CreateMap<HistoricoModificacaoSemanaOperativa, TbHistmodifsemanaoperDto>().ReverseMap();
+            CreateMap<ImportacaoPmo, TbImportacaopmoDto>().ReverseMap();
+            CreateMap<InsumoEstruturado, TbInsumoestruturadoDto>().ReverseMap();
+            CreateMap<InsumoNaoEstruturado, TbInsumonaoestruturadoDto>().ReverseMap();
+            CreateMap<InsumoPMO, TbInsumopmoDto>().ReverseMap();
+            CreateMap<IntervencaoSGI, TbIntervencaosgiDto>().ReverseMap();
+            CreateMap<LimitePeriodoDia, TbLimiteperiododiumDto>().ReverseMap();
+            CreateMap<LimitesIntercambio, TbLimitesintercambioDto>().ReverseMap();
+            CreateMap<LimitesPatamar, TbLimitespatamarDto>().ReverseMap();
+            CreateMap<ListaResultadoPmo, TbListaresultadopmoDto>().ReverseMap();
+            CreateMap<LogAuditoria, TbLogauditoriumDto>().ReverseMap();
+            CreateMap<LogDadosInformado, TbLogdadosinformadoDto>().ReverseMap();
+            CreateMap<LogNotificacao, TbLognotificacaoDto>().ReverseMap();
+            CreateMap<ManutencaoPmo, TbManutencaopmoDto>().ReverseMap();
+            CreateMap<ManutencaoProgramadaEstudo, TbManutencaoprogramadaestudoDto>().ReverseMap();
+            CreateMap<ManutencaoProgramada, TbManutencaoprogramadumDto>().ReverseMap();
+            CreateMap<MneespEstudoMontador, TbMneespestudomontadorDto>().ReverseMap();
+            CreateMap<MnemonicoBlocoAC, TbMnemonicoblocoacDto>().ReverseMap();
+            CreateMap<MnemonicoEstudoMontador, TbMnemonicoestudomontadorDto>().ReverseMap();
+            CreateMap<MnemonicoPmo, TbMnemonicopmoDto>().ReverseMap();
+            CreateMap<ModificacaoConfiguracaoBlocoEstudo, TbModifconfigblocoestudoDto>().ReverseMap();
+            CreateMap<MotivoAlteracao, TbMotivoalteracaoDto>().ReverseMap();
+            CreateMap<OrdemExportacaoAgente, TbOrdemexportacaoagenteDto>().ReverseMap();
+            CreateMap<OrdenacaoRegistro, TbOrdenacaoregistroDto>().ReverseMap();
+            CreateMap<OrigemColetaMontador, TbOrigemcoletamontadorDto>().ReverseMap();
+            CreateMap<OrigemColetum, TbOrigemcoletumDto>().ReverseMap();
+            CreateMap<OrigemResultadoPmo, TbOrigemresultadopmoDto>().ReverseMap();
+            CreateMap<ParametroPMO, TbParametropmoDto>().ReverseMap();
+            CreateMap<PerdaPotencia, TbPerdapotenciumDto>().ReverseMap();
+            //CreateMap<TbPmo, TbPmoDto>().ReverseMap();
+            CreateMap<RecuperacaoDado, TbRecuperacaodadoDto>().ReverseMap();
+            CreateMap<RecuperacaoDadosAgentePmo, TbRecuperacaodadosagentepmoDto>().ReverseMap();
+            CreateMap<RecuperacaoDadosBloco, TbRecuperacaodadosblocoDto>().ReverseMap();
+            CreateMap<ReducaoLimiteIntercambio, TbReducaolimiteintercambioDto>().ReverseMap();
+            CreateMap<Restricao, TbRestricaoDto>().ReverseMap();
+            CreateMap<RestricaoEletrica, TbRestricaoeletricaDto>().ReverseMap();
+            CreateMap<RestricaoEstudo, TbRestricaoestudoDto>().ReverseMap();
+            CreateMap<ResultadoColetaPmo, TbResultadocoletapmoDto>().ReverseMap();
+            CreateMap<SemanaOperativa, TbSemanaoperativaDto>().ReverseMap();
+            CreateMap<Titulacao, TbTitulacaoDto>().ReverseMap();
+            CreateMap<CategoriaInsumo, TbTpcategoriainsumoDto>().ReverseMap();
+            CreateMap<Coleta, TbTpcoletumDto>().ReverseMap();
+            CreateMap<DadoGrandeza, TbTpdadograndezaDto>().ReverseMap();
+            CreateMap<Estagio, TbTpestagioDto>().ReverseMap();
+            CreateMap<TipoImportacaoPmo, TbTpimportacaopmoDto>().ReverseMap();
+            CreateMap<Limite, TbTplimiteDto>().ReverseMap();
+            CreateMap<TipoManutencaoProgramada, TbTpmanutencaoprogramadumDto>().ReverseMap();
+            CreateMap<TipoMnemonico, TbTpmnemonicoDto>().ReverseMap();
+            CreateMap<Patamar, TbTppatamarDto>().ReverseMap();
+            CreateMap<TipoPeriodoMontador, TbTpperiodomontadorDto>().ReverseMap();
+            CreateMap<TipoRestricao, TbTprestricaoDto>().ReverseMap();
+            CreateMap<SituacaoColetaIsumo, TbTpsituacaocoletainsumoDto>().ReverseMap();
+            CreateMap<SituacaoSemanaOperativa, TbTpsituacaosemanaoperDto>().ReverseMap();
 
         }
     }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ONS.PMO.Integracao.Application.Filter;
 using ONS.PMO.Integracao.Application.Service.Interfaces;
+using System.Runtime.InteropServices;
 
 namespace ONS.PMO.Integracao.Api.Controllers
 {
@@ -11,15 +12,15 @@ namespace ONS.PMO.Integracao.Api.Controllers
         private readonly IPmoServices _pmoServices;
         public PMOController(IPmoServices pmoServices)
         {
-            _pmoServices = pmoServices;
+                _pmoServices = pmoServices;
         }
-
+        
         [HttpGet("filter")]
         public async Task<IActionResult> GetByFilter([FromQuery] PmoFilter filter)
         {
             try
             {
-                var result = await _pmoServices.GetByFilter(filter);
+                var result = await _pmoServices.ObterPMOPorFiltro(filter);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -28,12 +29,13 @@ namespace ONS.PMO.Integracao.Api.Controllers
             }
         }
 
-        [HttpGet("{id:int}")]
+         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var result = await _pmoServices.GetByIdAsync(id);
+            //var result = await _pmoServices.GetByIdAsync(id);
+            
 
-            return Ok(result);
+            return Ok(/*result*/);
         }
 
 

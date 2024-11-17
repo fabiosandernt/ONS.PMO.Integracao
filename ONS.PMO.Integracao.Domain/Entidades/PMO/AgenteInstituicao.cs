@@ -1,11 +1,10 @@
-﻿using ONS.PMO.Integracao.Domain.Entidades.BDT;
-using ONS.PMO.Integracao.Domain.Entidades.Tabelas;
+﻿using ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.PMO
 {
-    public class Agenteinstituicao
+    public class AgenteInstituicao
     {
-        public int IdAgenteinstituicao { get; set; }
+        public int IdAgenteInstituicao { get; set; }
 
         public string DscRazaosocial { get; set; } = null!;
 
@@ -17,9 +16,9 @@ namespace ONS.PMO.Integracao.Domain.Entidades.PMO
 
         public virtual ICollection<LogNotificacao> TbLognotificacaos { get; set; } = new List<LogNotificacao>();
 
-        public virtual ICollection<ManutencaoPMO> TbManutencaopmos { get; set; } = new List<ManutencaoPMO>();
+        public virtual ICollection<ManutencaoPmo> TbManutencaopmos { get; set; } = new List<ManutencaoPmo>();
 
-        public virtual ICollection<ManutencaoPrograma> TbManutencaoprogramada { get; set; } = new List<ManutencaoPrograma>();
+        public virtual ICollection<ManutencaoProgramada> TbManutencaoprogramada { get; set; } = new List<ManutencaoProgramada>();
 
         public virtual ICollection<ConfiguracaoGestaoManutencao> IdConfiguracaogestaomanutencaos { get; set; } = new List<ConfiguracaoGestaoManutencao>();
     }

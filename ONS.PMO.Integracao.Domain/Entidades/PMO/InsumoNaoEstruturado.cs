@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using ONS.PMO.Integracao.Domain.Entidades.BDT;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.PMO;
 

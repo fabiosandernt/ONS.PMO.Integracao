@@ -9,7 +9,7 @@ public class LogNotificacao
 
     public int IdSemanaoperativa { get; set; }
 
-    public int IdAgenteinstituicao { get; set; }
+    public int IdAgenteInstituicao { get; set; }
 
     public string DscAcao { get; set; } = null!;
 
@@ -21,7 +21,7 @@ public class LogNotificacao
 
     public string? NomUsuario { get; set; }
 
-    public virtual Agenteinstituicao IdAgenteinstituicaoNavigation { get; set; } = null!;
+    public virtual AgenteInstituicao IdAgenteinstituicaoNavigation { get; set; } = null!;
 
     public virtual SemanaOperativa IdSemanaoperativaNavigation { get; set; } = null!;
 }

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using ONS.PMO.Integracao.Domain.Entidades.BDT;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
-public class EstadoMnemonicoEstudoMontador
+public  class EstadoMnemonicoEstudoMontador
 {
     public int IdEstadomnemonicoestudomontador { get; set; }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
-public class HistoricoConfiguracaoBloco
+public  class HistoricoConfiguracaoBloco
 {
     public int IdModifconfigblocoestudo { get; set; }
 
@@ -11,5 +11,5 @@ public class HistoricoConfiguracaoBloco
 
     public string? DscCabecalho { get; set; }
 
-    public virtual ModConfigBlocoEstudo IdModifconfigblocoestudoNavigation { get; set; } = null!;
+    public virtual ModificacaoConfiguracaoBlocoEstudo IdModifconfigblocoestudoNavigation { get; set; } = null!;
 }

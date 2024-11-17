@@ -7,7 +7,7 @@ public class LogDadosInformado
 {
     public int IdLogdadosinformados { get; set; }
 
-    public int? IdAgenteinstituicao { get; set; }
+    public int? IdAgenteInstituicao { get; set; }
 
     public int IdSemanaoperativa { get; set; }
 

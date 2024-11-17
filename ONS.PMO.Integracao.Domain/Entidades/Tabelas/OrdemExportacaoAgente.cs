@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
-public class OrdemExportacaoAgente
+public  class OrdemExportacaoAgente
 {
     public string AgeId { get; set; } = null!;
 

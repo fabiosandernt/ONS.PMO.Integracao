@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
-public class ManutencaoProgramadaEstudo
+public  class ManutencaoProgramadaEstudo
 {
     public int IdEstudomontador { get; set; }
 

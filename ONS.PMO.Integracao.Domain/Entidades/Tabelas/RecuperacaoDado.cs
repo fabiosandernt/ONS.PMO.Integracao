@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using ONS.PMO.Integracao.Domain.Entidades.BDT;
 using ONS.PMO.Integracao.Domain.Entidades.PMO;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
-public class RecuperacaoDado
+public  class RecuperacaoDado
 {
     public int IdRecuperacaodados { get; set; }
 
@@ -29,7 +28,7 @@ public class RecuperacaoDado
 
     public virtual SemanaOperativa? IdSemanaoperativafonteNavigation { get; set; }
 
-    public virtual ICollection<RecuperacaoDadosAgentePMO> TbRecuperacaodadosagentepmos { get; set; } = new List<RecuperacaoDadosAgentePMO>();
+    public virtual ICollection<RecuperacaoDadosAgentePmo> TbRecuperacaodadosagentepmos { get; set; } = new List<RecuperacaoDadosAgentePmo>();
 
     public virtual ICollection<RecuperacaoDadosBloco> TbRecuperacaodadosblocos { get; set; } = new List<RecuperacaoDadosBloco>();
 }

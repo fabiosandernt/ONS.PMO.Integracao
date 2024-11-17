@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using ONS.PMO.Integracao.Domain.Entidades.BDT;
+using ONS.PMO.Integracao.Domain.Entidades.Auxiliar;
 using ONS.PMO.Integracao.Domain.Entidades.PMO;
-using ONS.PMO.Integracao.Domain.Entidades.Tabelas.Auxiliares;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
-public class OrigemColetaMontador
+public  class OrigemColetaMontador
 {
     public int IdOrigemcoletamontador { get; set; }
 
@@ -30,39 +29,39 @@ public class OrigemColetaMontador
 
     public virtual Coleta IdTpcoletaNavigation { get; set; } = null!;
 
-    public virtual AuxConjMaquinaMontador? TbAuxConjmaqmontador { get; set; }
+    public virtual TbAuxConjmaqmontador? TbAuxConjmaqmontador { get; set; }
 
-    public virtual AuxDesvioAgua? TbAuxDesvioagua { get; set; }
+    public virtual TbAuxDesvioagua? TbAuxDesvioagua { get; set; }
 
-    public virtual AuxInterligacaoMontador? TbAuxInterligacaomontador { get; set; }
+    public virtual TbAuxInterligacaomontador? TbAuxInterligacaomontador { get; set; }
 
-    public virtual ICollection<AuxInterligacaoMontadorInterligacao> TbAuxInterligacaomontadorinterligacaos { get; set; } = new List<AuxInterligacaoMontadorInterligacao>();
+    public virtual ICollection<TbAuxInterligacaomontadorinterligacao> TbAuxInterligacaomontadorinterligacaos { get; set; } = new List<TbAuxInterligacaomontadorinterligacao>();
 
-    public virtual ICollection<AuxInterligacaoMontadorUsina> TbAuxInterligacaomontadorusinaIdOrigemcoletainterligprincNavigations { get; set; } = new List<AuxInterligacaoMontadorUsina>();
+    public virtual ICollection<TbAuxInterligacaomontadorusina> TbAuxInterligacaomontadorusinaIdOrigemcoletainterligprincNavigations { get; set; } = new List<TbAuxInterligacaomontadorusina>();
 
-    public virtual ICollection<AuxInterligacaoMontadorUsina> TbAuxInterligacaomontadorusinaIdOrigemcoletausinaNavigations { get; set; } = new List<AuxInterligacaoMontadorUsina>();
+    public virtual ICollection<TbAuxInterligacaomontadorusina> TbAuxInterligacaomontadorusinaIdOrigemcoletausinaNavigations { get; set; } = new List<TbAuxInterligacaomontadorusina>();
 
-    public virtual AuxMnemonicoMontador? TbAuxMnemonicomontador { get; set; }
+    public virtual TbAuxMnemonicomontador? TbAuxMnemonicomontador { get; set; }
 
-    public virtual AuxPequenaUsina? TbAuxPequenausina { get; set; }
+    public virtual TbAuxPequenausina? TbAuxPequenausina { get; set; }
 
-    public virtual AuxReeMontador? TbAuxReemontador { get; set; }
+    public virtual TbAuxReemontador? TbAuxReemontador { get; set; }
 
-    public virtual AuxSubmercado? TbAuxSubmercado { get; set; }
+    public virtual TbAuxSubmercado? TbAuxSubmercado { get; set; }
 
-    public virtual AuxSubsistemaContrato? TbAuxSubsistemacontrato { get; set; }
+    public virtual TbAuxSubsistemacontrato? TbAuxSubsistemacontrato { get; set; }
 
-    public virtual AuxSubsistemaIntervaloCustoDeficit? TbAuxSubsistemaintervalocustodeficit { get; set; }
+    public virtual TbAuxSubsistemaintervalocustodeficit? TbAuxSubsistemaintervalocustodeficit { get; set; }
 
-    public virtual AuxSubsistemaMontador? TbAuxSubsistemamontador { get; set; }
+    public virtual TbAuxSubsistemamontador? TbAuxSubsistemamontador { get; set; }
 
-    public virtual AuxUnidadeGeradoraMontador? TbAuxUnidadegeradoramontador { get; set; }
+    public virtual TbAuxUnidadegeradoramontador? TbAuxUnidadegeradoramontador { get; set; }
 
-    public virtual AuxUsinaConjunto? TbAuxUsinaconjunto { get; set; }
+    public virtual TbAuxUsinaconjunto? TbAuxUsinaconjunto { get; set; }
 
-    public virtual AuxUsinaMnemonico? TbAuxUsinamnemonico { get; set; }
+    public virtual TbAuxUsinamnemonico? TbAuxUsinamnemonico { get; set; }
 
-    public virtual AuxUsinaMontador? TbAuxUsinamontador { get; set; }
+    public virtual TbAuxUsinamontador? TbAuxUsinamontador { get; set; }
 
     public virtual ICollection<ChaveBlocoEstudo> TbChaveblocoestudos { get; set; } = new List<ChaveBlocoEstudo>();
 

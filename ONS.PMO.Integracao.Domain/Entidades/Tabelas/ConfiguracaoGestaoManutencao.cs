@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using ONS.PMO.Integracao.Domain.Entidades.BDT;
 using ONS.PMO.Integracao.Domain.Entidades.PMO;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
-public class ConfiguracaoGestaoManutencao
+public  class ConfiguracaoGestaoManutencao
 {
     public int IdConfiguracaogestaomanutencao { get; set; }
 
@@ -29,9 +28,9 @@ public class ConfiguracaoGestaoManutencao
 
     public virtual ICollection<GeracaoTermica> TbGeracaotermicas { get; set; } = new List<GeracaoTermica>();
 
-    public virtual ICollection<ManutencaoPMO> TbManutencaopmos { get; set; } = new List<ManutencaoPMO>();
+    public virtual ICollection<ManutencaoPmo> TbManutencaopmos { get; set; } = new List<ManutencaoPmo>();
 
-    public virtual ICollection<PerdaPotencium> TbPerdapotencia { get; set; } = new List<PerdaPotencium>();
+    public virtual ICollection<PerdaPotencia> TbPerdapotencia { get; set; } = new List<PerdaPotencia>();
 
-    public virtual ICollection<Agenteinstituicao> IdAgenteinstituicaos { get; set; } = new List<Agenteinstituicao>();
+    public virtual ICollection<AgenteInstituicao> IdAgenteinstituicaos { get; set; } = new List<AgenteInstituicao>();
 }

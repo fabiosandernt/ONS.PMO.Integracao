@@ -4,7 +4,7 @@ using ONS.PMO.Integracao.Domain.Entidades.PMO;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
-public class ExportacaoArquivoTexto
+public  class ExportacaoArquivoTexto
 {
     public int IdExportacaoarquivotexto { get; set; }
 

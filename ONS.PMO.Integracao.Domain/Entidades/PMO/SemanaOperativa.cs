@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using ONS.PMO.Integracao.Domain.Entidades.BDT;
 using ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.PMO;
@@ -33,27 +32,27 @@ public class SemanaOperativa
 
     public virtual Pmo IdPmoNavigation { get; set; } = null!;
 
-    public virtual SituacaoSemanaOperacao? IdTpsituacaosemanaoperNavigation { get; set; }
+    public virtual SituacaoSemanaOperativa? IdTpsituacaosemanaoperNavigation { get; set; }
 
     public virtual ICollection<ArquivoSemanaOperativa> TbArquivosemanaoperativas { get; set; } = new List<ArquivoSemanaOperativa>();
 
     public virtual ICollection<ColetaInsumo> TbColetainsumos { get; set; } = new List<ColetaInsumo>();
 
-    public virtual ICollection<ConfiguracaoGestaoManutencao> TbConfiguracaogestaomanutencaos { get; set; } = new List<ConfiguracaoGestaoManutencao>();
+    //public virtual ICollection<ConfiguracaoGestaoManutencao> TbConfiguracaogestaomanutencaos { get; set; } = new List<ConfiguracaoGestaoManutencao>();
 
     public virtual ICollection<DadosConvergencia> TbDadosconvergencia { get; set; } = new List<DadosConvergencia>();
 
-    public virtual ICollection<EstudoMontador> TbEstudomontadors { get; set; } = new List<EstudoMontador>();
+    //public virtual ICollection<EstudoMontador> TbEstudomontadors { get; set; } = new List<EstudoMontador>();
 
-    public virtual ICollection<ExportacaoArquivoTexto> TbExportacaoarquivotextos { get; set; } = new List<ExportacaoArquivoTexto>();
+    //public virtual ICollection<ExportacaoArquivoTexto> TbExportacaoarquivotextos { get; set; } = new List<ExportacaoArquivoTexto>();
 
     public virtual ICollection<Gabarito> TbGabaritos { get; set; } = new List<Gabarito>();
 
-    public virtual ICollection<HistoricoSemanaOperativa> TbHistmodifsemanaopers { get; set; } = new List<HistoricoSemanaOperativa>();
+    //public virtual ICollection<HistoricoModificacaoSemanaOperativa> TbHistmodifsemanaopers { get; set; } = new List<HistoricoModificacaoSemanaOperativa>();
 
-    public virtual ICollection<ImportacaoPMO> TbImportacaopmos { get; set; } = new List<ImportacaoPMO>();
+    //public virtual ICollection<ImportacaoPmo> TbImportacaopmos { get; set; } = new List<ImportacaoPmo>();
 
-    public virtual ICollection<LogNotificacao> TbLognotificacaos { get; set; } = new List<LogNotificacao>();
+    //public virtual ICollection<LogNotificacao> TbLognotificacaos { get; set; } = new List<LogNotificacao>();
 
-    public virtual ICollection<RecuperacaoDado> TbRecuperacaodados { get; set; } = new List<RecuperacaoDado>();
+    //public virtual ICollection<RecuperacaoDado> TbRecuperacaodados { get; set; } = new List<RecuperacaoDado>();
 }

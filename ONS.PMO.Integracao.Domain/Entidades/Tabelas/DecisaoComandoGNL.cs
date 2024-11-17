@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using ONS.PMO.Integracao.Domain.Entidades.Auxiliar;
 using ONS.PMO.Integracao.Domain.Entidades.PMO;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
-public class DecisaoComandoGNL
+public  class DecisaoComandoGNL
 {
     public int IdDecisaocomandognl { get; set; }
 
@@ -22,7 +23,7 @@ public class DecisaoComandoGNL
 
     public byte[] VerControleconcorrencia { get; set; } = null!;
 
-    public virtual AuxUsinaMontador? IdOrigemcoletamontadorNavigation { get; set; }
+    public virtual TbAuxUsinamontador? IdOrigemcoletamontadorNavigation { get; set; }
 
     public virtual Titulacao IdTitulacaoNavigation { get; set; } = null!;
 

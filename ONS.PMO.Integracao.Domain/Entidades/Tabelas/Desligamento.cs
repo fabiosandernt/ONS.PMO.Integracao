@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
-public class Desligamento
+public  class Desligamento
 {
     public int IdDesligamento { get; set; }
 

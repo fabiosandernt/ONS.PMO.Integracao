@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
-public class ReducaoLimiteIntercambio
+public  class ReducaoLimiteIntercambio
 {
     public int IdReducaolimiteintercambio { get; set; }
 

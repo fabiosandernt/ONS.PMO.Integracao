@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using ONS.PMO.Integracao.Domain.Entidades.BDT;
 using ONS.PMO.Integracao.Domain.Entidades.PMO;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
-public class EstudoMontador
+public  class EstudoMontador
 {
     public int IdEstudomontador { get; set; }
 
@@ -31,7 +30,7 @@ public class EstudoMontador
 
     public virtual ICollection<LimitesIntercambio> TbLimitesintercambios { get; set; } = new List<LimitesIntercambio>();
 
-    public virtual ICollection<ManutencaoPrograma> TbManutencaoprogramada { get; set; } = new List<ManutencaoPrograma>();
+    public virtual ICollection<ManutencaoProgramada> TbManutencaoprogramada { get; set; } = new List<ManutencaoProgramada>();
 
     public virtual ManutencaoProgramadaEstudo? TbManutencaoprogramadaestudo { get; set; }
 
@@ -39,7 +38,7 @@ public class EstudoMontador
 
     public virtual ICollection<MnemonicoEstudoMontador> TbMnemonicoestudomontadors { get; set; } = new List<MnemonicoEstudoMontador>();
 
-    public virtual ICollection<ModConfigBlocoEstudo> TbModifconfigblocoestudos { get; set; } = new List<ModConfigBlocoEstudo>();
+    public virtual ICollection<ModificacaoConfiguracaoBlocoEstudo> TbModifconfigblocoestudos { get; set; } = new List<ModificacaoConfiguracaoBlocoEstudo>();
 
     public virtual ICollection<RecuperacaoDado> TbRecuperacaodadoIdEstudomontadordestinoNavigations { get; set; } = new List<RecuperacaoDado>();
 
