@@ -1,6 +1,5 @@
 ﻿using ONS.PMO.Integracao.Application.Dto.DisponibilidadeCVU;
 using ONS.PMO.Integracao.Application.Dto.PMO;
-using ONS.PMO.Integracao.Application.Dto.TabelasDto;
 using ONS.PMO.Integracao.Application.Filter;
 using ONS.PMO.Integracao.Domain.Entidades.SAGER.DisponibilidadeCVU;
 

@@ -3,9 +3,9 @@ using System.Text.Json.Serialization;
 
 
 
-namespace ONS.PMO.Integracao.Application.Dto.TabelasDto;
+namespace ONS.PMO.Integracao.Application.Dto.PMO;
 
-public  class TbPmoDto 
+public class TbPmoDto
 {
     public int IdPmo { get; set; }
 

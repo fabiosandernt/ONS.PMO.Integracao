@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ONS.PMO.Integracao.Application.Service
+namespace ONS.PMO.Integracao.Application.Service.Implementation
 {
     public class InsumoService : IInsumoService
     {
@@ -30,7 +30,7 @@ namespace ONS.PMO.Integracao.Application.Service
         }
 
         public ICollection<TbInsumopmoDto> GetByQueryable(InsumoFilter filter)
-        {            
+        {
             //var query = _insumoRepository.GetAllInsumosCustom(filter);
             var query = _insumoRepository.GetByQueryable(filter);
             var insumosDto = _mapper.Map<List<TbInsumopmoDto>>(query);

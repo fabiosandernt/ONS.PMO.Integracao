@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using ONS.PMO.Integracao.Application.Dto.PMO;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;

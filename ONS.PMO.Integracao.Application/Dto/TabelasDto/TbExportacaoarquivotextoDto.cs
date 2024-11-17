@@ -1,4 +1,6 @@
-﻿namespace ONS.PMO.Integracao.Application.Dto.TabelasDto;
+﻿using ONS.PMO.Integracao.Application.Dto.PMO;
+
+namespace ONS.PMO.Integracao.Application.Dto.TabelasDto;
 
 public  class TbExportacaoarquivotextoDto
 {

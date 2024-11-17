@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace ONS.PMO.Integracao.Application.Dto.TabelasDto;
+namespace ONS.PMO.Integracao.Application.Dto.PMO;
 
-public  class TbSemanaoperativaDto
+public class TbSemanaoperativaDto
 {
     public int IdSemanaoperativa { get; set; }
 

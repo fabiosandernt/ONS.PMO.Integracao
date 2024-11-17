@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ONS.PMO.Integracao.Application.Dto.PMO;
 
 namespace ONS.PMO.Integracao.Application.Dto.TabelasDto;
 
