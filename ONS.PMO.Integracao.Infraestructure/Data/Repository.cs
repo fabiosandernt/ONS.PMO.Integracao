@@ -73,6 +73,10 @@ namespace ONS.PMO.Integracao.Infraestructure.Data
         {
             return _query;
         }
+
+        public interface IAquivoRepository
+        {
+        }
     }
 }
 
