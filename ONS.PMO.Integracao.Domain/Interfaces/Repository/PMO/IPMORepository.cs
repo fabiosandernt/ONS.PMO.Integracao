@@ -9,7 +9,7 @@ namespace ONS.PMO.Integracao.Domain.Interfaces.Repository.PMO
     {
 
         Pmo ObterPorFiltro(IBaseFilter filtro);
-        //PMO ObterPorFiltroExterno(PMOFilter filtro);
-        //int ObterQuantidadeSemanasPMO(int idSemanaOperativa);
+        Pmo ObterPorFiltroExterno(IBaseFilter filtro);
+        int ObterQuantidadeSemanasPMO(int idSemanaOperativa);
     }
 }

@@ -4,7 +4,7 @@ using ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.PMO;
 
-public class SituacaoColetaIsumo
+public class SituacaoColetaInsumo
 {
     public int IdTpsituacaocoletainsumo { get; set; }
 

@@ -16,5 +16,5 @@ public class HistoricoModificacaoColetaInsumo
 
     public virtual ColetaInsumo? IdColetainsumoNavigation { get; set; }
 
-    public virtual SituacaoColetaIsumo? IdTpsituacaocoletainsumoNavigation { get; set; }
+    public virtual SituacaoColetaInsumo? IdTpsituacaocoletainsumoNavigation { get; set; }
 }

@@ -272,7 +272,7 @@ namespace ONS.PMO.Integracao.Infraestructure.Context
 
         public virtual DbSet<TipoRestricao> TbTprestricaos { get; set; }
 
-        public virtual DbSet<SituacaoColetaIsumo> SituacaoColetaIsumos { get; set; }
+        public virtual DbSet<SituacaoColetaInsumo> SituacaoColetaIsumos { get; set; }
 
         public virtual DbSet<SituacaoSemanaOperativa> SituacaoSemanaOperativas { get; set; }  
 
@@ -4324,7 +4324,7 @@ namespace ONS.PMO.Integracao.Infraestructure.Context
                         });
             });
 
-            modelBuilder.Entity<SituacaoColetaIsumo>(entity =>
+            modelBuilder.Entity<SituacaoColetaInsumo>(entity =>
             {
                 entity.HasKey(e => e.IdTpsituacaocoletainsumo).HasName("pk_tb_tpsituacaocoletainsumo");
 

@@ -148,7 +148,7 @@ namespace ONS.PMO.Integracao.Application.Profile
             CreateMap<Patamar, TbTppatamarDto>().ReverseMap();
             CreateMap<TipoPeriodoMontador, TbTpperiodomontadorDto>().ReverseMap();
             CreateMap<TipoRestricao, TbTprestricaoDto>().ReverseMap();
-            CreateMap<SituacaoColetaIsumo, TbTpsituacaocoletainsumoDto>().ReverseMap();
+            CreateMap<SituacaoColetaInsumo, TbTpsituacaocoletainsumoDto>().ReverseMap();
             CreateMap<SituacaoSemanaOperativa, TbTpsituacaosemanaoperDto>().ReverseMap();
 
         }
