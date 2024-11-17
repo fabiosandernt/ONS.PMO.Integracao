@@ -4,6 +4,7 @@ using ONS.PMO.Integracao.Application.Dto.PMO;
 using ONS.PMO.Integracao.Application.Filter;
 using ONS.PMO.Integracao.Application.Service.Interfaces;
 using ONS.PMO.Integracao.Domain.Entidades.PMO;
+using ONS.PMO.Integracao.Domain.Entidades.Resources;
 using ONS.PMO.Integracao.Domain.Entidades.SAGER.DisponibilidadeCVU;
 using ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 using ONS.PMO.Integracao.Domain.Enum;
@@ -36,7 +37,7 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
         public async Task AtualizarMesesAdiantePMOAsync(int idPMO, int? mesesAdiante, byte[] versao)
         {
             ValidarQuantidadeMesesAdiante(mesesAdiante);
-            var pmo = await _PMORepository.GetbyExpressionAsync(x=>x.IdPmo == idPMO && x.VerControleconcorrencia == versao);
+            var pmo = await _PMORepository.GetbyExpressionAsync(x => x.IdPmo == idPMO && x.VerControleconcorrencia == versao);
             if (pmo != null)
             {
                 pmo.VerControleconcorrencia = versao;
@@ -53,11 +54,11 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
         }
         public async Task ExcluirPMOAsync(DadosPMODTO dto)
         {
-            var pmo = await _PMORepository.GetbyExpressionAsync(x=>x.IdPmo == dto.IdPMO && x.VerControleconcorrencia == dto.VersaoPMO);
+            var pmo = await _PMORepository.GetbyExpressionAsync(x => x.IdPmo == dto.IdPMO && x.VerControleconcorrencia == dto.VersaoPMO);
             if (pmo != null)
             {
                 await _PMORepository.Delete(pmo);
-            }       
+            }
         }
 
         public async Task ExcluirUltimaSemanaOperativaAsync(int idPMO, byte[] versaoPMO)
@@ -88,8 +89,8 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
                 var sitaucaoSemanaOperativa = (SituacaoSemanaOperativaEnum)situacao.IdTpsituacaosemanaoper;
                 if (sitaucaoSemanaOperativa >= SituacaoSemanaOperativaEnum.ColetaDados)
                 {
-                    //throw new ONSBusinessException(BusinessMessage.MS011);
-                    throw new ArgumentException("falta implementar");
+                    var message = BusinessMessage.Get("MS011");
+                    throw new ArgumentException(message.Value);
                 }
             }
         }
@@ -97,8 +98,8 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
         {
             if (data.CompareTo(DateTime.Now.Date) < 0)
             {
-                //throw new ONSBusinessException(SGIPMOMessages.MS010);
-                throw new ArgumentException("falta implementar");
+                var message = BusinessMessage.Get("MS010");
+                throw new ArgumentException(message.Value);
             }
         }
 
@@ -108,8 +109,8 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             {
                 if (pmo.TbSemanaoperativas.Count == 1)
                 {
-                    //throw new ONSBusinessException(SGIPMOMessages.MS007);
-                    throw new ArgumentException("falta implementar");
+                    var message = BusinessMessage.Get("MS007");
+                    throw new ArgumentException(message.Value);
                 }
             }
         }

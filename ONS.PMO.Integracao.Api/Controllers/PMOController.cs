@@ -6,6 +6,7 @@ using ONS.PMO.Integracao.Application.Filter;
 using ONS.PMO.Integracao.Application.Service.Implementation;
 using ONS.PMO.Integracao.Application.Service.Interfaces;
 using ONS.PMO.Integracao.Domain.Entidades.PMO;
+using ONS.PMO.Integracao.Domain.Entidades.Resources;
 
 namespace ONS.PMO.Integracao.Api.Controllers
 {
@@ -71,13 +72,15 @@ namespace ONS.PMO.Integracao.Api.Controllers
         {
             await _pmoServices.IncluirSemanaOperativaAsync(dto);
 
-            //IList<string> mensagens = new List<string>();
-            //mensagens.Add(SGIPMOMessages.MS013);
-            //string mensagemComSpan =
-            //    string.Format("<img src='{0}' style='float:left; margin-right:5px'></img> {1} ",
-            //        Url.Content("~/Images/alert2.png"), SGIPMOMessages.MS028);
-            //mensagens.Add(mensagemComSpan);
-            return Ok(dto);
+            var message = BusinessMessage.Get("MS013");
+            var SGIPMOMessages = BusinessMessage.Get("MS028");
+            IList<string> mensagens = new List<string>();
+            mensagens.Add(message.Value);
+            string mensagemComSpan =
+                string.Format("<img src='{0}' style='float:left; margin-right:5px'></img> {1} ",
+                    Url.Content("~/Images/alert2.png"), SGIPMOMessages.Value);
+            mensagens.Add(mensagemComSpan);
+            return Ok(mensagens);
         }
 
         #region Abertura Estudo
@@ -100,11 +103,12 @@ namespace ONS.PMO.Integracao.Api.Controllers
         {
             if (!idSemanaOperativa.HasValue)
             {
-                throw new ONSBusinessException(SGIPMOMessages.MS025);
+                var message = BusinessMessage.Get("MS025");
+                throw new ArgumentException(message.Value);
             }
         }
 
-       
+        #endregion
         #region Excluir Semana Operativa
 
         [HttpPost("Excluir Semana")]

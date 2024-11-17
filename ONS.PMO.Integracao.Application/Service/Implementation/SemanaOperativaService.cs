@@ -4,6 +4,7 @@ using ONS.PMO.Integracao.Application.Dto.PMO;
 using ONS.PMO.Integracao.Application.Filter;
 using ONS.PMO.Integracao.Application.Service.Interfaces;
 using ONS.PMO.Integracao.Domain.Entidades.PMO;
+using ONS.PMO.Integracao.Domain.Entidades.Resources;
 using ONS.PMO.Integracao.Domain.Interfaces.Repository.PMO;
 
 namespace ONS.PMO.Integracao.Application.Service.Implementation
@@ -139,8 +140,8 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
 
                 if (semana.IdTpsituacaosemanaoperNavigation != null)
                 {
-                    //throw new ONSBusinessException(SGIPMOMessages.MS008);
-                    throw new ArgumentException("falta implementar");
+                    var message = BusinessMessage.Get("MS008");
+                    throw new ArgumentException(message.Value);
                 }
             }
             var semanaDto = _mapper.Map<TbSemanaoperativaDto>(semana);
