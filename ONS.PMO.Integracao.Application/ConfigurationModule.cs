@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ONS.PMO.Integracao.Application.Service.Implementation;
 using ONS.PMO.Integracao.Application.Service.Interfaces;
+using ONS.PMO.Integracao.Domain.Interfaces.Repository.PMO;
 using System.Text;
 
 namespace ONS.PMO.Integracao.Application
@@ -19,9 +20,16 @@ namespace ONS.PMO.Integracao.Application
             services.AddAutoMapper(typeof(Application.ConfigurationModule).Assembly);
 
             services.AddScoped<IPmoServices, PmoServices>(); 
-            services.AddScoped<IInsumoService, InsumoService>(); 
-            
-  
+            services.AddScoped<IInsumoService, InsumoService>();
+            services.AddScoped<IPmoServices, PmoServices>();
+            services.AddScoped<IInsumoService, InsumoService>();
+            services.AddScoped<IParametroService, ParametroService>();
+            services.AddScoped<INotificacaoService, NotificacaoService>();
+            services.AddScoped<IColetaInsumoService, ColetaInsumoService>();
+            services.AddScoped<ISharePointService, SharePointService>();
+            services.AddScoped<IHistoricoService, HistoricoService>();
+
+
             services.AddHttpClient();
 
             services.AddCors(options =>
