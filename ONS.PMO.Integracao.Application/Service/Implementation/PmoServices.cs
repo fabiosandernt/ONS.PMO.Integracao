@@ -17,12 +17,20 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
         private readonly IDadosResultadoPmoRepository _dadosResultadoPmoRepository;
         private readonly IMapper _mapper;
         private readonly IPMORepository _PMORepository;
+        private readonly IPMORepository _pmoRepository;
+        private readonly ISemanaOperativaService _semanaOperativaService;
+        private readonly IParametroService _parametroService;
+        private readonly IHistoricoService _historicoService;
 
-        public PmoServices(IMapper mapper, IDadosResultadoPmoRepository dadosResultadoPmoRepository, IPMORepository PMORepository)
+        public PmoServices(IDadosResultadoPmoRepository dadosResultadoPmoRepository, IMapper mapper, IPMORepository pMORepository, IPMORepository pmoRepository, ISemanaOperativaService semanaOperativaService, IParametroService parametroService, IHistoricoService historicoService)
         {
-            _PMORepository = PMORepository;
             _dadosResultadoPmoRepository = dadosResultadoPmoRepository;
             _mapper = mapper;
+            _PMORepository = pMORepository;
+            _pmoRepository = pmoRepository;
+            _semanaOperativaService = semanaOperativaService;
+            _parametroService = parametroService;
+            _historicoService = historicoService;
         }
 
         public Task AtualizarMesesAdiantePMOAsync(int idPMO, int? mesesAdiante, byte[] versao)
