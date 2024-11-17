@@ -28,6 +28,7 @@ namespace ONS.PMO.Integracao.Application
             services.AddScoped<IColetaInsumoService, ColetaInsumoService>();
             services.AddScoped<ISharePointService, SharePointService>();
             services.AddScoped<IHistoricoService, HistoricoService>();
+            services.AddScoped<ISemanaOperativaService, SemanaOperativaService>();
 
 
             services.AddHttpClient();
