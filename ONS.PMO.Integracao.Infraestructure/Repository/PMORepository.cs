@@ -15,6 +15,11 @@ namespace ONS.PMO.Integracao.Infraestructure.Repository
 
         }
 
+        public Task ExcluirPMOAsync(Pmo dto)
+        {
+             _query.Remove(dto);
+        }
+
         public Pmo ObterPorFiltro(IBaseFilter filtro)
         {
 

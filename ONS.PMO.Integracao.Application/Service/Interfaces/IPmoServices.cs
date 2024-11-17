@@ -26,7 +26,7 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
         /// <param name="ano">Ano do PMO.</param>
         /// <param name="mes">Mês do PMO.</param>
         /// <returns>PMO</returns>
-        Task<TbPmoDto> GerarPMOAsync(int ano, int mes);
+        Task<TbPmoDto> GerarPMOAsync(TbPmoDto dto);
 
         /// <summary>
         /// Obtém o PMO de acordo com o filtro passado.
@@ -68,6 +68,7 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
         /// </summary>
         /// <param name="dto">Dados do PMO.</param>
         Task ExcluirPMOAsync(DadosPMODTO dto);
+        void ExcluirUltimaSemanaOperativa(object idPMO, byte[] bytes);
     }
 
 }

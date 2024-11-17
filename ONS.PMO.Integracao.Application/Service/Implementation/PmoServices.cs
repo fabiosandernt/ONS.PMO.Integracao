@@ -8,6 +8,7 @@ using ONS.PMO.Integracao.Domain.Entidades.SAGER.DisponibilidadeCVU;
 using ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 using ONS.PMO.Integracao.Domain.Interfaces.Repository.PMO;
 using ONS.PMO.Integracao.Domain.Interfaces.Repository.SAGER;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ONS.PMO.Integracao.Application.Service.Implementation
 {
@@ -30,9 +31,13 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             throw new NotImplementedException();
         }
 
-        public Task ExcluirPMOAsync(DadosPMODTO dto)
+        public async Task ExcluirPMOAsync(DadosPMODTO dto)
         {
-            throw new NotImplementedException();
+            var pmo = await _PMORepository.GetbyExpressionAsync(x=>x.IdPmo == dto.IdPMO && x.VerControleconcorrencia == dto.VersaoPMO);
+            if (pmo != null)
+            {
+                await _PMORepository.Delete(pmo);
+            }       
         }
 
         public Task ExcluirUltimaSemanaOperativaAsync(int idPMO, byte[] versaoPMO)
@@ -40,9 +45,21 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             throw new NotImplementedException();
         }
 
-        public Task<TbPmoDto> GerarPMOAsync(int ano, int mes)
+        public Task<TbPmoDto> GerarPMOAsync(TbPmoDto dto)
         {
-            throw new NotImplementedException();
+            var pmo = new Pmo()
+            {
+                AnoReferencia = dto.AnoReferencia,
+                MesReferencia = dto.MesReferencia,
+                SemanasOperativas = semanaOperativaService.GerarSugestaoSemanasOperativas(ano, mes)
+            };
+            var parametroQtdMeses = parametroService.ObterParametro(ParametroEnum.QuantidadeMesesAFrente);
+            if (parametroQtdMeses != null)
+            {
+                pmo.QuantidadeMesesAdiante = int.Parse(parametroQtdMeses.Valor);
+            }
+            _PMORepository.Add(pmo);
+            return pmo;
         }
 
         public async Task<TbPmoDto> GetByIdAsync(int id)
