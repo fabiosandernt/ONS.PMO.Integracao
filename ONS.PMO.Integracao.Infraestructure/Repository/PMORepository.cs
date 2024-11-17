@@ -19,10 +19,7 @@ namespace ONS.PMO.Integracao.Infraestructure.Repository
         {
 
             var query = _query.AsQueryable().AsNoTracking()
-                 .Include(x => x.TbSemanaoperativas)
-                     .ThenInclude(x => x.TbColetainsumos)
-                 .Include(x => x.TbSemanaoperativas)
-                     .ThenInclude(x => x.TbGabaritos)
+                 .Include(x => x.TbSemanaoperativas)                  
                  .Apply(filtro);
 
             return query.FirstOrDefault();

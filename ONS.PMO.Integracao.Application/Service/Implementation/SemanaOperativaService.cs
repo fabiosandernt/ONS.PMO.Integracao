@@ -7,6 +7,7 @@ using ONS.PMO.Integracao.Domain.Entidades.PMO;
 using ONS.PMO.Integracao.Domain.Entidades.Resources;
 using ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 using ONS.PMO.Integracao.Domain.Enum;
+using ONS.PMO.Integracao.Domain.Filter;
 using ONS.PMO.Integracao.Domain.Interfaces.Repository.PMO;
 using System;
 

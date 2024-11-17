@@ -106,10 +106,10 @@ namespace ONS.PMO.Integracao.Api.Controllers
             }
         }
 
-        [HttpPost("Alterar Semana")]
+        [HttpPost("AlterarSemanaOperativa")]
         public async Task<IActionResult> AlterarSemanaOperativa(DadosAlteracaoSemanaOperativaDTO dto)
         {
-            await _semanaOperativaService.AlterarSemanaOperativa(dto);
+             _semanaOperativaService.AlterarSemanaOperativa(dto);
             var message = BusinessMessage.Get("MS013");
             return Ok(message.Value);
         }

@@ -11,8 +11,8 @@ namespace ONS.PMO.Integracao.Domain.Interfaces.Repository.PMO
 {
     public interface IDadoColetaNaoEstruturadoRepository : IRepository<DadoColetaNaoEstruturado>
     {
-        DadoColetaNaoEstruturado ObterDadoColetaNaoEstruturado(DadoColetaInsumoNaoEstruturadoFilter filtros);
+        DadoColetaNaoEstruturado ObterDadoColetaNaoEstruturado(IBaseFilter filtros);
         void DeletarPorIdGabarito(IList<int> idsGabarito);
-        IList<DadoColetaNaoEstruturado> ObterDadosColetaNaoEstruturado(ArquivosSemanaOperativaFilter filtro);
+        IList<DadoColetaNaoEstruturado> ObterDadosColetaNaoEstruturado(IBaseFilter filtro);
     }
 }

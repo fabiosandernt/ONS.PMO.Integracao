@@ -22,12 +22,12 @@ namespace ONS.PMO.Integracao.Infraestructure.Repository.PMO
             throw new NotImplementedException();
         }
 
-        public DadoColetaNaoEstruturado ObterDadoColetaNaoEstruturado(DadoColetaInsumoNaoEstruturadoFilter filtros)
+        public DadoColetaNaoEstruturado ObterDadoColetaNaoEstruturado(IBaseFilter filtros)
         {
             throw new NotImplementedException();
         }
 
-        public IList<DadoColetaNaoEstruturado> ObterDadosColetaNaoEstruturado(ArquivosSemanaOperativaFilter filtro)
+        public IList<DadoColetaNaoEstruturado> ObterDadosColetaNaoEstruturado(IBaseFilter filtro)
         {
             throw new NotImplementedException();
         }
