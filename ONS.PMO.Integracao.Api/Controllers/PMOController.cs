@@ -32,10 +32,10 @@ namespace ONS.PMO.Integracao.Api.Controllers
          [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            //var result = await _pmoServices.GetByIdAsync(id);
+            var result = await _pmoServices.GetByIdAsync(id);
             
 
-            return Ok(/*result*/);
+            return Ok(result);
         }
 
 

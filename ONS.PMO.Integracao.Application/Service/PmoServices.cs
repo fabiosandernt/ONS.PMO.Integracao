@@ -180,7 +180,7 @@ namespace ONS.PMO.Integracao.Application.Service
         {
             var tbPmo = _PMORepository.ObterPorFiltro(filter);       
             //var tbPmo =  await _PMORepository
-              //.FindOneByCriterio(x=>x.AnoReferencia == filter.AnoReferencia && x.MesReferencia == filter.MesReferencia);
+            //  .GetbyExpressionAsync(x=>x.AnoReferencia == filter.AnoReferencia && x.MesReferencia == filter.MesReferencia);
 
             if (tbPmo == null)
             {                

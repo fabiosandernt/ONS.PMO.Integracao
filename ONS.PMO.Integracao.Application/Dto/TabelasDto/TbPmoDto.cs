@@ -15,7 +15,7 @@ public  class TbPmoDto
 
     public int? QtdMesesadiante { get; set; }
 
-    public byte[] VerControleconcorrencia { get; set; } = null!;
+    public byte[]? VerControleconcorrencia { get; set; } = null!;
 
     public ICollection<SemanaOperativa> TbSemanaoperativas { get; set; } = new List<SemanaOperativa>();
 }

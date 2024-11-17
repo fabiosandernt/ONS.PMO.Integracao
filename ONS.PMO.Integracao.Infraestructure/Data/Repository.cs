@@ -29,7 +29,7 @@ namespace ONS.PMO.Integracao.Infraestructure.Data
 
         public async Task<T> FindOneByCriterio(Expression<Func<T, bool>> expression)
         {
-           return _query.FirstOrDefault(expression);
+           return await _query.FirstOrDefaultAsync(expression);
         }
 
         public async Task<T> Get(object id)
