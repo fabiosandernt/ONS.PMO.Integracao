@@ -9,7 +9,7 @@ namespace ONS.PMO.Integracao.Api.Controllers
 {
     [Route("api/Integracao/Pmo")]
     [ApiController]    
-    [ClaimRequirement(POPClaimTypes.Operation, "ConsultarCVU")]
+    //[ClaimRequirement(POPClaimTypes.Operation, "ConsultarCVU")]
 
     public class IntegracaoController : ControllerBase
     {       

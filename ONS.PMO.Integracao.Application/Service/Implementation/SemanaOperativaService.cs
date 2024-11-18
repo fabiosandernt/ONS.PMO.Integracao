@@ -68,7 +68,7 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
                 semanaOperativa.DatIniciomanutencao = dadosAlteracao.DataInicioManutencao;
                 semanaOperativa.DatFimmanutencao = dadosAlteracao.DataFimManutencao;
                 semanaOperativa.DinUltimaalteracao = DateTime.Now;
-               await _semanaOperativaRepository.Save(semanaOperativa);
+               await _semanaOperativaRepository.UpdateAsync(semanaOperativa);
             }
         }
 
@@ -249,7 +249,7 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
                 }
 
                 //semanaOperativa.SituacaoId = (int)SituacaoSemanaOperativaEnum.Configuracao;
-                semanaOperativa.IdTpsituacaosemanaoperNavigation = await _situacaoSemanaOperativaRepository.Get((int)SituacaoSemanaOperativaEnum.GeracaoBlocos);
+                semanaOperativa.IdTpsituacaosemanaoperNavigation = await _situacaoSemanaOperativaRepository.GetByIdAsync((int)SituacaoSemanaOperativaEnum.GeracaoBlocos);
                 semanaOperativa.DinUltimaalteracao = DateTime.Now;
 
                 _historicoService.CriarSalvarHistoricoSemanaOperativa(semanaOperativa);
@@ -264,7 +264,7 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             {
                 SemanaOperativa semanaEstudoGabarito = await ObterSemanaOperativaPorChave(idSemanaEstudoGabarito.Value);
                 IEnumerable<Gabarito> gabaritosCopiados = CopiarGabaritos(semanaEstudoGabarito.TbGabaritos.ToList());
-                SituacaoColetaInsumo situacao = await _situacaoColetaInsumoRepository.Get((int)SituacaoColetaInsumoEnum.NaoIniciado);
+                SituacaoColetaInsumo situacao = await _situacaoColetaInsumoRepository.GetByIdAsync((int)SituacaoColetaInsumoEnum.NaoIniciado);
                 IEnumerable<ColetaInsumo> coletasCopiadas = semanaEstudoGabarito.TbColetainsumos.ToList().Where(ci => ci.IdInsumopmoNavigation.FlgAtivo).Select(ci =>
                     CriarColetaInsumo(ci.IdAgenteinstituicaoNavigation, ci.IdInsumopmoNavigation, ci.CodPerfilons, semanaOperativa, situacao));
 
@@ -329,7 +329,7 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             var gabaritosCopiados = CopiarGabaritos(gabaritosPadrao);
 
             var gabaritosPadraoAgrupados = gabaritosPadrao.GroupBy(g => new { g.IdInsumopmoNavigation, g.IdAgenteinstituicaoNavigation, g.CodPerfilons });
-            var situacaoColetaInsumo = await _situacaoColetaInsumoRepository.Get((int)SituacaoColetaInsumoEnum.NaoIniciado);
+            var situacaoColetaInsumo = await _situacaoColetaInsumoRepository.GetByIdAsync((int)SituacaoColetaInsumoEnum.NaoIniciado);
 
             var coletasCriadas = gabaritosPadraoAgrupados.Where(g => g.Key.IdInsumopmoNavigation.FlgAtivo)
                 .Select(g => CriarColetaInsumo(g.Key.IdAgenteinstituicaoNavigation, g.Key.IdInsumopmoNavigation, g.Key.CodPerfilons,

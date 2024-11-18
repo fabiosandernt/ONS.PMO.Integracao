@@ -25,7 +25,7 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
 
         public async Task<IEnumerable<TbInsumopmoDto>> GetAllAsync()
         {
-            var insumos = await _insumoRepository.GetAll();
+            var insumos = await _insumoRepository.GetAllAsync();
             return _mapper.Map<List<TbInsumopmoDto>>(insumos);
         }
 

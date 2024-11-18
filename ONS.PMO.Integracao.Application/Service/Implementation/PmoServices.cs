@@ -42,7 +42,7 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             {
                 pmo.VerControleconcorrencia = versao;
                 pmo.QtdMesesadiante = mesesAdiante;
-                await _PMORepository.Save(pmo);
+                await _PMORepository.UpdateAsync(pmo);
             }
         }
         private void ValidarQuantidadeMesesAdiante(int? qtdMeses)
@@ -58,7 +58,7 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             var pmo = await _PMORepository.GetbyExpressionAsync(x => x.IdPmo == dto.IdPMO && x.VerControleconcorrencia == dto.VersaoPMO);
             if (pmo != null)
             {
-                await _PMORepository.Delete(pmo);
+                await _PMORepository.DeleteAsync(pmo);
             }
         }
 
@@ -128,7 +128,7 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             {
                 pmo.QtdMesesadiante = int.Parse(parametroQtdMeses.ValParametropmo);
             }
-            _PMORepository.Save(pmo);
+            _PMORepository.AddAsync(pmo);
             return dto;
         }
 
@@ -228,7 +228,7 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
         }
         public async Task<TbPmoDto> GetByIdAsync(int id)
         {
-            var tbPmo = await _PMORepository.Get(id);
+            var tbPmo = await _PMORepository.GetByIdAsync(id);
 
             var tbPmoDto = new TbPmoDto
             {

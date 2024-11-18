@@ -16,39 +16,39 @@ namespace ONS.PMO.Integracao.Infraestructure.Data
             _query = _context.Set<T>();
         }
 
-        public async Task Delete(T entity)
+        public async Task DeleteAsync(T entity)
         {
             _query.Remove(entity);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<T>> FindAllByCriterio(Expression<Func<T, bool>> expression)
+        public async Task<IEnumerable<T>> FindAllByCriterioAsync(Expression<Func<T, bool>> expression)
         {
             return await _query.Where(expression).ToListAsync();
         }
 
-        public async Task<T> FindOneByCriterio(Expression<Func<T, bool>> expression)
+        public async Task<T> FindOneByCriterioAsync(Expression<Func<T, bool>> expression)
         {
            return await _query.FirstOrDefaultAsync(expression);
         }
 
-        public async Task<T> Get(object id)
+        public async Task<T> GetByIdAsync(object id)
         {
             return await _query.FindAsync(id);
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _query.ToListAsync();
         }
 
-        public async Task Save(T entity)
+        public async Task AddAsync(T entity)
         {
             await _query.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Update(T entity)
+        public async Task UpdateAsync(T entity)
         {
             _query.Update(entity);
             await _context.SaveChangesAsync();
