@@ -10,7 +10,7 @@ namespace ONS.PMO.Integracao.Domain.Entidades.Resources
 
         private static List<BusinessMessage> Messages;
 
-        // Caminho para o arquivo JSON
+        //Caminho para o arquivo JSON
         private static readonly string JsonFilePath = "businessMessage.json";
 
         static BusinessMessage()
@@ -18,7 +18,7 @@ namespace ONS.PMO.Integracao.Domain.Entidades.Resources
             LoadMessagesFromFile();
         }
 
-        // Método para carregar mensagens do arquivo JSON
+        //Método para carregar mensagens do arquivo JSON
         private static void LoadMessagesFromFile()
         {
             if (File.Exists(JsonFilePath))
@@ -39,20 +39,5 @@ namespace ONS.PMO.Integracao.Domain.Entidades.Resources
         }
     }
 
-    // Exceção personalizada para validação
-    public class BusinessValidationException : Exception
-    {
-        public List<string> Errors { get; }
-
-        public BusinessValidationException(IEnumerable<string> errors)
-            : base("Ocorreram erros de validação.")
-        {
-            Errors = errors.ToList();
-        }
-
-        public override string ToString()
-        {
-            return string.Join(Environment.NewLine, Errors);
-        }
-    }
+    
 }
