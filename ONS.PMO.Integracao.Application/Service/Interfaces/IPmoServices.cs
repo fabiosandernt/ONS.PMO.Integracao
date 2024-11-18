@@ -26,7 +26,7 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
         /// <param name="ano">Ano do PMO.</param>
         /// <param name="mes">Mês do PMO.</param>
         /// <returns>PMO</returns>
-        Task<TbPmoDto> GerarPMOAsync(TbPmoDto dto);
+        Task<IncluirPMODto> GerarPMOAsync(IncluirPMODto dto);
 
         /// <summary>
         /// Obtém o PMO de acordo com o filtro passado.

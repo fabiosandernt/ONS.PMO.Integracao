@@ -115,7 +115,7 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
                 }
             }
         }
-        public async Task<TbPmoDto> GerarPMOAsync(TbPmoDto dto)
+        public async Task<IncluirPMODto> GerarPMOAsync(IncluirPMODto dto)
         {
             var pmo = new Pmo()
             {

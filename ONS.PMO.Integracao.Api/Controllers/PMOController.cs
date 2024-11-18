@@ -51,7 +51,7 @@ namespace ONS.PMO.Integracao.Api.Controllers
         }
 
         [HttpPost("Incluir PMO")]
-        public async Task<IActionResult> IncluirPMOAsync([FromBody] TbPmoDto dto)
+        public async Task<IActionResult> IncluirPMOAsync([FromBody] IncluirPMODto dto)
         {
             var pmo = await _pmoServices.GerarPMOAsync(dto);
             return Ok(pmo);
