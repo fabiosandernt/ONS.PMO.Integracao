@@ -109,10 +109,18 @@ namespace ONS.PMO.Integracao.Api.Controllers
         [HttpPost("AlterarSemanaOperativa")]
         public async Task<IActionResult> AlterarSemanaOperativa(DadosAlteracaoSemanaOperativaDTO dto)
         {
-             _semanaOperativaService.AlterarSemanaOperativa(dto);
-            var message = BusinessMessage.Get("MS013");
-            return Ok(message.Value);
+            try
+            {
+                await _semanaOperativaService.AlterarSemanaOperativa(dto);
+                var message = BusinessMessage.Get("MS013");
+                return Ok(message.Value);
+            }
+            catch (BusinessValidationException validationException)
+            {                
+                return BadRequest(new { Errors = validationException.Errors });
+            }
         }
+
 
         [HttpPost("Resetar Gabarito")]
         public ActionResult ResetarGabarito(ResetGabaritoDTO dto)

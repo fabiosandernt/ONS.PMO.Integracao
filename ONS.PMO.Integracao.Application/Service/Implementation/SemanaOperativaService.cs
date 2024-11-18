@@ -59,7 +59,9 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
         public async Task AlterarSemanaOperativa(DadosAlteracaoSemanaOperativaDTO dadosAlteracao)
         {
             ValidarDataAlteracao(dadosAlteracao);
+
             SemanaOperativa semanaOperativa = await _semanaOperativaRepository.GetbyExpressionAsync(x => x.IdSemanaoperativa == dadosAlteracao.Id);
+            
             if (semanaOperativa != null)
             {
                 semanaOperativa.DatReuniao = dadosAlteracao.DataReuniao;
@@ -75,7 +77,6 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             const string dataInicioManutencao = "Data Início da Manutenção";
             const string dataFimManutencao = "Data Termino da Manutenção";
 
-            bool isDataInvalida = false;
             DateTime dataAtual = DateTime.Now.Date;
             var message = BusinessMessage.Get("MS006");
 
@@ -98,9 +99,10 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
 
             if (mensagens.Any())
             {
-                throw new ArgumentException(mensagens.FirstOrDefault());
+                throw new BusinessValidationException(mensagens);
             }
         }
+
 
         public void AtualizarSemanasOperativasInclusao(IEnumerable<SemanaOperativa> semanasOperativas, int ano, string nomeMes)
         {
