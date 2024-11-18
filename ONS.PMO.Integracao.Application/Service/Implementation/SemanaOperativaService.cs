@@ -68,6 +68,7 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
                 semanaOperativa.DatIniciomanutencao = dadosAlteracao.DataInicioManutencao;
                 semanaOperativa.DatFimmanutencao = dadosAlteracao.DataFimManutencao;
                 semanaOperativa.DinUltimaalteracao = DateTime.Now;
+               await _semanaOperativaRepository.Save(semanaOperativa);
             }
         }
 

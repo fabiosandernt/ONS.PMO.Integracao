@@ -42,6 +42,7 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             {
                 pmo.VerControleconcorrencia = versao;
                 pmo.QtdMesesadiante = mesesAdiante;
+                await _PMORepository.Save(pmo);
             }
         }
         private void ValidarQuantidadeMesesAdiante(int? qtdMeses)
