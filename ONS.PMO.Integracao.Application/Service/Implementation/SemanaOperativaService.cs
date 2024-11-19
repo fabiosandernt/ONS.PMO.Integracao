@@ -11,6 +11,7 @@ using ONS.PMO.Integracao.Domain.Filter;
 using ONS.PMO.Integracao.Domain.Interfaces.Repository.PMO;
 using System;
 using System.Globalization;
+using System.Reflection.Metadata;
 
 namespace ONS.PMO.Integracao.Application.Service.Implementation
 {
@@ -151,12 +152,57 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             throw new NotImplementedException();
         }
 
-        public SemanaOperativa GerarSemanaOperativa(int ano, string nomeMes, DateTime dataInicioSemana, DateTime dataFimPMO, int revisao)
+        public async Task<SemanaOperativa> GerarSemanaOperativaAsync(int ano, string nomeMes, DateTime dataInicioSemana, DateTime dataFimPMO, int revisao)
         {
-            throw new NotImplementedException();
+            SemanaOperativa semanaOperativa = new SemanaOperativa
+            {
+                DatIniciosemana = dataInicioSemana,
+                DatFimsemana = dataInicioSemana.AddDays(6),
+                DatReuniao = await ObterDataReuniaoAsync(dataInicioSemana, revisao),
+                NumRevisao = revisao,
+                DatIniciomanutencao = dataInicioSemana,
+                DatFimmanutencao = dataFimPMO,
+                NomSemanaoperativa = ObterNomeSemanaOperativa(ano, nomeMes, revisao)
+            };
+
+            return semanaOperativa;
         }
 
-        public ISet<SemanaOperativa> GerarSugestaoSemanasOperativas(int ano, int mes)
+        private string ObterNomeSemanaOperativa(int ano, string nomeMes, int revisao)
+        {
+            string nomeSemanaOperativa = revisao == 0 ?
+                string.Format("PMO {0} {1}", nomeMes, ano) :
+                string.Format("PMO {0} {1} - Revisão {2}", nomeMes, ano, revisao);
+            return nomeSemanaOperativa;
+        }
+
+        private async Task<DateTime> ObterDataReuniaoAsync(DateTime dataInicioSemana, int revisao)
+        {
+            ParametroPMO parametro;
+            int valorDiaReuniao = 0;
+            if (revisao == 0)
+            {
+                parametro = await _parametroService.ObterParametroAsync(ParametroEnum.DiaReuniaoPMO);
+                if (parametro != null)
+                {
+                    valorDiaReuniao = int.Parse(parametro.ValParametropmo);
+                }
+            }
+            else
+            {
+                parametro = await _parametroService.ObterParametroAsync(ParametroEnum.DiaReuniaoRevisao);
+                if (parametro != null)
+                {
+                    valorDiaReuniao = int.Parse(parametro.ValParametropmo);
+                }
+            }
+            int valorDeDiasParaRetroceder = valorDiaReuniao == (int)DayOfWeek.Saturday
+                ? -7
+                : valorDiaReuniao - (int)DayOfWeek.Saturday;
+            return dataInicioSemana.AddDays(valorDeDiasParaRetroceder);
+        }
+
+        public async Task<ISet<SemanaOperativa>> GerarSugestaoSemanasOperativasAsync(int ano, int mes)
         {
 
             ISet<SemanaOperativa> semanasOperativas = new SortedSet<SemanaOperativa>();
@@ -190,7 +236,7 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             int revisao = 0;
             while (dataInicioSemana <= ultimoDiaMes)
             {
-                SemanaOperativa semanaOperativa = GerarSemanaOperativa(ano, nomeMes, dataInicioSemana, dataFimPMO, revisao);
+                SemanaOperativa semanaOperativa = await GerarSemanaOperativaAsync(ano, nomeMes, dataInicioSemana, dataFimPMO, revisao);
                 if (semanaOperativa != null)
                 {
                     semanasOperativas.Add(semanaOperativa);

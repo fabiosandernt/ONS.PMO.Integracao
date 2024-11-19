@@ -11,6 +11,6 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
         /// </summary>
         /// <param name="paramento">Nome do parâmetro</param>
         /// <returns>Parametro</returns>
-      ParametroPMO ObterParametro(ParametroEnum paramento);
+      Task<ParametroPMO> ObterParametroAsync(ParametroEnum paramento);
     }
 }

@@ -7,6 +7,6 @@ namespace ONS.PMO.Integracao.Domain.Interfaces.Repository.PMO
 {
     public interface IParametroRepository : IRepository<ParametroPMO>
     {
-        ParametroPMO ObterPorTipo(ParametroEnum parametro);
+        Task<ParametroPMO> ObterPorTipoAsync(ParametroEnum parametro);
     }
 }

@@ -14,10 +14,10 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
         {
             _parametroRepository = parametroRepository;
         }
-        public ParametroPMO ObterParametro(ParametroEnum paramentoEnum)
+        public async Task<ParametroPMO> ObterParametroAsync(ParametroEnum paramentoEnum)
         {
 
-            ParametroPMO parametro = _parametroRepository.ObterPorTipo(paramentoEnum);
+            ParametroPMO parametro = await _parametroRepository.ObterPorTipoAsync(paramentoEnum);
             if (parametro == null || string.IsNullOrEmpty(parametro.ValParametropmo))
             {
                 string mensagem = string.Format("Parâmetro {0} não cadastrado", paramentoEnum.GetDescription());

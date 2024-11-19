@@ -1,4 +1,5 @@
-﻿using ONS.PMO.Integracao.Domain.Entidades.PMO;
+﻿using Microsoft.EntityFrameworkCore;
+using ONS.PMO.Integracao.Domain.Entidades.PMO;
 using ONS.PMO.Integracao.Domain.Enum;
 using ONS.PMO.Integracao.Domain.Enums;
 using ONS.PMO.Integracao.Domain.Interfaces.Repository.PMO;
@@ -17,15 +18,15 @@ namespace ONS.PMO.Integracao.Infraestructure.Repository.PMO
     {
         public ParametroRepository(WebPmoContext context) : base(context)
         {
-             
+
         }
 
-        public ParametroPMO ObterPorTipo(ParametroEnum parametro)
+        public Task<ParametroPMO> ObterPorTipoAsync(ParametroEnum parametro)
         {
             string nomeParametro = parametro.GetDescription();
-            var parametroPMO = _query.FirstOrDefault(param => param.NomParametropmo == nomeParametro);
+            var parametroPMO = _query.FirstOrDefaultAsync(param => param.NomParametropmo == nomeParametro);
             return parametroPMO;
         }
     }
-            
+
 }

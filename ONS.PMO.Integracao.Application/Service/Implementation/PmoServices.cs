@@ -123,9 +123,9 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             {
                 AnoReferencia = dto.AnoReferencia,
                 MesReferencia = dto.MesReferencia,
-                TbSemanaoperativas = _semanaOperativaService.GerarSugestaoSemanasOperativas(dto.AnoReferencia, dto.MesReferencia)
+                TbSemanaoperativas = await _semanaOperativaService.GerarSugestaoSemanasOperativasAsync(dto.AnoReferencia, dto.MesReferencia)
             };
-            var parametroQtdMeses = _parametroService.ObterParametro(ParametroEnum.QuantidadeMesesAFrente);
+            var parametroQtdMeses = await _parametroService.ObterParametroAsync(ParametroEnum.QuantidadeMesesAFrente);
             if (parametroQtdMeses != null)
             {
                 pmo.QtdMesesadiante = int.Parse(parametroQtdMeses.ValParametropmo);
@@ -147,8 +147,8 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
 
             var filtro = new PmoFilter()
             {
-               AnoReferencia = ano,
-               MesReferencia = mes
+                AnoReferencia = ano,
+                MesReferencia = mes
             };
 
             Pmo pmo = _PMORepository.ObterPorFiltro(filtro);
@@ -163,7 +163,7 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
                 throw new BusinessValidationException(mensagens);
             }
         }
-        public ISet<SemanaOperativa> GerarSugestaoSemanasOperativas(int ano, int mes)
+        public async Task<ISet<SemanaOperativa>> GerarSugestaoSemanasOperativasAsync(int ano, int mes)
         {
             ISet<SemanaOperativa> semanasOperativas = new SortedSet<SemanaOperativa>();
 
@@ -196,7 +196,7 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             int revisao = 0;
             while (dataInicioSemana <= ultimoDiaMes)
             {
-                SemanaOperativa semanaOperativa = GerarSemanaOperativa(ano, nomeMes, dataInicioSemana, dataFimPMO, revisao);
+                SemanaOperativa semanaOperativa = await GerarSemanaOperativaAsync(ano, nomeMes, dataInicioSemana, dataFimPMO, revisao);
                 if (semanaOperativa != null)
                 {
                     semanasOperativas.Add(semanaOperativa);
@@ -207,14 +207,14 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             return semanasOperativas;
         }
 
-        public SemanaOperativa GerarSemanaOperativa(int ano, string nomeMes, DateTime dataInicioSemana,
+        public async Task<SemanaOperativa> GerarSemanaOperativaAsync(int ano, string nomeMes, DateTime dataInicioSemana,
           DateTime dataFimPMO, int revisao)
         {
             SemanaOperativa semanaOperativa = new SemanaOperativa
             {
                 DatIniciosemana = dataInicioSemana,
                 DatFimsemana = dataInicioSemana.AddDays(6),
-                DatReuniao = ObterDataReuniao(dataInicioSemana, revisao),
+                DatReuniao = await ObterDataReuniaoAsync(dataInicioSemana, revisao),
                 NumRevisao = revisao,
                 DatIniciomanutencao = dataInicioSemana,
                 DatFimmanutencao = dataFimPMO,
@@ -232,13 +232,13 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             return nomeSemanaOperativa;
         }
 
-        private DateTime ObterDataReuniao(DateTime dataInicioSemana, int revisao)
+        private async Task<DateTime> ObterDataReuniaoAsync(DateTime dataInicioSemana, int revisao)
         {
             ParametroPMO parametro;
             int valorDiaReuniao = 0;
             if (revisao == 0)
             {
-                parametro = _parametroService.ObterParametro(ParametroEnum.DiaReuniaoPMO);
+                parametro = await _parametroService.ObterParametroAsync(ParametroEnum.DiaReuniaoPMO);
                 if (parametro != null)
                 {
                     valorDiaReuniao = int.Parse(parametro.ValParametropmo);
@@ -246,7 +246,7 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             }
             else
             {
-                parametro = _parametroService.ObterParametro(ParametroEnum.DiaReuniaoRevisao);
+                parametro = await _parametroService.ObterParametroAsync(ParametroEnum.DiaReuniaoRevisao);
                 if (parametro != null)
                 {
                     valorDiaReuniao = int.Parse(parametro.ValParametropmo);
