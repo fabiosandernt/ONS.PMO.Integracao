@@ -105,7 +105,7 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
         /// Exclui a semana operativa
         /// </summary>
         /// <param name="semanaOperativa">SemanaOperativa</param>
-        void ExcluirSemana(SemanaOperativa semanaOperativa);
+        Task ExcluirSemana(SemanaOperativa semanaOperativa);
 
         /// <summary>
         /// Altera a semana operativa.
