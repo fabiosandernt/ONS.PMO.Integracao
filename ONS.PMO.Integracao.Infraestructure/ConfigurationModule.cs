@@ -34,6 +34,7 @@ namespace ONS.PMO.Integracao.Infraestructure
             services.AddScoped<IDadoColetaNaoEstruturadoRepository, DadoColetaNaoEstruturadoRepository>();
             services.AddScoped<IArquivoRepository, ArquivoRepository>();
             services.AddScoped<IArquivoSemanaOperativaRepository, ArquivoSemanaOperativaRepository>();
+            services.AddScoped<IParametroRepository, ParametroRepository>();
 
             return services;
         }

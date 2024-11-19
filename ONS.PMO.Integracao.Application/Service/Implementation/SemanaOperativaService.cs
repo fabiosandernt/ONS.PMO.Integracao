@@ -10,6 +10,7 @@ using ONS.PMO.Integracao.Domain.Enum;
 using ONS.PMO.Integracao.Domain.Filter;
 using ONS.PMO.Integracao.Domain.Interfaces.Repository.PMO;
 using System;
+using System.Globalization;
 
 namespace ONS.PMO.Integracao.Application.Service.Implementation
 {
@@ -61,14 +62,14 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             ValidarDataAlteracao(dadosAlteracao);
 
             SemanaOperativa semanaOperativa = await _semanaOperativaRepository.GetbyExpressionAsync(x => x.IdSemanaoperativa == dadosAlteracao.Id);
-            
+
             if (semanaOperativa != null)
             {
                 semanaOperativa.DatReuniao = dadosAlteracao.DataReuniao;
                 semanaOperativa.DatIniciomanutencao = dadosAlteracao.DataInicioManutencao;
                 semanaOperativa.DatFimmanutencao = dadosAlteracao.DataFimManutencao;
                 semanaOperativa.DinUltimaalteracao = DateTime.Now;
-               await _semanaOperativaRepository.UpdateAsync(semanaOperativa);
+                await _semanaOperativaRepository.UpdateAsync(semanaOperativa);
             }
         }
 
@@ -157,7 +158,48 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
 
         public ISet<SemanaOperativa> GerarSugestaoSemanasOperativas(int ano, int mes)
         {
-            throw new NotImplementedException();
+
+            ISet<SemanaOperativa> semanasOperativas = new SortedSet<SemanaOperativa>();
+
+            var cultura = CultureInfo.CurrentCulture;
+            string nomeMes = cultura.TextInfo.ToTitleCase(cultura.DateTimeFormat.GetMonthName(mes));
+
+            DateTime dataInicioSemana = new DateTime(ano, mes, 1);
+            DateTime ultimoDiaMes = dataInicioSemana.AddMonths(1).AddDays(-1);
+            DateTime dataFimPMO = ultimoDiaMes;
+
+            if (dataInicioSemana.DayOfWeek != DayOfWeek.Saturday)
+            {
+                // A semana operativa desve ser sempre de Sábado a Sexta
+                // Se o primeiro dia do mês não for um Sábado é preciso obter a quantidade de dias 
+                // que se deve retroceder para chegar ao Sábado
+                int qtdDiasParaSabado = -(int)dataInicioSemana.DayOfWeek - 1;
+                dataInicioSemana = dataInicioSemana.AddDays(qtdDiasParaSabado);
+            }
+
+            if (ultimoDiaMes.DayOfWeek != DayOfWeek.Friday)
+            {
+                // A semana operativa desve ser sempre de Sábado a Sexta
+                // Se último dia do mês não for uma Sexta é preciso obter a quantidade de dias 
+                // para chegar à Sexta
+                int qtdDiasParaSexta = ultimoDiaMes.DayOfWeek == DayOfWeek.Saturday ?
+                    6 : (int)DayOfWeek.Friday - (int)ultimoDiaMes.DayOfWeek;
+                dataFimPMO = ultimoDiaMes.AddDays(qtdDiasParaSexta);
+            }
+
+            int revisao = 0;
+            while (dataInicioSemana <= ultimoDiaMes)
+            {
+                SemanaOperativa semanaOperativa = GerarSemanaOperativa(ano, nomeMes, dataInicioSemana, dataFimPMO, revisao);
+                if (semanaOperativa != null)
+                {
+                    semanasOperativas.Add(semanaOperativa);
+                    revisao++;
+                }
+                dataInicioSemana = dataInicioSemana.AddDays(7);
+            }
+            return semanasOperativas;
+
         }
 
         public void IniciarConvergenciaCCEE(InicializacaoConvergenciaCceeDTO dto)

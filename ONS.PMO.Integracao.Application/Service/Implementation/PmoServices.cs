@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.JSInterop.Infrastructure;
 using ONS.PMO.Integracao.Application.Dto.DisponibilidadeCVU;
 using ONS.PMO.Integracao.Application.Dto.PMO;
 using ONS.PMO.Integracao.Application.Filter;
@@ -117,6 +118,7 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
         }
         public async Task<IncluirPMODto> GerarPMOAsync(IncluirPMODto dto)
         {
+            ValidarInclusaoPMO(dto.AnoReferencia, dto.MesReferencia);
             var pmo = new Pmo()
             {
                 AnoReferencia = dto.AnoReferencia,
@@ -128,10 +130,39 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             {
                 pmo.QtdMesesadiante = int.Parse(parametroQtdMeses.ValParametropmo);
             }
-            _PMORepository.AddAsync(pmo);
+            await _PMORepository.AddAsync(pmo);
             return dto;
         }
+        private void ValidarInclusaoPMO(int ano, int mes)
+        {
+            IList<string> mensagens = new List<string>();
 
+            DateTime dataCorrente = DateTime.Now.Date;
+            if (dataCorrente.Year > ano
+                || (dataCorrente.Year == ano && dataCorrente.Month > mes))
+            {
+                var msg = BusinessMessage.Get("MS003");
+                mensagens.Add(msg.Value);
+            }
+
+            var filtro = new PmoFilter()
+            {
+               AnoReferencia = ano,
+               MesReferencia = mes
+            };
+
+            Pmo pmo = _PMORepository.ObterPorFiltro(filtro);
+
+            if (pmo != null)
+            {
+                var msg = BusinessMessage.Get("MS002");
+                mensagens.Add(msg.Value);
+            }
+            if (mensagens.Any())
+            {
+                throw new BusinessValidationException(mensagens);
+            }
+        }
         public ISet<SemanaOperativa> GerarSugestaoSemanasOperativas(int ano, int mes)
         {
             ISet<SemanaOperativa> semanasOperativas = new SortedSet<SemanaOperativa>();
