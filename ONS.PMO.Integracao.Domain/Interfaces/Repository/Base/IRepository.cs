@@ -7,15 +7,14 @@ namespace ONS.PMO.Integracao.Domain.Interfaces.Repository.Base
     {
         Task AddAsync(T entity);
         Task DeleteAsync(T entity);
-        Task DeleteAsync(ICollection<T> entity);
+        Task DeleteRangeAsync(ICollection<T> entity);
         Task UpdateAsync(T entity);
         Task<T> GetByIdAsync(object id);
         Task<IEnumerable<T>> GetAllAsync();
         Task<IEnumerable<T>> FindAllByCriterioAsync(Expression<Func<T, bool>> expression);
         Task<T> FindOneByCriterioAsync(Expression<Func<T, bool>> expression);
         ValueTask<bool> AnyAsync(Expression<Func<T, bool>> expression);
-        ValueTask<T> GetbyExpressionAsync(Expression<Func<T, bool>> expression);
-        ValueTask<T> GetbyExpressionIncludeAsync(Expression<Func<T, bool>> expression,Func<IQueryable<T>, IQueryable<T>>? includeExpression = null);
+        ValueTask<T> GetbyExpressionAsync(Expression<Func<T, bool>> expression);        
         IQueryable<T> GetByQueryable(ICustomQueryable filter);
         IQueryable<T> Query();
 
