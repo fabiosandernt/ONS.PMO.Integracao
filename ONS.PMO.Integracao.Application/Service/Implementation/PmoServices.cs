@@ -59,21 +59,7 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
         }
         public async Task ExcluirPMOAsync(DadosPMODTO dto)
         {
-            var pmo = await _PMORepository.GetbyExpressionIncludeAsync(
-                x => x.IdPmo == dto.IdPMO && x.VerControleconcorrencia == dto.VersaoPMO,
-                query => query.Include(x => x.TbSemanaoperativas)
-            );
-
-            if (pmo != null)
-            {
-               
-                foreach (var semanaOperativa in pmo.TbSemanaoperativas.ToList())
-                {
-                    await _semanaOperativaRepository.DeleteAsync(semanaOperativa);
-                }
-                
-                await _PMORepository.DeleteAsync(pmo);
-            }
+            
         }
 
 
