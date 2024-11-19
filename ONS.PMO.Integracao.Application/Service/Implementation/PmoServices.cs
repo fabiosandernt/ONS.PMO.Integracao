@@ -12,6 +12,7 @@ using ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 using ONS.PMO.Integracao.Domain.Enum;
 using ONS.PMO.Integracao.Domain.Interfaces.Repository.PMO;
 using ONS.PMO.Integracao.Domain.Interfaces.Repository.SAGER;
+using System.Collections;
 using System.Globalization;
 
 namespace ONS.PMO.Integracao.Application.Service.Implementation
@@ -63,21 +64,65 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
                 x => x.IdPmo == dto.IdPMO && x.VerControleconcorrencia == dto.VersaoPMO,
                 query => query.Include(x => x.TbSemanaoperativas)
             );
-
             if (pmo != null)
             {
-               
-                foreach (var semanaOperativa in pmo.TbSemanaoperativas.ToList())
-                {
-                    await _semanaOperativaRepository.DeleteAsync(semanaOperativa);
-                }
-                
+                ValidarExclusaoPMO(pmo);
+                pmo.VerControleconcorrencia = dto.VersaoPMO;
+                await _historicoService.ExcluirHistoricosSemanaOperativa(pmo.TbSemanaoperativas);
                 await _PMORepository.DeleteAsync(pmo);
             }
+            else
+            {
+                var msg = BusinessMessage.Get("MS014");
+                throw new Exception(msg.Value);
+            }
+
+            //var pmo = await _PMORepository.GetbyExpressionIncludeAsync(
+            //    x => x.IdPmo == dto.IdPMO && x.VerControleconcorrencia == dto.VersaoPMO,
+            //    query => query.Include(x => x.TbSemanaoperativas)
+            //);
+
+            //if (pmo != null)
+            //{
+
+            //    foreach (var semanaOperativa in pmo.TbSemanaoperativas.ToList())
+            //    {
+            //        await _semanaOperativaRepository.DeleteAsync(semanaOperativa);
+            //    }
+
+            //    await _PMORepository.DeleteAsync(pmo);
+            //}
         }
 
 
+        private void ValidarExclusaoPMO(Pmo pmo)
+        {
+            IList<string> mensagens = new List<string>();
 
+            bool existeSemanaPosConfiguracao =
+                pmo.TbSemanaoperativas.Any(s => s.IdTpsituacaosemanaoperNavigation != null &&
+                    s.IdSemanaoperativa > (int)SituacaoSemanaOperativaEnum.Configuracao);
+
+            if (existeSemanaPosConfiguracao)
+            {
+                var msg = BusinessMessage.Get("MS029");
+                mensagens.Add(msg.Value);
+            }
+
+            bool existeSemanaComGabarito =
+                pmo.TbSemanaoperativas.Any(s => s.TbGabaritos.Any());
+
+            if (existeSemanaComGabarito)
+            {
+                var msg = BusinessMessage.Get("MS030");
+                mensagens.Add(msg.Value);
+            }
+
+            if (mensagens.Any())
+            {
+                throw new BusinessValidationException(mensagens);
+            }
+        }
 
 
         public async Task ExcluirUltimaSemanaOperativaAsync(int idPMO, byte[] versaoPMO)
@@ -94,7 +139,7 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
 
                 ValidarColetaDados(ultimaSemana);
 
-                _semanaOperativaService.ExcluirSemana(ultimaSemana);
+                await _semanaOperativaService.ExcluirSemana(ultimaSemana);
 
                 pmo.VerControleconcorrencia = versaoPMO;
             }
@@ -327,9 +372,66 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             return pmosDto;
         }
 
-        public Task IncluirSemanaOperativaAsync(InclusaoSemanaOperativaDTO dto)
+        public async Task IncluirSemanaOperativaAsync(InclusaoSemanaOperativaDTO dto)
         {
-            throw new NotImplementedException();
+            var pmo = await _PMORepository.GetbyExpressionAsync(x => x.IdPmo == dto.IdPMO && x.VerControleconcorrencia == dto.VersaoPMO);
+            if (pmo != null)
+            {
+                pmo.VerControleconcorrencia = dto.VersaoPMO; // Necessário para forçar o incremento da versão do PMO
+
+                var semanasOrdenasPorRevisao = pmo.TbSemanaoperativas.OrderBy(s => s.DatReuniao);
+
+                var cultura = CultureInfo.CurrentCulture;
+                string nomeMes = cultura.TextInfo.ToTitleCase(cultura.DateTimeFormat.GetMonthName(pmo.MesReferencia));
+
+                if (dto.IsInicioPMO)
+                {
+                    ValidarExisteEstudoPmo(pmo);
+                    _semanaOperativaService.AtualizarSemanasOperativasInclusao(semanasOrdenasPorRevisao,
+                        pmo.AnoReferencia, nomeMes);
+                }
+
+                int revisao = ObterNumeroRevisao(pmo.TbSemanaoperativas.Count, dto.IsInicioPMO);
+                DateTime dataInicioSemana = ObterDataInicioSemana(semanasOrdenasPorRevisao, dto.IsInicioPMO);
+
+                ValidarDataInclusaoExclusaoSemanaOperativa(dataInicioSemana);
+
+                DateTime dataFimPMO = ObterDataFimPMO(semanasOrdenasPorRevisao, dto.IsInicioPMO);
+
+                var semanaOperativa = await _semanaOperativaService.GerarSemanaOperativaAsync(pmo.AnoReferencia,
+                    nomeMes, dataInicioSemana, dataFimPMO, revisao);
+
+                pmo.TbSemanaoperativas.Add(semanaOperativa);
+            }
+        }
+
+        private DateTime ObterDataFimPMO(IEnumerable<SemanaOperativa> semanasOperativas, bool isInicioPMO)
+        {
+            return isInicioPMO ? semanasOperativas.Last().DatFimsemana
+                : semanasOperativas.Last().DatFimsemana.AddDays(7);
+        }
+        private DateTime ObterDataInicioSemana(IEnumerable<SemanaOperativa> semanasOperativas, bool isInicioPMO)
+        {
+            return isInicioPMO ? semanasOperativas.First().DatIniciosemana.AddDays(-7)
+                : semanasOperativas.Last().DatIniciosemana.AddDays(7);
+        }
+        private int ObterNumeroRevisao(int ultimaRevisao, bool isInicioPMO)
+        {
+            int revisao = 0;
+            if (!isInicioPMO)
+            {
+                revisao = ultimaRevisao;
+            }
+            return revisao;
+        }
+        private void ValidarExisteEstudoPmo(Pmo pmo)
+        {
+            if (pmo.TbSemanaoperativas.Any(s => s.IdTpsituacaosemanaoperNavigation != null
+                && s.IdSemanaoperativa != (int)SituacaoSemanaOperativaEnum.Configuracao))
+            {
+                var msg = BusinessMessage.Get("MS065");
+                throw new Exception(msg.Value);
+            }
         }
 
         public async Task<DadoResultadoPmoDto> ObterDadosMontadorDisponibilidadeInflexibilidadeCVU(DisponibilidadeFilter filter)

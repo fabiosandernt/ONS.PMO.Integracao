@@ -34,7 +34,7 @@ namespace ONS.PMO.Integracao.Infraestructure.Data
             _query.Remove(entity);
             await _context.SaveChangesAsync();
         }
-        public async Task DeleteRangeAsync(ICollection<T> entity)
+        public async Task DeleteAsync(ICollection<T> entity)
         {
             _query.RemoveRange(entity);
             await _context.SaveChangesAsync();

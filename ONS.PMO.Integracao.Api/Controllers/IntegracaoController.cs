@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ONS.Core.POP.Provider.Schemas;
-using ONS.PMO.Integracao.Api.Shared;
 using ONS.PMO.Integracao.Application.Service.Interfaces;
 using ONS.PMO.Integracao.Domain.Entidades.SAGER.DisponibilidadeCVU;
 

@@ -43,8 +43,8 @@ namespace ONS.PMO.Integracao.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost("Excluir")]
-        public async Task<IActionResult> ExcluirPMO(DadosPMODTO dto)
+        [HttpDelete("Excluir")]
+        public async Task<IActionResult> ExcluirPMO([FromBody] DadosPMODTO dto)
         {
             await _pmoServices.ExcluirPMOAsync(dto);
             return Ok(dto);
@@ -59,14 +59,14 @@ namespace ONS.PMO.Integracao.Api.Controllers
         }
 
         [HttpPost("AlterarPMO")]
-        public async Task<IActionResult> SalvarPMO(TbPmoDto dto)
+        public async Task<IActionResult> SalvarPMO([FromBody] TbPmoDto dto)
         {
             await _pmoServices.AtualizarMesesAdiantePMOAsync(dto.IdPmo, dto.QtdMesesadiante, dto.VerControleconcorrencia);
             return Ok(dto);
         }
 
         [HttpPost("IncluirSemana")]
-        public async Task<IActionResult> IncluirSemanaOperativa(InclusaoSemanaOperativaDTO dto)
+        public async Task<IActionResult> IncluirSemanaOperativa([FromBody] InclusaoSemanaOperativaDTO dto)
         {
             await _pmoServices.IncluirSemanaOperativaAsync(dto);
 
@@ -84,7 +84,7 @@ namespace ONS.PMO.Integracao.Api.Controllers
         #region Abertura Estudo
 
         [HttpPost("AbrirEstudo")]
-        public async Task<IActionResult> CarregarAbrirEstudo(AberturaEstudoDTO aberturaEstudoDTO)
+        public async Task<IActionResult> CarregarAbrirEstudo([FromBody] AberturaEstudoDTO aberturaEstudoDTO)
         {
             ValidarSelecaoSemanaOperativa(aberturaEstudoDTO.IdSemanaOperativa);
 
@@ -107,7 +107,7 @@ namespace ONS.PMO.Integracao.Api.Controllers
         }
 
         [HttpPost("AlterarSemanaOperativa")]
-        public async Task<IActionResult> AlterarSemanaOperativa(DadosAlteracaoSemanaOperativaDTO dto)
+        public async Task<IActionResult> AlterarSemanaOperativa([FromBody] DadosAlteracaoSemanaOperativaDTO dto)
         {
             try
             {
@@ -116,14 +116,14 @@ namespace ONS.PMO.Integracao.Api.Controllers
                 return Ok(message.Value);
             }
             catch (BusinessValidationException validationException)
-            {                
+            {
                 return BadRequest(new { Errors = validationException.Errors });
             }
         }
 
 
         [HttpPost("Resetar Gabarito")]
-        public ActionResult ResetarGabarito(ResetGabaritoDTO dto)
+        public ActionResult ResetarGabarito([FromBody] ResetGabaritoDTO dto)
         {
             _semanaOperativaService.ResetarGabarito(dto);
             var message = BusinessMessage.Get("MS013");
@@ -134,8 +134,8 @@ namespace ONS.PMO.Integracao.Api.Controllers
 
         #region Excluir Semana Operativa
 
-        [HttpPost("ExcluirSemana")]
-        public async Task<IActionResult> ExcluirUltimaSemanaOperativaPMO(TbPmoDto dto)
+        [HttpDelete("ExcluirSemana")]
+        public async Task<IActionResult> ExcluirUltimaSemanaOperativaPMO([FromBody] TbPmoDto dto)
         {
             await _pmoServices.ExcluirUltimaSemanaOperativaAsync(dto.IdPmo, dto.VerControleconcorrencia);
 

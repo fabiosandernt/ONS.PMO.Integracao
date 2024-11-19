@@ -11,15 +11,15 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
     public interface IHistoricoService
     {
         void CriarSalvarHistoricoColetaInsumo(ColetaInsumo coletaInsumo);
-       
+
         void CriarSalvarHistoricoSemanaOperativa(SemanaOperativa semanaOperativa);
 
-        void ExcluirHistoricoColetaInsumo(int idColetaInsumo);
+        Task ExcluirHistoricoColetaInsumo(ColetaInsumo coletaInsumo);
 
-        void ExcluirHistoricoColetaInsumoViaSemanaOperativa(int idSemanaOperativa);
+        Task ExcluirHistoricoColetaInsumoViaSemanaOperativa(SemanaOperativa semanaOperativa);
 
-        void ExcluirHistoricoSemanaOperativa(int idSemanaOperativa);
+        Task ExcluirHistoricoSemanaOperativa(SemanaOperativa semanaOperativa);
 
-        void ExcluirHistoricosSemanaOperativa(ISet<SemanaOperativa> idsSemanaOperativa);
+        Task ExcluirHistoricosSemanaOperativa(ICollection<SemanaOperativa> idsSemanaOperativa);
     }
 }

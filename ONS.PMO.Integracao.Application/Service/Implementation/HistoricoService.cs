@@ -1,12 +1,20 @@
 ﻿using ONS.PMO.Integracao.Application.Service.Interfaces;
 using ONS.PMO.Integracao.Domain.Entidades.PMO;
 using ONS.PMO.Integracao.Domain.Entidades.Tabelas;
+using ONS.PMO.Integracao.Domain.Interfaces.Repository.PMO;
 
 
 namespace ONS.PMO.Integracao.Application.Service.Implementation
 {
     public class HistoricoService : IHistoricoService
     {
+        private readonly ISemanaOperativaRepository _semanaOperativaRepository;
+        private readonly IColetaInsumoRepository _coletaInsumoRepository;
+        public HistoricoService(ISemanaOperativaRepository semanaOperativaRepository, IColetaInsumoRepository coletaInsumoRepository)
+        {
+            _semanaOperativaRepository = semanaOperativaRepository;
+            _coletaInsumoRepository = coletaInsumoRepository;
+        }
         public void CriarSalvarHistoricoColetaInsumo(ColetaInsumo coletaInsumo)
         {
             throw new NotImplementedException();
@@ -17,24 +25,33 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             throw new NotImplementedException();
         }
 
-        public void ExcluirHistoricoColetaInsumo(int idColetaInsumo)
+        public async Task ExcluirHistoricoColetaInsumo(ColetaInsumo coletaInsumo)
         {
-            throw new NotImplementedException();
+            await _coletaInsumoRepository.DeleteAsync(coletaInsumo);
         }
 
-        public void ExcluirHistoricoColetaInsumoViaSemanaOperativa(int idSemanaOperativa)
+        public async Task ExcluirHistoricoColetaInsumoViaSemanaOperativa(SemanaOperativa semanaOperativa)
         {
-            throw new NotImplementedException();
+            foreach (var item in semanaOperativa.TbColetainsumos)
+            {
+                if (item.IdSemanaoperativa == semanaOperativa.IdSemanaoperativa)
+                {
+                    await _coletaInsumoRepository.DeleteAsync(item);
+                }
+            }
         }
 
-        public void ExcluirHistoricoSemanaOperativa(int idSemanaOperativa)
+        public async Task ExcluirHistoricoSemanaOperativa(SemanaOperativa semanaOperativa)
         {
-            throw new NotImplementedException();
+            await _semanaOperativaRepository.DeleteAsync(semanaOperativa);
         }
 
-        public void ExcluirHistoricosSemanaOperativa(ISet<SemanaOperativa> idsSemanaOperativa)
+        public async Task ExcluirHistoricosSemanaOperativa(ICollection<SemanaOperativa> semanaOperativa)
         {
-            throw new NotImplementedException();
+            foreach (var semana in semanaOperativa)
+            {
+               await ExcluirHistoricoSemanaOperativa(semana);
+            }
         }
     }
 }

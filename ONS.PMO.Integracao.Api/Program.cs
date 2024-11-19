@@ -43,20 +43,20 @@ namespace ONS.PMO.Integracao.Api
             }
             else
             {
-                var environmentVariables = Environment.GetEnvironmentVariables();
+                //var environmentVariables = Environment.GetEnvironmentVariables();
 
-                builder.Configuration.AddConfigITConfiguration(options =>
-                {
-                    options["-amb"] = environmentVariables["ConfigITamb"]?.ToString();
-                    options["-user"] = environmentVariables["ConfigITuser"]?.ToString();
-                    options["-password"] = environmentVariables["ConfigITpwd"]?.ToString();
-                    options["-r"] = environmentVariables["ConfigITr"]?.ToString();
-                });
+                //builder.Configuration.AddConfigITConfiguration(options =>
+                //{
+                //    options["-amb"] = environmentVariables["ConfigITamb"]?.ToString();
+                //    options["-user"] = environmentVariables["ConfigITuser"]?.ToString();
+                //    options["-password"] = environmentVariables["ConfigITpwd"]?.ToString();
+                //    options["-r"] = environmentVariables["ConfigITr"]?.ToString();
+                //});
 
-                var connectionString = builder.Configuration.GetConnectionString("PMOIntegracaoConnectionString");
-                builder.Configuration["TestConfigValue"] = connectionString;
-                builder.Services.RegisterApplication(builder.Configuration)
-                    .RegisterRepository(connectionString);
+                //var connectionString = builder.Configuration.GetConnectionString("PMOIntegracaoConnectionString");
+                //builder.Configuration["TestConfigValue"] = connectionString;
+                //builder.Services.RegisterApplication(builder.Configuration)
+                //    .RegisterRepository(connectionString);
             }
 
             var supportedCultures = new[]
@@ -68,50 +68,50 @@ namespace ONS.PMO.Integracao.Api
             builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
             var resourceBuild = ResourceBuilder.CreateDefault()
-                .AddService(serviceName: "ONS.PMO.Integracao.Api", serviceVersion: "1.0.4")
-                .AddTelemetrySdk();
+                .AddService(serviceName: "ONS.PMO.Integracao.Api", serviceVersion: "1.0.4");
+                //.AddTelemetrySdk();
 
            
-            builder.Services.AddOpenTelemetry()
-                .WithMetrics(builder =>
-                {
-                    builder.AddMeter("ONS.PMO.Integracao.Api")
-                        .SetResourceBuilder(resourceBuild)
-                        .AddHttpClientInstrumentation()
-                        .AddAspNetCoreInstrumentation()
-                        .AddConsoleExporter()
-                        .AddOtlpExporter(exporter => { exporter.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc; });
-                })
-                .WithTracing(builder =>
-                {
-                    builder.AddSource("ONS.PMO.Integracao.Api")
-                        .SetResourceBuilder(resourceBuild)
-                        .AddHttpClientInstrumentation(options => options.RecordException = true)
-                        .AddAspNetCoreInstrumentation(options => options.RecordException = true)
-                        .SetErrorStatusOnException()
-                        .AddConsoleExporter()
-                        .AddOtlpExporter(exporter =>
-                        {
-                            exporter.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
-                        });
-                });
+            //builder.Services.AddOpenTelemetry()
+            //    .WithMetrics(builder =>
+            //    {
+            //        builder.AddMeter("ONS.PMO.Integracao.Api")
+            //            .SetResourceBuilder(resourceBuild)
+            //            .AddHttpClientInstrumentation()
+            //            .AddAspNetCoreInstrumentation()
+            //            .AddConsoleExporter()
+            //            .AddOtlpExporter(exporter => { exporter.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc; });
+            //    })
+            //    .WithTracing(builder =>
+            //    {
+            //        builder.AddSource("ONS.PMO.Integracao.Api")
+            //            .SetResourceBuilder(resourceBuild)
+            //            .AddHttpClientInstrumentation(options => options.RecordException = true)
+            //            .AddAspNetCoreInstrumentation(options => options.RecordException = true)
+            //            .SetErrorStatusOnException()
+            //            .AddConsoleExporter()
+            //            .AddOtlpExporter(exporter =>
+            //            {
+            //                exporter.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
+            //            });
+            //    });
 
            
             builder.Logging.ClearProviders();
-            builder.Logging.AddOpenTelemetry(loggerOptions =>
-            {
-                loggerOptions
-                    .SetResourceBuilder(resourceBuild)
-                    .AddConsoleExporter()
-                    .AddOtlpExporter(exporter =>
-                    {
-                        exporter.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
-                    });
+            //builder.Logging.AddOpenTelemetry(loggerOptions =>
+            //{
+            //    loggerOptions
+            //        .SetResourceBuilder(resourceBuild)
+            //        .AddConsoleExporter()
+            //        .AddOtlpExporter(exporter =>
+            //        {
+            //            exporter.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
+            //        });
 
-                loggerOptions.IncludeFormattedMessage = true;
-                loggerOptions.IncludeScopes = true;
-                loggerOptions.ParseStateValues = true;
-            });
+            //    loggerOptions.IncludeFormattedMessage = true;
+            //    loggerOptions.IncludeScopes = true;
+            //    loggerOptions.ParseStateValues = true;
+            //});
 
             
             builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Information);
