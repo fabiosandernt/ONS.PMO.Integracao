@@ -147,9 +147,14 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             throw new NotImplementedException();
         }
 
-        public void ExcluirSemana(SemanaOperativa semanaOperativa)
+        public async Task ExcluirSemana(SemanaOperativa semanaOperativa)
         {
-            throw new NotImplementedException();
+            _historicoService.ExcluirHistoricoColetaInsumoViaSemanaOperativa(semanaOperativa.IdSemanaoperativa);
+            _historicoService.ExcluirHistoricoSemanaOperativa(semanaOperativa.IdSemanaoperativa);
+
+            await _gabaritoRepository.DeleteAsync(semanaOperativa.TbGabaritos);
+            await _coletaInsumoRepository.DeleteAsync(semanaOperativa.TbColetainsumos);
+            await _semanaOperativaRepository.DeleteAsync(semanaOperativa);
         }
 
         public async Task<SemanaOperativa> GerarSemanaOperativaAsync(int ano, string nomeMes, DateTime dataInicioSemana, DateTime dataFimPMO, int revisao)

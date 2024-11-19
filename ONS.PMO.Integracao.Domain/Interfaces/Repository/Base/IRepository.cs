@@ -7,6 +7,7 @@ namespace ONS.PMO.Integracao.Domain.Interfaces.Repository.Base
     {
         Task AddAsync(T entity);
         Task DeleteAsync(T entity);
+        Task DeleteAsync(ICollection<T> entity);
         Task UpdateAsync(T entity);
         Task<T> GetByIdAsync(object id);
         Task<IEnumerable<T>> GetAllAsync();
