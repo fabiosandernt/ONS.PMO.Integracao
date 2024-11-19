@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.JSInterop.Infrastructure;
 using ONS.PMO.Integracao.Application.Dto.DisponibilidadeCVU;
 using ONS.PMO.Integracao.Application.Dto.PMO;
@@ -24,8 +25,9 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
         private readonly ISemanaOperativaService _semanaOperativaService;
         private readonly IParametroService _parametroService;
         private readonly IHistoricoService _historicoService;
+        private readonly ISemanaOperativaRepository _semanaOperativaRepository;
 
-        public PmoServices(IDadosResultadoPmoRepository dadosResultadoPmoRepository, IMapper mapper, IPMORepository pMORepository, ISemanaOperativaService semanaOperativaService, IParametroService parametroService, IHistoricoService historicoService)
+        public PmoServices(ISemanaOperativaRepository semanaOperativaRepository, IDadosResultadoPmoRepository dadosResultadoPmoRepository, IMapper mapper, IPMORepository pMORepository, ISemanaOperativaService semanaOperativaService, IParametroService parametroService, IHistoricoService historicoService)
         {
             _dadosResultadoPmoRepository = dadosResultadoPmoRepository;
             _mapper = mapper;
@@ -33,6 +35,7 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             _semanaOperativaService = semanaOperativaService;
             _parametroService = parametroService;
             _historicoService = historicoService;
+            _semanaOperativaRepository = semanaOperativaRepository;
         }
 
         public async Task AtualizarMesesAdiantePMOAsync(int idPMO, int? mesesAdiante, byte[] versao)
@@ -56,12 +59,26 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
         }
         public async Task ExcluirPMOAsync(DadosPMODTO dto)
         {
-            var pmo = await _PMORepository.GetbyExpressionAsync(x => x.IdPmo == dto.IdPMO && x.VerControleconcorrencia == dto.VersaoPMO);
+            var pmo = await _PMORepository.GetbyExpressionIncludeAsync(
+                x => x.IdPmo == dto.IdPMO && x.VerControleconcorrencia == dto.VersaoPMO,
+                query => query.Include(x => x.TbSemanaoperativas)
+            );
+
             if (pmo != null)
             {
+               
+                foreach (var semanaOperativa in pmo.TbSemanaoperativas.ToList())
+                {
+                    await _semanaOperativaRepository.DeleteAsync(semanaOperativa);
+                }
+                
                 await _PMORepository.DeleteAsync(pmo);
             }
         }
+
+
+
+
 
         public async Task ExcluirUltimaSemanaOperativaAsync(int idPMO, byte[] versaoPMO)
         {
