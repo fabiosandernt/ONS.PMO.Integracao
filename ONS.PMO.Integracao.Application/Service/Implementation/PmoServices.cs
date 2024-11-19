@@ -60,7 +60,6 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
         }
         public async Task ExcluirPMOAsync(DadosPMODTO dto)
         {
-<<<<<<< HEAD
             var pmo = await _PMORepository.GetbyExpressionIncludeAsync(
                 x => x.IdPmo == dto.IdPMO && x.VerControleconcorrencia == dto.VersaoPMO,
                 query => query.Include(x => x.TbSemanaoperativas)
@@ -93,9 +92,6 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
 
             //    await _PMORepository.DeleteAsync(pmo);
             //}
-=======
-            
->>>>>>> fb1a6a4366074784c0efbf94cdf7b8b8834e3fcc
         }
 
 

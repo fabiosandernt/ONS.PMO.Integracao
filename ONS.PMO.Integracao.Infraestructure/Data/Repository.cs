@@ -68,8 +68,19 @@ namespace ONS.PMO.Integracao.Infraestructure.Data
         {
             return await _query.FirstOrDefaultAsync(expression);
         }
-        
 
+        public async ValueTask<T> GetbyExpressionIncludeAsync(Expression<Func<T, bool>> expression,
+                    Func<IQueryable<T>, IQueryable<T>>? includeExpression = null)
+        {
+            IQueryable<T> query = _query;
+
+            if (includeExpression != null)
+            {
+                query = includeExpression(query);
+            }
+
+            return await query.FirstOrDefaultAsync(expression);
+        }
 
         public IQueryable<T> GetByQueryable(ICustomQueryable filter)
         {
