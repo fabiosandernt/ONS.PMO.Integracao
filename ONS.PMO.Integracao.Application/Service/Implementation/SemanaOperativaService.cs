@@ -152,8 +152,8 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             _historicoService.ExcluirHistoricoColetaInsumoViaSemanaOperativa(semanaOperativa.IdSemanaoperativa);
             _historicoService.ExcluirHistoricoSemanaOperativa(semanaOperativa.IdSemanaoperativa);
 
-            await _gabaritoRepository.DeleteRangeAsync(semanaOperativa.TbGabaritos);
-            await _coletaInsumoRepository.DeleteRangeAsync(semanaOperativa.TbColetainsumos);
+            await _gabaritoRepository.DeleteAsync(semanaOperativa.TbGabaritos);
+            await _coletaInsumoRepository.DeleteAsync(semanaOperativa.TbColetainsumos);
             await _semanaOperativaRepository.DeleteAsync(semanaOperativa);
         }
 
