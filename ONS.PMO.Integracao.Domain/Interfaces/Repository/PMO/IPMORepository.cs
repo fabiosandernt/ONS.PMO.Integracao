@@ -10,5 +10,7 @@ namespace ONS.PMO.Integracao.Domain.Interfaces.Repository.PMO
         Pmo ObterPorFiltro(IBaseFilter filtro);
         Pmo ObterPorFiltroExterno(IBaseFilter filtro);
         int ObterQuantidadeSemanasPMO(int idSemanaOperativa);
+
+        Task<Pmo> ObterPorIdAndChaveAsync(int id, byte[] versaoPMO);
     }
 }

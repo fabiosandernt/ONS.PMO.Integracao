@@ -1550,10 +1550,10 @@ namespace ONS.PMO.Integracao.Infraestructure.Context
                     .HasColumnName("lgn_usuariocheckout");
                 entity.Property(e => e.QtdPeriodoanalise).HasColumnName("qtd_periodoanalise");
 
-                //entity.HasOne(d => d.IdSemanaoperativaNavigation).WithMany(p => p.TbConfiguracaogestaomanutencaos)
-                //    .HasForeignKey(d => d.IdSemanaoperativa)
-                //    .OnDelete(DeleteBehavior.ClientSetNull)
-                //    .HasConstraintName("fk_semanaoperativa_configuracaogestaomanutencao");
+                entity.HasOne(d => d.IdSemanaoperativaNavigation).WithMany(p => p.TbConfiguracaogestaomanutencaos)
+                    .HasForeignKey(d => d.IdSemanaoperativa)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_semanaoperativa_configuracaogestaomanutencao");
 
                 entity.HasMany(d => d.IdAgenteinstituicaos).WithMany(p => p.IdConfiguracaogestaomanutencaos)
                     .UsingEntity<Dictionary<string, object>>(
@@ -2083,10 +2083,10 @@ namespace ONS.PMO.Integracao.Infraestructure.Context
                 entity.Property(e => e.IdEstudomontador).HasColumnName("id_estudomontador");
                 entity.Property(e => e.IdSemanaoperativa).HasColumnName("id_semanaoperativa");
 
-                //entity.HasOne(d => d.IdSemanaoperativaNavigation).WithMany(p => p.TbEstudomontadors)
-                //    .HasForeignKey(d => d.IdSemanaoperativa)
-                //    .OnDelete(DeleteBehavior.ClientSetNull)
-                //    .HasConstraintName("fk_semanaoperativa_estudomontador");
+                entity.HasOne(d => d.IdSemanaoperativaNavigation).WithMany(p => p.TbEstudomontadors)
+                    .HasForeignKey(d => d.IdSemanaoperativa)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_semanaoperativa_estudomontador");
 
                 entity.HasMany(d => d.IdEstudomontadorrefs).WithMany(p => p.IdEstudomontadors)
                     .UsingEntity<Dictionary<string, object>>(
@@ -2221,10 +2221,10 @@ namespace ONS.PMO.Integracao.Infraestructure.Context
                     .HasForeignKey(d => d.IdArquivoexportacao)
                     .HasConstraintName("fk_arquivoexportacao_exportacaoarquivotexto");
 
-                //entity.HasOne(d => d.IdSemanaoperativaNavigation).WithMany(p => p.TbExportacaoarquivotextos)
-                //    .HasForeignKey(d => d.IdSemanaoperativa)
-                //    .OnDelete(DeleteBehavior.ClientSetNull)
-                //    .HasConstraintName("fk_semanaoperativa_exportacaoarquivotexto");
+                entity.HasOne(d => d.IdSemanaoperativaNavigation).WithMany(p => p.TbExportacaoarquivotextos)
+                    .HasForeignKey(d => d.IdSemanaoperativa)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_semanaoperativa_exportacaoarquivotexto");
             });
 
             modelBuilder.Entity<FonteOrigem>(entity =>
@@ -2761,10 +2761,10 @@ namespace ONS.PMO.Integracao.Infraestructure.Context
                 entity.Property(e => e.IdSemanaoperativa).HasColumnName("id_semanaoperativa");
                 entity.Property(e => e.IdTpsituacaosemanaoper).HasColumnName("id_tpsituacaosemanaoper");
 
-                //entity.HasOne(d => d.IdSemanaoperativaNavigation).WithMany(p => p.TbHistmodifsemanaopers)
-                //    .HasForeignKey(d => d.IdSemanaoperativa)
-                //    .OnDelete(DeleteBehavior.ClientSetNull)
-                //    .HasConstraintName("fk_semanaoperativa_histmodifsemanaoper");
+                entity.HasOne(d => d.IdSemanaoperativaNavigation).WithMany(p => p.TbHistmodifsemanaopers)
+                    .HasForeignKey(d => d.IdSemanaoperativa)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_semanaoperativa_histmodifsemanaoper");
 
                 entity.HasOne(d => d.IdTpsituacaosemanaoperNavigation).WithMany(p => p.TbHistmodifsemanaopers)
                     .HasForeignKey(d => d.IdTpsituacaosemanaoper)
@@ -2796,9 +2796,9 @@ namespace ONS.PMO.Integracao.Infraestructure.Context
                     .IsUnicode(false)
                     .HasColumnName("nom_usuarioultimaalteracao");
 
-                //entity.HasOne(d => d.IdSemanaoperativaNavigation).WithMany(p => p.TbImportacaopmos)
-                //    .HasForeignKey(d => d.IdSemanaoperativa)
-                //    .HasConstraintName("fk_semanaoperativa_importacaopmo");
+                entity.HasOne(d => d.IdSemanaoperativaNavigation).WithMany(p => p.TbImportacaopmos)
+                    .HasForeignKey(d => d.IdSemanaoperativa)
+                    .HasConstraintName("fk_semanaoperativa_importacaopmo");
 
                 entity.HasOne(d => d.IdTpimportacaopmoNavigation).WithMany(p => p.TbImportacaopmos)
                     .HasForeignKey(d => d.IdTpimportacaopmo)
@@ -3155,10 +3155,10 @@ namespace ONS.PMO.Integracao.Infraestructure.Context
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_agenteinstituicao_lognotificacao");
 
-                //entity.HasOne(d => d.IdSemanaoperativaNavigation).WithMany(p => p.TbLognotificacaos)
-                //    .HasForeignKey(d => d.IdSemanaoperativa)
-                //    .OnDelete(DeleteBehavior.ClientSetNull)
-                //    .HasConstraintName("fk_semanaoperativa_lognotificacao");
+                entity.HasOne(d => d.IdSemanaoperativaNavigation).WithMany(p => p.TbLognotificacaos)
+                    .HasForeignKey(d => d.IdSemanaoperativa)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_semanaoperativa_lognotificacao");
             });
 
             modelBuilder.Entity<ManutencaoPmo>(entity =>
@@ -3810,6 +3810,12 @@ namespace ONS.PMO.Integracao.Infraestructure.Context
                     .IsRowVersion()
                     .IsConcurrencyToken()
                     .HasColumnName("ver_controleconcorrencia");
+
+                entity.HasMany(p => p.TbSemanaoperativas)
+                     .WithOne(s => s.IdPmoNavigation)
+                     .HasForeignKey(s => s.IdPmo)
+                     .OnDelete(DeleteBehavior.Cascade);
+
             });
 
             modelBuilder.Entity<RecuperacaoDado>(entity =>
@@ -3849,9 +3855,9 @@ namespace ONS.PMO.Integracao.Infraestructure.Context
                     .HasForeignKey(d => d.IdEstudomontadorfonte)
                     .HasConstraintName("fk_estudomontador_recuperacaodados_fonte");
 
-                //entity.HasOne(d => d.IdSemanaoperativafonteNavigation).WithMany(p => p.TbRecuperacaodados)
-                //    .HasForeignKey(d => d.IdSemanaoperativafonte)
-                //    .HasConstraintName("fk_semanaoperativa_recuperacaodados_fonte");
+                entity.HasOne(d => d.IdSemanaoperativafonteNavigation).WithMany(p => p.TbRecuperacaodados)
+                    .HasForeignKey(d => d.IdSemanaoperativafonte)
+                    .HasConstraintName("fk_semanaoperativa_recuperacaodados_fonte");
             });
 
             modelBuilder.Entity<RecuperacaoDadosAgentePmo>(entity =>

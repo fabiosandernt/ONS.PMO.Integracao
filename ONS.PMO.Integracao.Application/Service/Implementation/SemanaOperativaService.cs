@@ -150,7 +150,7 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
         public async Task ExcluirSemana(SemanaOperativa semanaOperativa)
         {
             await _historicoService.ExcluirHistoricoColetaInsumoViaSemanaOperativa(semanaOperativa);
-            await _historicoService.ExcluirHistoricoSemanaOperativa(semanaOperativa);
+            await _historicoService.ExcluirHistoricoSemanaOperativa(semanaOperativa.IdSemanaoperativa);
 
             await _gabaritoRepository.DeleteAsync(semanaOperativa.TbGabaritos);
             await _coletaInsumoRepository.DeleteAsync(semanaOperativa.TbColetainsumos);

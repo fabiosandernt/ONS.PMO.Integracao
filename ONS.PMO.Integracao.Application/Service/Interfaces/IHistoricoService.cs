@@ -18,8 +18,10 @@ namespace ONS.PMO.Integracao.Application.Service.Interfaces
 
         Task ExcluirHistoricoColetaInsumoViaSemanaOperativa(SemanaOperativa semanaOperativa);
 
-        Task ExcluirHistoricoSemanaOperativa(SemanaOperativa semanaOperativa);
+        Task ExcluirHistoricoSemanaOperativa(int idSemanaOperativa);
 
-        Task ExcluirHistoricosSemanaOperativa(ICollection<SemanaOperativa> idsSemanaOperativa);
+        Task ExcluirHistoricosSemanaOperativa(ICollection<SemanaOperativa> semanasOperativas);
+
+      
     }
 }

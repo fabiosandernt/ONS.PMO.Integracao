@@ -60,15 +60,13 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
         }
         public async Task ExcluirPMOAsync(DadosPMODTO dto)
         {
-            var pmo = await _PMORepository.GetbyExpressionIncludeAsync(
-                x => x.IdPmo == dto.IdPMO && x.VerControleconcorrencia == dto.VersaoPMO,
-                query => query.Include(x => x.TbSemanaoperativas)
-            );
+            var pmo = await _PMORepository.ObterPorIdAndChaveAsync(dto.IdPMO, dto.VersaoPMO);
             if (pmo != null)
             {
                 ValidarExclusaoPMO(pmo);
                 pmo.VerControleconcorrencia = dto.VersaoPMO;
                 await _historicoService.ExcluirHistoricosSemanaOperativa(pmo.TbSemanaoperativas);
+
                 await _PMORepository.DeleteAsync(pmo);
             }
             else
@@ -329,7 +327,7 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
                 AnoReferencia = tbPmo.AnoReferencia,
                 MesReferencia = tbPmo.MesReferencia,
                 QtdMesesadiante = tbPmo.QtdMesesadiante,
-                //VerControleconcorrencia = tbPmo.VerControleconcorrencia,
+                VerControleconcorrencia = tbPmo.VerControleconcorrencia,
                 TbSemanaoperativas = tbPmo.TbSemanaoperativas.Select(semana => new SemanaOperativa
                 {
                     IdSemanaoperativa = semana.IdSemanaoperativa,
@@ -543,7 +541,8 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
 
             if (tbPmo == null)
             {
-                return null;
+                var msg = BusinessMessage.Get("MS004");                
+                throw new Exception(msg.Value);
             }
 
             var tbPmoDto = _mapper.Map<TbPmoDto>(tbPmo);

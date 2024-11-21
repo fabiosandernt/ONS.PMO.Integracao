@@ -19,8 +19,9 @@ namespace ONS.PMO.Integracao.Infraestructure.Repository
         {
 
             var query = _query.AsQueryable().AsNoTracking()
-                 .Include(x => x.TbSemanaoperativas)                  
-                 .Apply(filtro);
+                    .Include(x => x.TbSemanaoperativas)
+                        .ThenInclude(x => x.TbHistmodifsemanaopers)
+                        .Apply(filtro); 
 
             return query.FirstOrDefault();
         }
@@ -29,6 +30,15 @@ namespace ONS.PMO.Integracao.Infraestructure.Repository
         {
             throw new NotImplementedException();
         }
+
+        public async Task<Pmo> ObterPorIdAndChaveAsync(int id, byte[] versaoPMO)
+        {
+            return await _query
+                .AsNoTracking()
+                .Include(x=>x.TbSemanaoperativas)
+                .FirstOrDefaultAsync(x => x.IdPmo == id && x.VerControleconcorrencia == versaoPMO);
+        }
+
 
         public int ObterQuantidadeSemanasPMO(int idSemanaOperativa)
         {

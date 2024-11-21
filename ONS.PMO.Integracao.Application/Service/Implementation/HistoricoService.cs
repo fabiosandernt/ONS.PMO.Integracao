@@ -1,5 +1,6 @@
 ﻿using ONS.PMO.Integracao.Application.Service.Interfaces;
 using ONS.PMO.Integracao.Domain.Entidades.PMO;
+using ONS.PMO.Integracao.Domain.Entidades.Resources;
 using ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 using ONS.PMO.Integracao.Domain.Interfaces.Repository.PMO;
 
@@ -10,10 +11,13 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
     {
         private readonly ISemanaOperativaRepository _semanaOperativaRepository;
         private readonly IColetaInsumoRepository _coletaInsumoRepository;
-        public HistoricoService(ISemanaOperativaRepository semanaOperativaRepository, IColetaInsumoRepository coletaInsumoRepository)
+        private readonly IHistoricoSemanaOperativaRepository _historicoSemanaOperativaRepository;
+        public HistoricoService(IHistoricoSemanaOperativaRepository historicoSemanaOperativaRepository, ISemanaOperativaRepository semanaOperativaRepository, IColetaInsumoRepository coletaInsumoRepository)
         {
             _semanaOperativaRepository = semanaOperativaRepository;
             _coletaInsumoRepository = coletaInsumoRepository;
+            _historicoSemanaOperativaRepository = historicoSemanaOperativaRepository;
+
         }
         public void CriarSalvarHistoricoColetaInsumo(ColetaInsumo coletaInsumo)
         {
@@ -41,16 +45,24 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
             }
         }
 
-        public async Task ExcluirHistoricoSemanaOperativa(SemanaOperativa semanaOperativa)
+        public async Task ExcluirHistoricoSemanaOperativa(int idSemanaOperativa)
         {
-            await _semanaOperativaRepository.DeleteAsync(semanaOperativa);
+            var historicoSemana = await _historicoSemanaOperativaRepository.GetByIdAsync(idSemanaOperativa);
+            //if (historicoSemana == null) throw new Exception("Historico Semana Operativa Nao econtrado");
+            if (historicoSemana != null)
+            {
+                await _historicoSemanaOperativaRepository.DeleteAsync(historicoSemana);
+            }
+           
         }
 
-        public async Task ExcluirHistoricosSemanaOperativa(ICollection<SemanaOperativa> semanaOperativa)
+        
+
+        public async Task ExcluirHistoricosSemanaOperativa(ICollection<SemanaOperativa> semanasOperativas)
         {
-            foreach (var semana in semanaOperativa)
+            foreach (var semana in semanasOperativas)
             {
-               await ExcluirHistoricoSemanaOperativa(semana);
+               await ExcluirHistoricoSemanaOperativa(semana.IdSemanaoperativa);
             }
         }
     }

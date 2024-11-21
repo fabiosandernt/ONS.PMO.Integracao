@@ -43,7 +43,7 @@ namespace ONS.PMO.Integracao.Api.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("Excluir")]
+        [HttpDelete("ExcluirPMO")]
         public async Task<IActionResult> ExcluirPMO([FromBody] DadosPMODTO dto)
         {
             await _pmoServices.ExcluirPMOAsync(dto);
