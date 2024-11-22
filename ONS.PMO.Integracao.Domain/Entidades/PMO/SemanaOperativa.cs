@@ -4,8 +4,13 @@ using ONS.PMO.Integracao.Domain.Entidades.Tabelas;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.PMO;
 
-public class SemanaOperativa
+public class SemanaOperativa : IComparable<SemanaOperativa>
 {
+     public int CompareTo(SemanaOperativa other)
+        {
+            return DatIniciosemana.CompareTo(other.DatIniciosemana);
+        }
+
     public int IdSemanaoperativa { get; set; }
 
     public int IdPmo { get; set; }
@@ -55,4 +60,6 @@ public class SemanaOperativa
     public virtual ICollection<LogNotificacao> TbLognotificacaos { get; set; } = new List<LogNotificacao>();
 
     public virtual ICollection<RecuperacaoDado> TbRecuperacaodados { get; set; } = new List<RecuperacaoDado>();
+
+
 }

@@ -1,19 +1,14 @@
-﻿using System;
+﻿using ONS.PMO.Integracao.Domain.Entidades.Base;
+using System;
 using System.Collections.Generic;
 
 namespace ONS.PMO.Integracao.Domain.Entidades.PMO;
 
-public class HistoricoModificacaoSemanaOperativa
+public class HistoricoModificacaoSemanaOperativa : Entity<int>
 {
-    public int IdHistmodifsemanaoper { get; set; }
-
-    public int IdSemanaoperativa { get; set; }
-
-    public int? IdTpsituacaosemanaoper { get; set; }
-
-    public DateTime DinHistmodifsemanaoper { get; set; }
-
-    public virtual SemanaOperativa IdSemanaoperativaNavigation { get; set; } = null!;
-
-    public virtual SituacaoSemanaOperativa? IdTpsituacaosemanaoperNavigation { get; set; }
+    public DateTime DataHoraAlteracao { get; set; }
+    public virtual SemanaOperativa SemanaOperativa { get; set; }
+    public virtual SituacaoSemanaOperativa Situacao { get; set; }
+    public int SemanaOperativaId { get; set; }
+    public int? SituacaoId { get; set; }
 }

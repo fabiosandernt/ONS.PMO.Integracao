@@ -384,51 +384,21 @@ namespace ONS.PMO.Integracao.Infraestructure.Context
 
             modelBuilder.Entity<ArquivoSemanaOperativa>(entity =>
             {
-                entity.HasKey(e => e.IdArquivosemanaoperativa).HasName("pk_tb_arquivosemanaoperativa");
+                entity.HasKey(t => t.Id);
+                entity.ToTable("tb_arquivosemanaoperativa");
 
-                entity.ToTable("tb_arquivosemanaoperativa", tb => tb.HasComment("Associação de arquivos encaminhados por semana operativa "));
+                entity.Property(t => t.Id).HasColumnName("id_arquivosemanaoperativa");
+                entity.Property(t => t.IsPublicado).HasColumnName("flg_publicado");
+                entity.Property(t => t.ArquivoId).HasColumnName("id_arquivo");
+                entity.HasOne(t => t.Arquivo).WithMany().HasForeignKey(t => t.ArquivoId).OnDelete(DeleteBehavior.Restrict);
 
-                entity.HasIndex(e => e.IdArquivo, "in_fk_arquivo_arquivosemanaoperativa").HasFillFactor(90);
+                entity.Property(t => t.SemanaOperativaId).HasColumnName("id_semanaoperativa");
+                entity.HasOne(t => t.SemanaOperativa).WithMany().HasForeignKey(t => t.SemanaOperativaId).OnDelete(DeleteBehavior.Restrict);
 
-                entity.HasIndex(e => e.IdSemanaoperativa, "in_fk_semanaoperativa_arquivosemanaoperativa").HasFillFactor(90);
-
-                entity.HasIndex(e => e.IdTpsituacaosemanaoper, "in_fk_tpsituacaosemanaoper_arquivosemanaoperativa").HasFillFactor(90);
-
-                entity.HasIndex(e => e.IdArquivosemanaoperativa, "in_pk_tb_arquivosemanaoperativa")
-                    .IsUnique()
-                    .HasFillFactor(90);
-
-                entity.Property(e => e.IdArquivosemanaoperativa)
-                    .HasComment("Identificador do arquivo da semana operativa")
-                    .HasColumnName("id_arquivosemanaoperativa");
-                entity.Property(e => e.FlgPublicado)
-                    .HasComment("Indica se o arquivo associado a semana operativa foi publicado")
-                    .HasColumnName("flg_publicado");
-                entity.Property(e => e.IdArquivo)
-                    .HasComment("Identificador dos arquivos que contém insumos para o sistema")
-                    .HasColumnName("id_arquivo");
-                entity.Property(e => e.IdSemanaoperativa)
-                    .HasComment("Identificadorda semana operativa do programa mensal de operação - PMO")
-                    .HasColumnName("id_semanaoperativa");
-                entity.Property(e => e.IdTpsituacaosemanaoper)
-                    .HasComment("Identificador da situação da semana operativado. Possíveis valores: Configuração, Coleta de dados, Geração de blocos, Convergência CCEE e Publicado")
-                    .HasColumnName("id_tpsituacaosemanaoper");
-
-                entity.HasOne(d => d.IdArquivoNavigation).WithMany(p => p.TbArquivosemanaoperativas)
-                    .HasForeignKey(d => d.IdArquivo)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_arquivo_arquivosemanaoperativa");
-
-                entity.HasOne(d => d.IdSemanaoperativaNavigation).WithMany(p => p.TbArquivosemanaoperativas)
-                    .HasForeignKey(d => d.IdSemanaoperativa)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_semanaoperativa_arquivosemanaoperativa");
-
-                entity.HasOne(d => d.IdTpsituacaosemanaoperNavigation).WithMany(p => p.TbArquivosemanaoperativas)
-                    .HasForeignKey(d => d.IdTpsituacaosemanaoper)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_tpsituacaosemanaoper_arquivosemanaoperativa");
+                entity.Property(t => t.SituacaoId).HasColumnName("id_tpsituacaosemanaoper");
+                entity.HasOne(t => t.Situacao).WithMany().HasForeignKey(t => t.SituacaoId).OnDelete(DeleteBehavior.Restrict);
             });
+
 
             modelBuilder.Entity<TbAuxConjmaqmontador>(entity =>
             {
@@ -2746,33 +2716,42 @@ namespace ONS.PMO.Integracao.Infraestructure.Context
 
             modelBuilder.Entity<HistoricoModificacaoSemanaOperativa>(entity =>
             {
-                entity.HasKey(e => e.IdHistmodifsemanaoper).HasName("pk_tb_histmodifsemanaoper");
+                entity.HasKey(e => e.Id).HasName("pk_tb_histmodifsemanaoper");
 
                 entity.ToTable("tb_histmodifsemanaoper");
 
-                entity.HasIndex(e => e.IdSemanaoperativa, "in_fk_semanaoperativa_histmodifsemanaoper").HasFillFactor(90);
+                entity.HasIndex(e => e.SemanaOperativaId, "in_fk_semanaoperativa_histmodifsemanaoper").HasFillFactor(90);
 
-                entity.HasIndex(e => e.IdTpsituacaosemanaoper, "in_fk_tpsituacaosemanaoper_histmodifsemanaoper").HasFillFactor(90);
+                entity.HasIndex(e => e.SituacaoId, "in_fk_tpsituacaosemanaoper_histmodifsemanaoper").HasFillFactor(90);
 
-                entity.Property(e => e.IdHistmodifsemanaoper).HasColumnName("id_histmodifsemanaoper");
-                entity.Property(e => e.DinHistmodifsemanaoper)
+                entity.Property(e => e.Id).HasColumnName("id_histmodifsemanaoper");
+                entity.Property(e => e.DataHoraAlteracao)
                     .HasColumnType("datetime")
                     .HasColumnName("din_histmodifsemanaoper");
-                entity.Property(e => e.IdSemanaoperativa).HasColumnName("id_semanaoperativa");
-                entity.Property(e => e.IdTpsituacaosemanaoper).HasColumnName("id_tpsituacaosemanaoper");
+                entity.Property(e => e.SemanaOperativaId).HasColumnName("id_semanaoperativa");
+                entity.Property(e => e.SituacaoId).HasColumnName("id_tpsituacaosemanaoper");
 
-                entity.HasOne(t => t.IdTpsituacaosemanaoperNavigation)
-                      .WithMany()
-                      .HasForeignKey(t => t.IdTpsituacaosemanaoper)
-                      .OnDelete(DeleteBehavior.Cascade)
-                      .HasConstraintName("fk_tpsituacaosemanaoper_histmodifsemanaoper");
+                entity.HasOne(d => d.SemanaOperativa).WithMany(p => p.TbHistmodifsemanaopers)
+                    .HasForeignKey(d => d.SemanaOperativaId)
+                    .HasConstraintName("fk_semanaoperativa_histmodifsemanaoper");
 
-                entity.HasOne(t => t.IdSemanaoperativaNavigation)
-                      .WithMany()
-                      .HasForeignKey(t => t.IdSemanaoperativa)
-                      .OnDelete(DeleteBehavior.Cascade)
-                      .HasConstraintName("fk_semanaoperativa_histmodifsemanaoper");
+                entity.HasOne(d => d.Situacao).WithMany(p => p.TbHistmodifsemanaopers)
+                    .HasForeignKey(d => d.SituacaoId)
+                    .HasConstraintName("fk_tpsituacaosemanaoper_histmodifsemanaoper");
+
+                //entity.HasKey(t => t.Id);
+                //entity.ToTable("tb_histmodifsemanaoper");
+
+                //entity.Property(t => t.Id).HasColumnName("id_histmodifsemanaoper");
+                //entity.Property(t => t.DataHoraAlteracao).HasColumnName("din_histmodifsemanaoper");
+
+                //entity.Property(t => t.SemanaOperativaId).HasColumnName("id_semanaoperativa");
+                //entity.HasOne(t => t.SemanaOperativa).WithMany().HasForeignKey(t => t.SemanaOperativaId).OnDelete(DeleteBehavior.Restrict);
+
+                //entity.Property(t => t.SituacaoId).HasColumnName("id_tpsituacaosemanaoper");
+                //entity.HasOne(t => t.Situacao).WithMany().HasForeignKey(t => t.SituacaoId).OnDelete(DeleteBehavior.Restrict);
             });
+
 
             modelBuilder.Entity<ImportacaoPmo>(entity =>
             {
@@ -4190,8 +4169,8 @@ namespace ONS.PMO.Integracao.Infraestructure.Context
                     .HasForeignKey(t => t.IdSemanaoperativa)
                     .OnDelete(DeleteBehavior.NoAction); // Sem cascata
                 
-                entity.HasMany(t => t.TbArquivosemanaoperativas).WithOne(e => e.IdSemanaoperativaNavigation)
-                    .HasForeignKey(t => t.IdSemanaoperativa)
+                entity.HasMany(t => t.TbArquivosemanaoperativas).WithOne(e => e.SemanaOperativa)
+                    .HasForeignKey(t => t.SemanaOperativaId)
                     .OnDelete(DeleteBehavior.Cascade); // Com cascata
 
                 entity.HasOne(t => t.TbDadosconvergencia)

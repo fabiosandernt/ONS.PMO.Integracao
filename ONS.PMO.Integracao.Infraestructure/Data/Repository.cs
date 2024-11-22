@@ -39,7 +39,7 @@ namespace ONS.PMO.Integracao.Infraestructure.Data
 
         public async Task<T> GetByIdAsync(object id)
         {
-            return await _query.FindAsync(id);
+            return  _query.Find(id);
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()

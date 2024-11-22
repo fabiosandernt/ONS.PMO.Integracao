@@ -67,6 +67,9 @@ namespace ONS.PMO.Integracao.Application.Service.Implementation
                 pmo.VerControleconcorrencia = dto.VersaoPMO;
                 await _historicoService.ExcluirHistoricosSemanaOperativa(pmo.TbSemanaoperativas);
 
+                //Excluir semana
+
+
                 await _PMORepository.DeleteAsync(pmo);
             }
             else
