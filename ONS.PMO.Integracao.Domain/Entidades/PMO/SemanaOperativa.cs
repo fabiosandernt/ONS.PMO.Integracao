@@ -40,7 +40,7 @@ public class SemanaOperativa
 
     public virtual ICollection<ConfiguracaoGestaoManutencao> TbConfiguracaogestaomanutencaos { get; set; } = new List<ConfiguracaoGestaoManutencao>();
 
-    public virtual ICollection<DadosConvergencia> TbDadosconvergencia { get; set; } = new List<DadosConvergencia>();
+    public virtual DadosConvergencia TbDadosconvergencia { get; set; }
 
     public virtual ICollection<EstudoMontador> TbEstudomontadors { get; set; } = new List<EstudoMontador>();
 
