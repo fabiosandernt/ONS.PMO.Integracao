@@ -1,16 +1,33 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace ONS.PMO.Integracao.Domain.Entidades.Resources
 {
     public class BusinessValidationException : Exception
     {
-        public List<string> Errors { get; }
+        public IReadOnlyList<string> Errors { get; }
+
+        // Construtor com mensagem única
+        public BusinessValidationException(string error)
+            : base("Ocorreram erros de validação.")
+        {
+            if (string.IsNullOrWhiteSpace(error))
+                throw new ArgumentException("A mensagem de erro não pode ser nula ou vazia.", nameof(error));
+
+            Errors = new List<string> { error };
+        }
 
         public BusinessValidationException(IEnumerable<string> errors)
             : base("Ocorreram erros de validação.")
         {
-            Errors = errors.ToList();
+            if (errors == null || !errors.Any())
+                throw new ArgumentException("A lista de erros não pode ser nula ou vazia.", nameof(errors));
+
+            Errors = errors.ToList().AsReadOnly();
         }
 
+        
         public override string ToString()
         {
             return string.Join(Environment.NewLine, Errors);

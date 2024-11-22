@@ -10,7 +10,6 @@ namespace ONS.PMO.Integracao.Domain.Entidades.Resources
 
         private static List<BusinessMessage> Messages;
 
-        //Caminho para o arquivo JSON
         private static readonly string JsonFilePath = "businessMessage.json";
 
         static BusinessMessage()
@@ -18,7 +17,6 @@ namespace ONS.PMO.Integracao.Domain.Entidades.Resources
             LoadMessagesFromFile();
         }
 
-        //Método para carregar mensagens do arquivo JSON
         private static void LoadMessagesFromFile()
         {
             if (File.Exists(JsonFilePath))
@@ -32,12 +30,11 @@ namespace ONS.PMO.Integracao.Domain.Entidades.Resources
             }
         }
 
-        // Busca uma mensagem pelo código
         public static BusinessMessage Get(string code)
         {
             return Messages.FirstOrDefault(m => m.Code == code);
         }
     }
 
-    
+
 }

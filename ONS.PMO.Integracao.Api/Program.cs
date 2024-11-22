@@ -8,6 +8,7 @@ using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 using System.Diagnostics;
+using ONS.PMO.Integracao.Domain.Entidades.Resources;
 
 namespace ONS.PMO.Integracao.Api
 {
@@ -117,6 +118,7 @@ namespace ONS.PMO.Integracao.Api
             builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Information);
 
             var app = builder.Build();
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             app.UseRequestLocalization(new RequestLocalizationOptions
             {

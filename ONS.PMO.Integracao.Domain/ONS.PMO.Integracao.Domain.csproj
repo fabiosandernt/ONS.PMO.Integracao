@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="AspNetCore.IQueryable.Extensions" Version="7.1.1" />
     <PackageReference Include="FluentValidation" Version="11.8.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
